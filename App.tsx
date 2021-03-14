@@ -1,12 +1,18 @@
 import {
   ApplicationProvider,
+  BottomNavigation,
+  BottomNavigationTab,
+  Icon,
   IconRegistry,
   Layout,
   List,
+  TopNavigation,
+  TopNavigationAction,
+  Text
 } from "@ui-kitten/components";
-import { StatusBar } from "expo-status-bar";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import EventCard, { EventCardProps } from "./components/event-card/event-card";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import * as eva from "@eva-design/eva";
@@ -22,20 +28,64 @@ const data = new Array(8).fill({
     "https://images.unsplash.com/photo-1615646549461-b9b9c118f300?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
 });
 
+const useBottomNavigationState = (initialState = 0) => {
+  const [selectedIndex, setSelectedIndex] = React.useState(initialState);
+  return { selectedIndex, onSelect: setSelectedIndex };
+};
+
+const BackIcon = (props: any) => (
+  <Icon {...props} name='arrow-back'/>
+);
+
+const PersonIcon = (props: any) => (
+  <Icon {...props} name='person-outline'/>
+);
+
+const BellIcon = (props: any) => (
+  <Icon {...props} name='bell-outline' />
+);
+
+const EmailIcon = (props: any) => (
+  <Icon {...props} name='email-outline'/>
+);
+
+const BackAction = () => (
+  <TopNavigationAction icon={BackIcon}/>
+);
+
 export default function App() {
+  const navigationState = useBottomNavigationState();
+
   const renderItem = ({ item }: { item: EventCardProps }) => (
     <EventCard {...item}></EventCard>
   );
-
+  
   return (
     <React.Fragment>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+        
+        <TopNavigation
+          accessoryLeft={BackAction}
+          title='Eva Application'
+          style={{marginTop: StatusBar.currentHeight}}
+        />
+
         <Layout style={styles.container}>
-          <List style={{ width: "100%" }} data={data} renderItem={renderItem} />
+        {/* <Text style={{colo: 40}}/> */}
+        <List style={{ width: "100%" }} data={data} renderItem={renderItem} />
         </Layout>
+
+        <BottomNavigation style={styles.bottomNavigation} {...navigationState}>
+          <BottomNavigationTab icon={PersonIcon}/>
+          <BottomNavigationTab icon={EmailIcon}/>
+          <BottomNavigationTab icon={(p) => BellIcon({...p, height: 40, width: 40})}/>
+          <BottomNavigationTab icon={EmailIcon}/>
+          <BottomNavigationTab icon={EmailIcon}/>
+        </BottomNavigation>
+
       </ApplicationProvider>
-      <StatusBar style="auto" />
+      <ExpoStatusBar style="auto" />
     </React.Fragment>
   );
 }
@@ -46,5 +96,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  bottomNavigation: {
+    // marginVertical: 8,
   },
 });

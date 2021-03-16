@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 import ThemeColors from "../../common/theme/theme-colors";
-import Button from "../button/button";
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export interface EventCardProps {
   id: string;
@@ -30,27 +30,34 @@ const EventCard = (props: EventCardProps) => {
         }}
         imageStyle={{ height: 130 }}
       />
-      <View padding-16>
+      <View padding-16 row style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
         <View>
-          <Text text90 style={{ color: ThemeColors.primary }}>
-            {props.date}
-          </Text>
-          <Text text70 grey10>
-            {props.title}
-          </Text>
-          <Text text90 grey50>
-            {props.city}
-          </Text>
+          <View>
+            <Text text90 style={{ color: ThemeColors.primary }}>
+              {props.date}
+            </Text>
+            <Text text70 grey10>
+              {props.title}
+            </Text>
+            
+            <View row>
+              <View style={{marginRight: 8}}>
+                <Text text90 grey50>
+                  <FontAwesome5 name="map-marker-alt" color="#ccc"></FontAwesome5>
+                </Text>
+              </View>
+              <View>
+                <Text text90 grey50>
+                  {props.city}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
-        <View
-          paddingT-8
-          row
-          style={{ justifyContent: "space-between", alignItems: "center" }}
-        >
+        <View>
           <Text text70 grey10>
             {props.price}
           </Text>
-          <Button label="Participa" />
         </View>
       </View>
     </Card>

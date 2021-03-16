@@ -41,8 +41,8 @@ const PersonIcon = (props: any) => (
   <Icon {...props} name='person-outline'/>
 );
 
-const BellIcon = (props: any) => (
-  <Icon {...props} name='bell-outline' />
+const PlusIcon = (props: any) => (
+  <Icon {...props} name='plus' />
 );
 
 const EmailIcon = (props: any) => (
@@ -67,7 +67,7 @@ export default function App() {
         
         <TopNavigation
           accessoryLeft={BackAction}
-          title='Eva Application'
+          title='Application'
           style={{marginTop: StatusBar.currentHeight}}
         />
 
@@ -79,7 +79,7 @@ export default function App() {
         <BottomNavigation style={styles.bottomNavigation} {...navigationState}>
           <BottomNavigationTab icon={PersonIcon}/>
           <BottomNavigationTab icon={EmailIcon}/>
-          <BottomNavigationTab icon={(p) => BellIcon({...p, height: 40, width: 40})}/>
+          <BottomNavigationTab icon={PlusIcon}/>
           <BottomNavigationTab icon={EmailIcon}/>
           <BottomNavigationTab icon={EmailIcon}/>
         </BottomNavigation>

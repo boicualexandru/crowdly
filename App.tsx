@@ -1,22 +1,12 @@
-import {
-  ApplicationProvider,
-  BottomNavigation,
-  BottomNavigationTab,
-  Icon,
-  IconRegistry,
-  Layout,
-  List,
-  TopNavigation,
-  TopNavigationAction,
-  Text
-} from "@ui-kitten/components";
-import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { Icon, TopNavigationAction } from "@ui-kitten/components";
 import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
 import EventCard, { EventCardProps } from "./components/event-card/event-card";
-import { EvaIconsPack } from "@ui-kitten/eva-icons";
-import * as eva from "@eva-design/eva";
-import { default as theme } from "./common/theme/custom-theme.json";
+import { createStackNavigator } from "@react-navigation/stack";
+import NewServiceScreen from "./screens/new-service";
+import { NavigationContainer } from "@react-navigation/native";
+import HomeTabs from "./screens/home-tabs/home-tabs";
 
 const data = new Array(8).fill({
   id: "asd",
@@ -33,25 +23,22 @@ const useBottomNavigationState = (initialState = 0) => {
   return { selectedIndex, onSelect: setSelectedIndex };
 };
 
-const BackIcon = (props: any) => (
-  <Icon {...props} name='arrow-back'/>
-);
+const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
 
-const PersonIcon = (props: any) => (
-  <Icon {...props} name='person-outline'/>
-);
+const PersonIcon = (props: any) => <Icon {...props} name="person-outline" />;
 
-const PlusIcon = (props: any) => (
-  <Icon {...props} name='plus' />
-);
+const PlusIcon = (props: any) => <Icon {...props} name="plus" />;
 
-const EmailIcon = (props: any) => (
-  <Icon {...props} name='email-outline'/>
-);
+const EmailIcon = (props: any) => <Icon {...props} name="email-outline" />;
 
-const BackAction = () => (
-  <TopNavigationAction icon={BackIcon}/>
-);
+const BackAction = () => <TopNavigationAction icon={BackIcon} />;
+
+export type RootStackParamList = {
+  HomeTabs: undefined;
+  NewService: { userId: string };
+};
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const navigationState = useBottomNavigationState();
@@ -59,34 +46,44 @@ export default function App() {
   const renderItem = ({ item }: { item: EventCardProps }) => (
     <EventCard {...item}></EventCard>
   );
-  
+
   return (
     <React.Fragment>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-        
-        <TopNavigation
-          accessoryLeft={BackAction}
-          title='Application'
-          style={{marginTop: StatusBar.currentHeight}}
-        />
-
-        <Layout style={styles.container}>
-        {/* <Text style={{colo: 40}}/> */}
-        <List style={{ width: "100%" }} data={data} renderItem={renderItem} />
-        </Layout>
-
-        <BottomNavigation style={styles.bottomNavigation} {...navigationState}>
-          <BottomNavigationTab icon={PersonIcon}/>
-          <BottomNavigationTab icon={EmailIcon}/>
-          <BottomNavigationTab icon={PlusIcon}/>
-          <BottomNavigationTab icon={EmailIcon}/>
-          <BottomNavigationTab icon={EmailIcon}/>
-        </BottomNavigation>
-
-      </ApplicationProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="HomeTabs" component={HomeTabs} />
+          <Stack.Screen name="NewService" component={NewServiceScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
       <ExpoStatusBar style="auto" />
     </React.Fragment>
+
+    // <React.Fragment>
+    //   <IconRegistry icons={EvaIconsPack} />
+    //   <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+
+    //     <TopNavigation
+    //       accessoryLeft={BackAction}
+    //       title='Application'
+    //       style={{marginTop: StatusBar.currentHeight}}
+    //     />
+
+    //     <Layout style={styles.container}>
+    //     {/* <Text style={{colo: 40}}/> */}
+    //     <List style={{ width: "100%" }} data={data} renderItem={renderItem} />
+    //     </Layout>
+
+    //     <BottomNavigation style={styles.bottomNavigation} {...navigationState}>
+    //       <BottomNavigationTab icon={PersonIcon}/>
+    //       <BottomNavigationTab icon={EmailIcon}/>
+    //       <BottomNavigationTab icon={PlusIcon}/>
+    //       <BottomNavigationTab icon={EmailIcon}/>
+    //       <BottomNavigationTab icon={EmailIcon}/>
+    //     </BottomNavigation>
+
+    //   </ApplicationProvider>
+    //   <ExpoStatusBar style="auto" />
+    // </React.Fragment>
   );
 }
 

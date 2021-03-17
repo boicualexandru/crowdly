@@ -4,10 +4,10 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React from "react";
-import { RootStackParamList } from "../../App";
-import ThemeColors from "../../common/theme/theme-colors";
-import ProfileScreen from "./profile";
-import ServicesScreen from "./services";
+import { RootStackParamList } from "../App";
+import ThemeColors from "../common/theme/theme-colors";
+import ProfileScreen from "../screens/profile";
+import ServicesScreen from "../screens/services/services";
 
 export type HomeTabsParamList = {
   Services: undefined;
@@ -21,7 +21,7 @@ type HomeTabsNavigationProp = BottomTabNavigationProp<
 
 const Tab = createBottomTabNavigator();
 
-const HomeTabs = (props: HomeTabsNavigationProp) => {
+const HomeTabsNavigation = (props: HomeTabsNavigationProp) => {
   return (
     <Tab.Navigator
     initialRouteName="Services"
@@ -45,4 +45,4 @@ const HomeTabs = (props: HomeTabsNavigationProp) => {
   );
 };
 
-export default HomeTabs;
+export default HomeTabsNavigation;

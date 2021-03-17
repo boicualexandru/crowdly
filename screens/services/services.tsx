@@ -7,7 +7,7 @@ import { RootStackParamList } from "../../App";
 import EventCard, {
   EventCardProps,
 } from "../../components/event-card/event-card";
-import { HomeTabsParamList } from "./home-tabs";
+import { HomeTabsParamList } from "../../navigation/home-tabs";
 
 type ServicesScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<HomeTabsParamList, "Services">,
@@ -15,7 +15,7 @@ type ServicesScreenNavigationProp = CompositeNavigationProp<
 >;
 
 const DATA = new Array(8).fill({
-  id: "asd",
+  id: Math.random().toString(),
   title: "Targ de cariere pentru tineri",
   date: "Mie, 2 Aug • 17:00",
   city: "Sibiu, Romania",

@@ -6,8 +6,8 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { RootStackParamList } from "../../App";
-import { HomeTabsParamList } from "./home-tabs";
+import { RootStackParamList } from "../App";
+import { HomeTabsParamList } from "../navigation/home-tabs";
 
 type ProfileScreenNavigationProp = CompositeNavigationProp<
   BottomTabNavigationProp<HomeTabsParamList, "Profile">,

@@ -1,11 +1,14 @@
 import React from "react";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import RootStackNavigation from "./navigation/root-stack";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   return (
     <React.Fragment>
-      <RootStackNavigation />
+      <NavigationContainer>
+        <RootStackNavigation />
+      </NavigationContainer>
       <ExpoStatusBar style="auto" />
     </React.Fragment>
 

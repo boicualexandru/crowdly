@@ -1,17 +1,16 @@
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { CompositeNavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
-import { RootStackParamList } from "../../App";
 import EventCard, {
   EventCardProps,
 } from "../../components/event-card/event-card";
-import { HomeTabsParamList } from "../../navigation/home-tabs";
+import { HomeTabsNavigationProp } from "../../navigation/home-tabs";
+import { ServicesStackParamList } from "../../navigation/services-stack";
 
 type ServicesScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<HomeTabsParamList, "Services">,
-  StackNavigationProp<RootStackParamList>
+  StackNavigationProp<ServicesStackParamList, "Services">,
+  HomeTabsNavigationProp
 >;
 
 const DATA = new Array(8).fill({

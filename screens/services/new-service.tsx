@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
 import { View, Text } from "react-native";
-import { RootStackParamList } from "../../App";
+import { RootStackParamList } from "../../navigation/root-stack";
 
 type NewServiceScreenNavigationProp = StackScreenProps<RootStackParamList, 'NewService'>;
 

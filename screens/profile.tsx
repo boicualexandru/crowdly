@@ -1,18 +1,13 @@
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import {
-  CompositeNavigationProp,
-  useNavigation,
-} from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { RootStackParamList } from "../App";
-import { HomeTabsParamList } from "../navigation/home-tabs";
+import {
+  HomeTabsNavigationPropChild,
+  HomeTabsRoutePropChild,
+} from "../navigation/home-tabs";
 
-type ProfileScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<HomeTabsParamList, "Profile">,
-  StackNavigationProp<RootStackParamList>
->;
+type ProfileScreenNavigationProp = HomeTabsNavigationPropChild<"Profile">;
+type ProfileScreenRouteProp = HomeTabsRoutePropChild<"Profile">;
 
 const ProfileScreen = () => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();

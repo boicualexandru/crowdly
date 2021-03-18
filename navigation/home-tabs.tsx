@@ -7,22 +7,23 @@ import React from "react";
 import ThemeColors from "../common/theme/theme-colors";
 import ProfileScreen from "../screens/profile";
 import ServicesScreen from "../screens/services/services";
-import { RootStackNavigationProp, RootStackParamList } from "./root-stack";
-import { CompositeNavigationProp } from "@react-navigation/native";
+import {
+  RootStackNavigationPropChild,
+  RootStackRoutePropChild,
+} from "./root-stack";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 
-export type HomeTabsParamList = {
+type HomeTabsParamList = {
   ServicesStack: undefined;
   Profile: undefined;
 };
 
-export type HomeTabsNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<RootStackParamList, "HomeTabs">,
-  RootStackNavigationProp
->;
+type HomeTabsNavigationProp = RootStackNavigationPropChild<"HomeTabs">;
+type HomeTabsRouteProp = RootStackRoutePropChild<"HomeTabs">;
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
-const HomeTabsNavigation = (props: HomeTabsNavigationProp) => {
+const HomeTabsNavigation = () => {
   return (
     <Tab.Navigator
       initialRouteName="ServicesStack"
@@ -63,3 +64,14 @@ const HomeTabsNavigation = (props: HomeTabsNavigationProp) => {
 };
 
 export default HomeTabsNavigation;
+
+export type HomeTabsNavigationPropChild<
+  RouteName extends keyof HomeTabsParamList
+> = CompositeNavigationProp<
+  BottomTabNavigationProp<HomeTabsParamList, RouteName>,
+  HomeTabsNavigationProp
+>;
+
+export type HomeTabsRoutePropChild<
+  RouteName extends keyof HomeTabsParamList
+> = RouteProp<HomeTabsParamList, RouteName>;

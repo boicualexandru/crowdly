@@ -1,14 +1,21 @@
-import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
 import { View, Text } from "react-native";
-import { RootStackParamList } from "../../navigation/root-stack";
+import {
+  RootStackRoutePropChild,
+  RootStackNavigationPropChild,
+} from "../../navigation/root-stack";
 
-type NewServiceScreenNavigationProp = StackScreenProps<RootStackParamList, 'NewService'>;
+type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
+type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;
 
-const NewServiceScreen = (props: NewServiceScreenNavigationProp) => {
+type Props = {
+  route: NewServiceScreenRouteProp;
+};
+
+const NewServiceScreen = ({ route }: Props) => {
   return (
     <View>
-      <Text>NewService: {props.route.params.userId}</Text>
+      <Text>NewService: {route.params.userId}</Text>
     </View>
   );
 };

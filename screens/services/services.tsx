@@ -1,17 +1,15 @@
-import { CompositeNavigationProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import EventCard, {
   EventCardProps,
 } from "../../components/event-card/event-card";
-import { HomeTabsNavigationProp } from "../../navigation/home-tabs";
-import { ServicesStackParamList } from "../../navigation/services-stack";
+import {
+  ServicesStackNavigationPropChild,
+  ServicesStackRoutePropChild,
+} from "../../navigation/services-stack";
 
-type ServicesScreenNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<ServicesStackParamList, "Services">,
-  HomeTabsNavigationProp
->;
+type ServicesScreenNavigationProp = ServicesStackNavigationPropChild<"Services">;
+type ServicesScreenRouteProp = ServicesStackRoutePropChild<"Services">;
 
 const DATA = new Array(8).fill({
   id: Math.random().toString(),

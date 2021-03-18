@@ -1,3 +1,4 @@
+import { RouteProp } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -6,12 +7,12 @@ import React from "react";
 import NewServiceScreen from "../screens/services/new-service";
 import HomeTabsNavigation from "./home-tabs";
 
-export type RootStackParamList = {
+type RootStackParamList = {
   HomeTabs: undefined;
   NewService: { userId: string };
 };
 
-export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
+type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -25,3 +26,11 @@ const RootStackNavigation = () => {
 };
 
 export default RootStackNavigation;
+
+export type RootStackNavigationPropChild<
+  RouteName extends keyof RootStackParamList
+> = StackNavigationProp<RootStackParamList, RouteName>;
+
+export type RootStackRoutePropChild<
+  RouteName extends keyof RootStackParamList
+> = RouteProp<RootStackParamList, RouteName>;

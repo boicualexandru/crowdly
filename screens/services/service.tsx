@@ -1,16 +1,14 @@
-import { CompositeNavigationProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { View, Text } from "react-native";
-import { HomeTabsNavigationProp } from "../../navigation/home-tabs";
-import { ServicesStackParamList } from "../../navigation/services-stack";
+import {
+  ServicesStackNavigationPropChild,
+  ServicesStackRoutePropChild,
+} from "../../navigation/services-stack";
 
-type ServiceScreenNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<ServicesStackParamList, "Service">,
-  HomeTabsNavigationProp
->;
+type ServiceScreenNavigationProp = ServicesStackNavigationPropChild<"Service">;
+type ServiceScreenRouteProp = ServicesStackRoutePropChild<"Service">;
 
-const ServiceScreen = (props: ServiceScreenNavigationProp) => {
+const ServiceScreen = () => {
   return (
     <View>
       <Text>Service</Text>

@@ -1,4 +1,4 @@
-import { CompositeNavigationProp } from "@react-navigation/native";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -6,17 +6,15 @@ import {
 import React from "react";
 import ServiceScreen from "../screens/services/service";
 import ServicesScreen from "../screens/services/services";
-import { HomeTabsNavigationProp, HomeTabsParamList } from "./home-tabs";
+import { HomeTabsNavigationPropChild, HomeTabsRoutePropChild } from "./home-tabs";
 
-export type ServicesStackParamList = {
+type ServicesStackParamList = {
   Services: undefined;
   Service: { id: string };
 };
 
-export type ServicesStackNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<HomeTabsParamList, "ServicesStack">,
-  HomeTabsNavigationProp
->;
+type ServicesStackNavigationProp = HomeTabsNavigationPropChild<"ServicesStack">;
+type ServicesStackRouteProp = HomeTabsRoutePropChild<"ServicesStack">;
 
 const Stack = createStackNavigator<ServicesStackParamList>();
 
@@ -30,3 +28,14 @@ const RootStackNavigation = () => {
 };
 
 export default RootStackNavigation;
+
+export type ServicesStackNavigationPropChild<
+  RouteName extends keyof ServicesStackParamList
+> = CompositeNavigationProp<
+  StackNavigationProp<ServicesStackParamList, RouteName>,
+  ServicesStackNavigationProp
+>;
+
+export type ServicesStackRoutePropChild<
+  RouteName extends keyof ServicesStackParamList
+> = RouteProp<ServicesStackParamList, RouteName>;

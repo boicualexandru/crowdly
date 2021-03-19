@@ -19,7 +19,13 @@ const Stack = createStackNavigator<RootStackParamList>();
 const RootStackNavigation = () => {
   return (
     <Stack.Navigator initialRouteName="HomeTabs">
-      <Stack.Screen name="HomeTabs" component={HomeTabsNavigation} />
+      <Stack.Screen
+        name="HomeTabs"
+        component={HomeTabsNavigation}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="NewService" component={NewServiceScreen} />
     </Stack.Navigator>
   );

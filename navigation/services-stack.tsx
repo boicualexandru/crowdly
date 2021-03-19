@@ -4,9 +4,12 @@ import {
   StackNavigationProp,
 } from "@react-navigation/stack";
 import React from "react";
-import ServiceScreen from "../screens/services/service";
+import ServiceScreen from "../screens/services/service/service";
 import ServicesScreen from "../screens/services/services";
-import { HomeTabsNavigationPropChild, HomeTabsRoutePropChild } from "./home-tabs";
+import {
+  HomeTabsNavigationPropChild,
+  HomeTabsRoutePropChild,
+} from "./home-tabs";
 
 type ServicesStackParamList = {
   Services: undefined;
@@ -18,16 +21,22 @@ type ServicesStackRouteProp = HomeTabsRoutePropChild<"ServicesStack">;
 
 const Stack = createStackNavigator<ServicesStackParamList>();
 
-const RootStackNavigation = () => {
+const ServicesStackNavigation = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Services" component={ServicesScreen} />
-      <Stack.Screen name="Service" component={ServiceScreen} />
+      <Stack.Screen
+        name="Service"
+        component={ServiceScreen}
+        options={{
+          headerTransparent: true,
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
-export default RootStackNavigation;
+export default ServicesStackNavigation;
 
 export type ServicesStackNavigationPropChild<
   RouteName extends keyof ServicesStackParamList

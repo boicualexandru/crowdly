@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 import ThemeColors from "../../common/theme/theme-colors";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export interface EventCardProps {
   id: string;
@@ -10,6 +10,7 @@ export interface EventCardProps {
   city?: string;
   imageUrl?: string;
   price: string;
+  onPress: () => void;
 }
 
 const EventCard = (props: EventCardProps) => {
@@ -19,7 +20,7 @@ const EventCard = (props: EventCardProps) => {
       marginV-10
       flex
       selected={false}
-      onPress={() => {}}
+      onPress={props.onPress}
       activeOpacity={1}
       marginH-20
       style={{ height: "100%" }}
@@ -30,7 +31,11 @@ const EventCard = (props: EventCardProps) => {
         }}
         imageStyle={{ height: 130 }}
       />
-      <View padding-16 row style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
+      <View
+        padding-16
+        row
+        style={{ justifyContent: "space-between", alignItems: "flex-start" }}
+      >
         <View>
           <View>
             <Text text90 style={{ color: ThemeColors.primary }}>
@@ -39,11 +44,14 @@ const EventCard = (props: EventCardProps) => {
             <Text text70 grey10>
               {props.title}
             </Text>
-            
+
             <View row>
-              <View style={{marginRight: 8}}>
+              <View style={{ marginRight: 8 }}>
                 <Text text90 grey50>
-                  <FontAwesome5 name="map-marker-alt" color="#ccc"></FontAwesome5>
+                  <FontAwesome5
+                    name="map-marker-alt"
+                    color="#ccc"
+                  ></FontAwesome5>
                 </Text>
               </View>
               <View>

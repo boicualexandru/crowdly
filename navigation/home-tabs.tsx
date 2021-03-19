@@ -6,13 +6,13 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useState } from "react";
 import ThemeColors from "../common/theme/theme-colors";
 import ProfileScreen from "../screens/profile";
-import ServicesScreen from "../screens/services/services";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
 } from "./root-stack";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import NewItemModal from "../components/new-item-modal/new-item-modal";
+import ServicesStackNavigation from "./services-stack";
 
 type HomeTabsParamList = {
   ServicesStack: undefined;
@@ -47,7 +47,7 @@ const HomeTabsNavigation = ({
       >
         <Tab.Screen
           name="ServicesStack"
-          component={ServicesScreen}
+          component={ServicesStackNavigation}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
               <FontAwesome5

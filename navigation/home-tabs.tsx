@@ -32,6 +32,10 @@ const HomeTabsNavigation = ({
 }) => {
   const [newItemModalIsOpen, setNewItemModalIsOpen] = useState(false);
 
+  const NullComponent = () => {
+    return null;
+  };
+
   return (
     <React.Fragment>
       <Tab.Navigator
@@ -57,7 +61,7 @@ const HomeTabsNavigation = ({
         />
         <Tab.Screen
           name="Add"
-          component={() => null}
+          component={NullComponent}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
               <FontAwesome5

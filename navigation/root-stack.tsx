@@ -3,8 +3,10 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import NewServiceScreen from "@screens/services/new-service";
 import React from "react";
+
+import NewServiceScreen from "@screens/services/new-service";
+
 import HomeTabsNavigation from "./home-tabs";
 
 type RootStackParamList = {

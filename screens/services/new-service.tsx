@@ -1,6 +1,10 @@
-import { RootStackNavigationPropChild, RootStackRoutePropChild } from "@navigation/root-stack";
 import React from "react";
 import { View, Text } from "react-native";
+
+import {
+  RootStackNavigationPropChild,
+  RootStackRoutePropChild,
+} from "@navigation/root-stack";
 
 type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
 type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;

@@ -3,9 +3,11 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
+import React from "react";
+
 import ServiceScreen from "@screens/services/service/service";
 import ServicesScreen from "@screens/services/services";
-import React from "react";
+
 import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,

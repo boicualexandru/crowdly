@@ -1,10 +1,11 @@
-import ThemeColors from '@theme/theme-colors';
-import React from 'react'
+import React from "react";
 import { Button as RNUIButton } from "react-native-ui-lib";
 
+import ThemeColors from "@theme/theme-colors";
+
 export interface ButtonProps {
-  label: string,
-  color?: 'primary',
+  label: string;
+  color?: "primary";
 }
 
 const Button = (props: ButtonProps) => {
@@ -15,7 +16,7 @@ const Button = (props: ButtonProps) => {
       backgroundColor={ThemeColors.primary}
       style={{ height: 45 }}
     />
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

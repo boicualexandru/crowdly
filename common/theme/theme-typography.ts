@@ -1,6 +1,7 @@
+import { StyleSheet } from "react-native";
+
 import { alpha } from "./mixins";
 import ThemeColors from "./theme-colors";
-import { StyleSheet } from "react-native";
 
 export const ThemeTypography = {
   cardTitle: { fontSize: 58, fontWeight: "300", lineHeight: 80 },

@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Service } from "@models/services/service";
-import { ThemeTypography, ThemeTypographyColorStyles } from "@theme/theme-typography";
-import ImageSwiper from "@components/image-swiper/image-swiper";
-import { ServicesStackNavigationPropChild, ServicesStackRoutePropChild } from "@navigation/services-stack";
+
+import {
+  ServicesStackNavigationPropChild,
+  ServicesStackRoutePropChild,
+} from "@navigation/services-stack";
+
 import IconButton from "@components/button/icon-button";
+import ImageSwiper from "@components/image-swiper/image-swiper";
+
+import { Service } from "@models/services/service";
+
 import ThemeColors from "@theme/theme-colors";
+import {
+  ThemeTypography,
+  ThemeTypographyColorStyles,
+} from "@theme/theme-typography";
 
 type ServiceScreenNavigationProp = ServicesStackNavigationPropChild<"Service">;
 type ServiceScreenRouteProp = ServicesStackRoutePropChild<"Service">;

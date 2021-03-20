@@ -1,7 +1,12 @@
 import React from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+
+import {
+  ServicesStackNavigationPropChild,
+  ServicesStackRoutePropChild,
+} from "@navigation/services-stack";
+
 import EventCard, { EventModel } from "@components/event-card/event-card";
-import { ServicesStackNavigationPropChild, ServicesStackRoutePropChild } from "@navigation/services-stack";
 
 type ServicesScreenNavigationProp = ServicesStackNavigationPropChild<"Services">;
 type ServicesScreenRouteProp = ServicesStackRoutePropChild<"Services">;

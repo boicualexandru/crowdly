@@ -1,0 +1,6 @@
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "importOrder": ["^@(navigation|screens)/(.*)$", "^@components/(.*)$", "^@models/(.*)$", "^@theme/(.*)$", "^[./]"],
+  "importOrderSeparation": true
+}

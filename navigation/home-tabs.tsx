@@ -1,18 +1,22 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-import { FontAwesome5 } from "@expo/vector-icons";
-import React, { useState } from "react";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import React, { useState } from "react";
+
+import ProfileScreen from "@screens/profile";
+
+import NewItemModal from "@components/new-item-modal/new-item-modal";
+
+import ThemeColors from "@theme/theme-colors";
+
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
 } from "./root-stack";
-import ThemeColors from "@theme/theme-colors";
 import ServicesStackNavigation from "./services-stack";
-import ProfileScreen from "@screens/profile";
-import NewItemModal from "@components/new-item-modal/new-item-modal";
 
 type HomeTabsParamList = {
   ServicesStack: undefined;

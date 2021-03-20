@@ -11,7 +11,7 @@ import {
   RootStackRoutePropChild,
 } from "./root-stack";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
-import NewItemModal from "../components/new-item-modal/new-item-modal";
+import NewItemModal from "../common/components/new-item-modal/new-item-modal";
 import ServicesStackNavigation from "./services-stack";
 
 type HomeTabsParamList = {

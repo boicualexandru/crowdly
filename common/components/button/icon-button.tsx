@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, GestureResponderEvent } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import ThemeColors from "../../common/theme/theme-colors";
+import ThemeColors from "../../theme/theme-colors";
 
 interface Props {
   icon: string;

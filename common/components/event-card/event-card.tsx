@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
-import ThemeColors from "../../common/theme/theme-colors";
+import ThemeColors from "../../theme/theme-colors";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export interface EventModel {

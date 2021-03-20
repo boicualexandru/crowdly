@@ -5,13 +5,13 @@ import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "../../../common/theme/theme-typography";
-import ImageSwiper from "../../../components/image-swiper/image-swiper";
+import ImageSwiper from "../../../common/components/image-swiper/image-swiper";
 import {
   ServicesStackNavigationPropChild,
   ServicesStackRoutePropChild,
 } from "../../../navigation/services-stack";
 import ThemeColors from "../../../common/theme/theme-colors";
-import IconButton from "../../../components/button/icon-button";
+import IconButton from "../../../common/components/button/icon-button";
 
 type ServiceScreenNavigationProp = ServicesStackNavigationPropChild<"Service">;
 type ServiceScreenRouteProp = ServicesStackRoutePropChild<"Service">;

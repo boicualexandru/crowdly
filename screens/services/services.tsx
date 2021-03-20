@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
-import EventCard, { EventModel } from "../../components/event-card/event-card";
+import EventCard, { EventModel } from "../../common/components/event-card/event-card";
 import {
   ServicesStackNavigationPropChild,
   ServicesStackRoutePropChild,

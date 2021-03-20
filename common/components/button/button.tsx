@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button as RNUIButton } from "react-native-ui-lib";
-import ThemeColors from '../../common/theme/theme-colors';
+import ThemeColors from '../../theme/theme-colors';
 
 export interface ButtonProps {
   label: string,

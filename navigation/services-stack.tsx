@@ -13,7 +13,7 @@ import {
 
 type ServicesStackParamList = {
   Services: undefined;
-  Service: { id: string };
+  Service: { id: string; name: string };
 };
 
 type ServicesStackNavigationProp = HomeTabsNavigationPropChild<"ServicesStack">;

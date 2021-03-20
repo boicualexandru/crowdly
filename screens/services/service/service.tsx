@@ -48,24 +48,24 @@ const useServiceState = (
 };
 
 const ServiceScreen = ({ navigation, route }: Props) => {
-  const serviceId = route.params.id;
+  const { id, name } = route.params;
 
   const [service, setService] = useServiceState(navigation);
 
   useEffect(() => {
     setService({
-      id: serviceId,
+      id: id,
       city: "Cluj-Napoca",
       email: "test@test.com",
       images: [
         "https://images.unsplash.com/photo-1615646549461-b9b9c118f300?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
         "https://images.unsplash.com/photo-1615646549461-b9b9c118f300?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
       ],
-      name: "Test Name",
+      name: name,
       tel: "1234",
       isFavourite: false,
     });
-  }, [serviceId]);
+  }, [route.params]);
 
   if (service == null) return null;
 

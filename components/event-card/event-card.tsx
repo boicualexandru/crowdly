@@ -3,31 +3,35 @@ import { View, Text, Card } from "react-native-ui-lib";
 import ThemeColors from "../../common/theme/theme-colors";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export interface EventCardProps {
+export interface EventModel {
   id: string;
   title: string;
   date?: string;
   city?: string;
   imageUrl?: string;
   price: string;
+}
+
+interface Props {
+  event: EventModel;
   onPress: () => void;
 }
 
-const EventCard = (props: EventCardProps) => {
+const EventCard = ({ event, onPress }: Props) => {
   return (
     <Card
-      key={props.id}
+      key={event.id}
       marginV-10
       flex
       selected={false}
-      onPress={props.onPress}
+      onPress={onPress}
       activeOpacity={1}
       marginH-20
       style={{ height: "100%" }}
     >
       <Card.Section
         imageSource={{
-          uri: props.imageUrl,
+          uri: event.imageUrl,
         }}
         imageStyle={{ height: 130 }}
       />
@@ -39,10 +43,10 @@ const EventCard = (props: EventCardProps) => {
         <View>
           <View>
             <Text text90 style={{ color: ThemeColors.primary }}>
-              {props.date}
+              {event.date}
             </Text>
             <Text text70 grey10>
-              {props.title}
+              {event.title}
             </Text>
 
             <View row>
@@ -56,7 +60,7 @@ const EventCard = (props: EventCardProps) => {
               </View>
               <View>
                 <Text text90 grey50>
-                  {props.city}
+                  {event.city}
                 </Text>
               </View>
             </View>
@@ -64,7 +68,7 @@ const EventCard = (props: EventCardProps) => {
         </View>
         <View>
           <Text text70 grey10>
-            {props.price}
+            {event.price}
           </Text>
         </View>
       </View>

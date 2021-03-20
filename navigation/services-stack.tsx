@@ -32,6 +32,7 @@ const ServicesStackNavigation = () => {
         component={ServiceScreen}
         options={{
           headerTransparent: true,
+          title: "",
         }}
       />
     </Stack.Navigator>

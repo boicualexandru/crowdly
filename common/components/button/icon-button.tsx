@@ -1,29 +1,37 @@
-import { FontAwesome5 } from "@expo/vector-icons";
-import React from "react";
+import { FontAwesome5, AntDesign, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import React, { useMemo } from "react";
 import { Pressable, GestureResponderEvent } from "react-native";
 
 import ThemeColors from "@theme/theme-colors";
 
 interface Props {
   icon: string;
+  theme?: "FontAwesome5" | "AntDesign"
   solid?: boolean;
   color?: string;
   onPress?: (event: GestureResponderEvent) => void;
 }
 
 const IconButton = (props: Props) => {
+  const IconComponent = useMemo(() => {
+    const theme = props.theme ?? "FontAwesome5";
+
+    if(theme == "FontAwesome5") return FontAwesome5;
+    if(theme == "AntDesign") return AntDesign;
+  }, [props.theme]);
+
   return (
     <Pressable
       onPress={props.onPress}
       android_ripple={{ radius: 24, color: "#00000051" }}
       style={{ padding: 16 }}
     >
-      <FontAwesome5
+      <IconComponent
         name={props.icon}
         solid={props.solid === true}
         color={props.color || ThemeColors.textDark}
         size={20}
-      ></FontAwesome5>
+      />
     </Pressable>
   );
 };

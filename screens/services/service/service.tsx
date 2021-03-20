@@ -32,16 +32,18 @@ const useServiceState = (
 
   const setService = (service: Service) => {
     navigation.setOptions({
-      title: service?.name,
       headerRight: ({ tintColor }) => (
-        <IconButton
-          icon="heart"
-          solid={service?.isFavourite}
-          color={ThemeColors.primary}
-          onPress={() =>
-            setService({ ...service, isFavourite: !service.isFavourite })
-          }
-        />
+        <View style={{ flexDirection: "row" }}>
+          <IconButton
+            icon="heart"
+            solid={service?.isFavourite}
+            color={ThemeColors.primary}
+            onPress={() =>
+              setService({ ...service, isFavourite: !service.isFavourite })
+            }
+          />
+          <IconButton icon="share" />
+        </View>
       ),
     });
 
@@ -63,7 +65,7 @@ const ServiceScreen = ({ navigation, route }: Props) => {
       email: "test@test.com",
       images: [
         "https://images.unsplash.com/photo-1615646549461-b9b9c118f300?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
-        "https://images.unsplash.com/photo-1615646549461-b9b9c118f300?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+        "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1067&q=80",
       ],
       name: name,
       tel: "1234",
@@ -83,7 +85,7 @@ const ServiceScreen = ({ navigation, route }: Props) => {
           alignContent: "flex-start",
         }}
       >
-        <ImageSwiper images={service.images} />
+        <ImageSwiper images={service.images} topGradient ratio={16.0 / 10} />
 
         <View style={styles.descriptionContainer}>
           <View style={styles.descriptionContent}>

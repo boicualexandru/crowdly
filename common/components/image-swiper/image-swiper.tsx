@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
   View,
@@ -18,6 +19,7 @@ export interface ImageSwiperProps extends ViewProps {
   ratio?: number;
   sliderWidth?: number;
   imageWrapperStyle?: ViewStyle;
+  topGradient?: boolean;
   onPress?: () => void;
 }
 
@@ -78,6 +80,13 @@ const ImageSwiper = (props: ImageSwiperProps) => {
       >
         {props.images.map(slide)}
       </Swiper>
+      {props.topGradient && (
+        <LinearGradient
+          locations={[0.7, 1]}
+          colors={["#FFFFFF44", "#FFFFFF00"]}
+          style={{ position: "absolute", width: "100%", height: 80 }}
+        />
+      )}
     </View>
   );
 };

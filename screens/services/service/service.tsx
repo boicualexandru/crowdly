@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Service } from "../../../common/models/services/service";
-import {
-  ThemeTypography,
-  ThemeTypographyColorStyles,
-} from "../../../common/theme/theme-typography";
-import ImageSwiper from "../../../common/components/image-swiper/image-swiper";
-import {
-  ServicesStackNavigationPropChild,
-  ServicesStackRoutePropChild,
-} from "../../../navigation/services-stack";
-import ThemeColors from "../../../common/theme/theme-colors";
-import IconButton from "../../../common/components/button/icon-button";
+import { Service } from "@models/services/service";
+import { ThemeTypography, ThemeTypographyColorStyles } from "@theme/theme-typography";
+import ImageSwiper from "@components/image-swiper/image-swiper";
+import { ServicesStackNavigationPropChild, ServicesStackRoutePropChild } from "@navigation/services-stack";
+import IconButton from "@components/button/icon-button";
+import ThemeColors from "@theme/theme-colors";
 
 type ServiceScreenNavigationProp = ServicesStackNavigationPropChild<"Service">;
 type ServiceScreenRouteProp = ServicesStackRoutePropChild<"Service">;

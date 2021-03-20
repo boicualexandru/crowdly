@@ -1,10 +1,7 @@
+import { HomeTabsNavigationPropChild, HomeTabsRoutePropChild } from "@navigation/home-tabs";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import {
-  HomeTabsNavigationPropChild,
-  HomeTabsRoutePropChild,
-} from "../navigation/home-tabs";
 
 type ProfileScreenNavigationProp = HomeTabsNavigationPropChild<"Profile">;
 type ProfileScreenRouteProp = HomeTabsRoutePropChild<"Profile">;

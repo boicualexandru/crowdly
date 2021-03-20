@@ -1,10 +1,7 @@
 import React from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
-import EventCard, { EventModel } from "../../common/components/event-card/event-card";
-import {
-  ServicesStackNavigationPropChild,
-  ServicesStackRoutePropChild,
-} from "../../navigation/services-stack";
+import EventCard, { EventModel } from "@components/event-card/event-card";
+import { ServicesStackNavigationPropChild, ServicesStackRoutePropChild } from "@navigation/services-stack";
 
 type ServicesScreenNavigationProp = ServicesStackNavigationPropChild<"Services">;
 type ServicesScreenRouteProp = ServicesStackRoutePropChild<"Services">;
@@ -17,7 +14,7 @@ interface Props {
 const DATA: EventModel[] = [
   {
     id: "asd",
-    title: "Targ de cariere pentru tineri",
+    title: "Targ de cariera pentru tineri",
     date: "Mie, 2 Aug • 17:00",
     city: "Sibiu, Romania",
     price: "20 Lei",

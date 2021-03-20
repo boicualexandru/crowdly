@@ -4,15 +4,15 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useState } from "react";
-import ThemeColors from "../common/theme/theme-colors";
-import ProfileScreen from "../screens/profile";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
 } from "./root-stack";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
-import NewItemModal from "../common/components/new-item-modal/new-item-modal";
+import ThemeColors from "@theme/theme-colors";
 import ServicesStackNavigation from "./services-stack";
+import ProfileScreen from "@screens/profile";
+import NewItemModal from "@components/new-item-modal/new-item-modal";
 
 type HomeTabsParamList = {
   ServicesStack: undefined;

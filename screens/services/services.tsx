@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { FlatList, RefreshControl, SafeAreaView, StyleSheet } from "react-native";
 
 import {
   ServicesStackNavigationPropChild,
@@ -8,6 +8,7 @@ import {
 
 import { getServices, ServiceDTO } from "api/services";
 import ServiceCard from "@components/service-card/service-card";
+import useAsync from "@hooks/useAsync";
 
 type ServicesScreenNavigationProp = ServicesStackNavigationPropChild<"Services">;
 type ServicesScreenRouteProp = ServicesStackRoutePropChild<"Services">;
@@ -18,13 +19,9 @@ interface Props {
 }
 
 const ServicesScreen = ({ navigation }: Props) => {
-  const [services, setServices] = useState<ServiceDTO[]>([]);
+  const { execute, status, value: services, error } = useAsync(getServices);
 
-  useEffect(() => {
-    getServices().then(s => {
-      setServices(s);
-    });
-  }, [])
+  useEffect(() => { execute(); }, [])
 
   const renderItem = ({ item }: { item: ServiceDTO }) => (
     <ServiceCard
@@ -38,7 +35,8 @@ const ServicesScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={services}
+        refreshControl={<RefreshControl refreshing={status == "pending"} onRefresh={execute} />}
+        data={services || []}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />

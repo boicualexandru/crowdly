@@ -12,6 +12,7 @@ module.exports = function (api) {
             "@navigation": "./navigation",
             "@screens": "./screens",
             "@components": "./common/components",
+            "@hooks": "./common/hooks",
             "@models": "./common/models",
             "@theme": "./common/theme",
           },

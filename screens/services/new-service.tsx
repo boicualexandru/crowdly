@@ -1,6 +1,7 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Platform, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+
 
 import {
   RootStackNavigationPropChild,
@@ -9,6 +10,8 @@ import {
 
 import Button from "@components/button/button";
 import TextField from "@components/form/text-field";
+import useImagePicker from "@hooks/useImagePicker";
+import useCamera from "@hooks/useCamera";
 
 type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
 type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;
@@ -18,7 +21,10 @@ type Props = {
 };
 
 const NewServiceScreen = ({ route }: Props) => {
-  const [value, onChangeText] = React.useState("");
+  const [value, onChangeText] = useState("");
+
+  const { images, removeImage, pickImage, takePhoto } = useImagePicker();
+
   return (
     <ScrollView
       style={{
@@ -57,15 +63,20 @@ const NewServiceScreen = ({ route }: Props) => {
           }}
         >
           <Button
-            label="Incarca Imagini"
-            leftIcon="images"
+            label="Incarca Imagine"
+            leftIcon="image"
             style={{ flex: 1, margin: 8 }}
+            onPress={pickImage}
           />
           <Button
             label="Fotografiaza"
             leftIcon="camera"
             style={{ flex: 1, margin: 8 }}
+            onPress={takePhoto}
           />
+        </View>
+        <View>
+          {images.map(image => <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />)}
         </View>
       </View>
       <View>

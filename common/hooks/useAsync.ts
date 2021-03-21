@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 const useAsync = <T>(asyncFunction: () => Promise<T>, immediate = true) => {
-  const [status, setStatus] = useState<
-    "idle" | "pending" | "success" | "error"
-  >("idle");
+  const [isPending, setIsPending] = useState(false);
   const [value, setValue] = useState<T | null>(null);
   const [error, setError] = useState(null);
 
@@ -12,18 +10,18 @@ const useAsync = <T>(asyncFunction: () => Promise<T>, immediate = true) => {
   // useCallback ensures the below useEffect is not called
   // on every render, but only if asyncFunction changes.
   const execute = useCallback(() => {
-    setStatus("pending");
+    setIsPending(true);
     setValue(null);
     setError(null);
 
     return asyncFunction()
       .then((response) => {
         setValue(response);
-        setStatus("success");
+        setIsPending(false);
       })
       .catch((error) => {
         setError(error);
-        setStatus("error");
+        setIsPending(false);
       });
   }, [asyncFunction]);
 
@@ -36,7 +34,7 @@ const useAsync = <T>(asyncFunction: () => Promise<T>, immediate = true) => {
     }
   }, [execute, immediate]);
 
-  return { execute, status, value, error };
+  return { value, isPending, error, execute };
 };
 
 export default useAsync;

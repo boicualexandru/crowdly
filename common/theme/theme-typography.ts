@@ -71,10 +71,10 @@ export const ThemeTypography = {
 
 export const ThemeTypographyColorStyles = StyleSheet.create({
   text_dark_87: {
-    color: alpha(ThemeColors.dark, 0.87),
+    color: alpha(ThemeColors.black, 0.87),
   },
   text_dark_60: {
-    color: alpha(ThemeColors.dark, 0.6),
+    color: alpha(ThemeColors.black, 0.6),
   },
   text_white: {
     color: ThemeColors.white,

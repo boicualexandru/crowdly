@@ -55,7 +55,7 @@ const EventCard = ({ event, onPress }: Props) => {
                 <Text text90 grey50>
                   <FontAwesome5
                     name="map-marker-alt"
-                    color="#ccc"
+                    color={ThemeColors.textGray}
                   ></FontAwesome5>
                 </Text>
               </View>

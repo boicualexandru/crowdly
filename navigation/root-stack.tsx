@@ -11,7 +11,7 @@ import HomeTabsNavigation from "./home-tabs";
 
 type RootStackParamList = {
   HomeTabs: undefined;
-  NewService: { userId: string };
+  NewService: undefined;
 };
 
 type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -28,7 +28,9 @@ const RootStackNavigation = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="NewService" component={NewServiceScreen} />
+      <Stack.Screen name="NewService" component={NewServiceScreen} options={{
+        title: "Serviciu Nou"
+      }} />
     </Stack.Navigator>
   );
 };

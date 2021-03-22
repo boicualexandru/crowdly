@@ -4,7 +4,10 @@ import { useCallback, useState } from "react";
 import { Platform } from "react-native";
 
 const useImagePicker = (imagePickerOptions?: ImagePickerOptions) => {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<{ uri: string; selected: boolean }[]>(
+    []
+  );
+  const [isAnySelected, setIsAnySelected] = useState(false);
 
   const checkPickerPermisions = useCallback(async () => {
     if (Platform.OS !== "web") {
@@ -42,7 +45,7 @@ const useImagePicker = (imagePickerOptions?: ImagePickerOptions) => {
     if (result.cancelled) return null;
 
     if (!result.cancelled) {
-      setImages([...images, result.uri]);
+      setImages([...images, { uri: result.uri, selected: false }]);
     }
   }, [images]);
 
@@ -60,20 +63,45 @@ const useImagePicker = (imagePickerOptions?: ImagePickerOptions) => {
     console.log(result);
 
     if (!result.cancelled) {
-      setImages([...images, result.uri]);
+      setImages([...images, { uri: result.uri, selected: false }]);
     }
   }, [images]);
 
-  const removeImage = useCallback(
-    async (index: number) => {
+  const removeSelected = useCallback(async () => {
+    const onlyNotSelected = images.filter((image) => !image.selected);
+    setImages(onlyNotSelected);
+    setIsAnySelected(false);
+  }, [images]);
+
+  const setImageSelected = useCallback(
+    (index: number, selected: boolean) => {
       const newImages = [...images];
-      newImages.splice(index, 1);
+      newImages[index].selected = selected;
       setImages(newImages);
+      setIsAnySelected(newImages.some((image) => image.selected));
     },
     [images]
   );
 
-  return { images, removeImage, pickImage, takePhoto };
+  const selectImage = useCallback(
+    (index: number) => setImageSelected(index, true),
+    [setImageSelected]
+  );
+
+  const unselectImage = useCallback(
+    (index: number) => setImageSelected(index, false),
+    [setImageSelected]
+  );
+
+  return {
+    images,
+    isAnySelected,
+    removeSelected,
+    pickImage,
+    takePhoto,
+    selectImage,
+    unselectImage,
+  };
 };
 
 export default useImagePicker;

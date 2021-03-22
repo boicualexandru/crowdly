@@ -9,6 +9,7 @@ import {
 } from "@navigation/root-stack";
 
 import Button from "@components/button/button";
+import Divider from "@components/divider/divider";
 import TextField from "@components/form/text-field";
 
 import useImagePicker from "@hooks/useImagePicker";
@@ -40,7 +41,7 @@ const NewServiceScreen = ({ route }: Props) => {
     image: { uri: string; selected: boolean },
     index: number
   ) => (
-    <View style={styles.columnHalf}>
+    <View style={styles.columnHalf} key={index}>
       <Pressable
         style={[
           styles.imageContainer,
@@ -66,6 +67,41 @@ const NewServiceScreen = ({ route }: Props) => {
         )}
       </Pressable>
     </View>
+  );
+
+  const renderRemoveImageButton = () => (
+    <View style={[styles.row, { marginTop: 16 }]}>
+      <View style={styles.columnHalf}>
+        <Button
+          label="Sterge"
+          leftIcon="trash"
+          style={{ flex: 1 }}
+          onPress={removeSelected}
+        />
+      </View>
+    </View>
+  );
+
+  const renderImageSelectionNote = () => (
+    <View style={{ marginTop: 16 }}>
+      <Text
+        style={[
+          ThemeTypography.body2,
+          { fontStyle: "italic", color: ThemeColors.textGray },
+        ]}
+      >
+        Apasa lung pentru a incepe selectia.
+      </Text>
+    </View>
+  );
+
+  const renderImagesSelection = () => (
+    <>
+      <View style={[styles.row, styles.imagesContainer]}>
+        {images.map(renderImage)}
+      </View>
+      {isAnySelected ? renderRemoveImageButton() : renderImageSelectionNote()}
+    </>
   );
 
   return (
@@ -98,7 +134,8 @@ const NewServiceScreen = ({ route }: Props) => {
           value={value}
           containerStyle={styles.textField}
         />
-        <View style={styles.row}>
+        <Divider style={{ marginTop: 16 }} />
+        <View style={[styles.row, { marginTop: 16 }]}>
           <View style={styles.columnHalf}>
             <Button
               label="Incarca Imagine"
@@ -116,44 +153,9 @@ const NewServiceScreen = ({ route }: Props) => {
             />
           </View>
         </View>
-
-        {images.length > 0 && (
-          <View
-            style={[
-              styles.row,
-              {
-                flexWrap: "wrap",
-              },
-            ]}
-          >
-            {images.map(renderImage)}
-          </View>
-        )}
-        {images.length > 0 &&
-          (isAnySelected ? (
-            <View style={styles.row}>
-              <View style={styles.columnHalf}>
-                <Button
-                  label="Sterge"
-                  leftIcon="trash"
-                  style={{ flex: 1 }}
-                  onPress={removeSelected}
-                />
-              </View>
-            </View>
-          ) : (
-            <View>
-              <Text
-                style={[
-                  ThemeTypography.body2,
-                  { fontStyle: "italic", color: ThemeColors.textGray },
-                ]}
-              >
-                Apasa lung pentru a incepe selectia.
-              </Text>
-            </View>
-          ))}
+        {images.length > 0 && renderImagesSelection()}
       </View>
+      <Divider style={{ marginTop: 16 }} />
       <View>
         <Button label="Salveaza" style={{ marginVertical: 16 }} />
       </View>
@@ -164,11 +166,10 @@ const NewServiceScreen = ({ route }: Props) => {
 const styles = StyleSheet.create({
   row: {
     marginHorizontal: -8,
-    marginVertical: 8,
     flexDirection: "row",
   },
   columnHalf: {
-    padding: 8,
+    paddingHorizontal: 8,
     width: "50%",
   },
   textField: {
@@ -178,7 +179,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: ThemeColors.gray,
-    padding: 4,
+    paddingHorizontal: 4,
+  },
+  imagesContainer: {
+    marginTop: 16,
+    flexWrap: "wrap",
   },
   image: {
     borderRadius: 4,

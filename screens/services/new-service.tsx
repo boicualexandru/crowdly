@@ -16,6 +16,7 @@ import useImagePicker from "@hooks/useImagePicker";
 
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
+import { useFormik } from 'formik';
 
 type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
 type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;
@@ -25,7 +26,17 @@ type Props = {
 };
 
 const NewServiceScreen = ({ route }: Props) => {
-  const [value, onChangeText] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      city: '',
+      price: '',
+      description: '',
+    },
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   const {
     images,
@@ -114,23 +125,23 @@ const NewServiceScreen = ({ route }: Props) => {
         <TextField
           label="Numele Serviciului"
           placeholder="Ex. DJ"
-          onChangeText={(text) => onChangeText(text)}
-          value={value}
+          onChangeText={formik.handleChange('name')}
+          value={formik.values.name}
           containerStyle={styles.textField}
         />
         <TextField
           label="Oras"
           placeholder="Ex: Iasi"
-          onChangeText={(text) => onChangeText(text)}
-          value={value}
+          onChangeText={formik.handleChange('city')}
+          value={formik.values.city}
           containerStyle={styles.textField}
         />
         <TextField
           label="Pret"
           placeholder="Ex: 1200"
           rightText="Lei"
-          onChangeText={(text) => onChangeText(text)}
-          value={value}
+          onChangeText={formik.handleChange('price')}
+          value={formik.values.price}
           containerStyle={styles.textField}
           keyboardType={"numeric"}
         />
@@ -139,8 +150,8 @@ const NewServiceScreen = ({ route }: Props) => {
           placeholder="Ex: Salut, ..."
           multiline
           numberOfLines={4}
-          onChangeText={(text) => onChangeText(text)}
-          value={value}
+          onChangeText={formik.handleChange('description')}
+          value={formik.values.description}
           containerStyle={styles.textField}
         />
         <Divider style={{ marginTop: 16 }} />
@@ -166,7 +177,7 @@ const NewServiceScreen = ({ route }: Props) => {
       </View>
       <Divider style={{ marginTop: 16 }} />
       <View>
-        <Button label="Salveaza" style={{ marginVertical: 16 }} />
+        <Button onPress={() => formik.handleSubmit()} label="Salveaza" style={{ marginVertical: 16 }} />
       </View>
     </ScrollView>
   );

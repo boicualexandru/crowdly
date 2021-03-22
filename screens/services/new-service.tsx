@@ -17,6 +17,7 @@ import useImagePicker from "@hooks/useImagePicker";
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
 import { useFormik } from 'formik';
+import { createService, CreateServiceRequest } from "api/services";
 
 type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
 type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;
@@ -26,15 +27,16 @@ type Props = {
 };
 
 const NewServiceScreen = ({ route }: Props) => {
-  const formik = useFormik({
+  const formik = useFormik<CreateServiceRequest>({
     initialValues: {
       name: '',
       city: '',
       price: '',
       description: '',
     },
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      console.log(JSON.stringify(values, null, 2));
+      await createService(values);
     },
   });
 

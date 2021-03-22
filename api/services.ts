@@ -68,3 +68,31 @@ export const getServicesPage = async (
     hasMore: randomprice % 100 < 80,
   };
 };
+
+export interface CreateServiceRequest {
+  name: string;
+  city: string;
+  price: string;
+  description: string;
+}
+
+export const createService = async (
+  service: CreateServiceRequest
+): Promise<string> => {
+  const responseRaw = await fetch("https://jsonbase.com/crowdly/services", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...service,
+      id: "asd",
+    }),
+  });
+
+  console.log(responseRaw);
+  const response = await responseRaw.json();
+  console.log(response);
+  return "asd";
+};

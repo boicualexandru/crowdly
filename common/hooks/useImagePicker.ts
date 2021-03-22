@@ -42,8 +42,6 @@ const useImagePicker = (imagePickerOptions?: ImagePickerOptions) => {
 
     console.log(result);
 
-    if (result.cancelled) return null;
-
     if (!result.cancelled) {
       setImages([...images, { uri: result.uri, selected: false }]);
     }

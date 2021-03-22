@@ -126,6 +126,15 @@ const NewServiceScreen = ({ route }: Props) => {
           containerStyle={styles.textField}
         />
         <TextField
+          label="Pret"
+          placeholder="Ex: 1200"
+          rightText="Lei"
+          onChangeText={(text) => onChangeText(text)}
+          value={value}
+          containerStyle={styles.textField}
+          keyboardType={"numeric"}
+        />
+        <TextField
           label="Descriere"
           placeholder="Ex: Salut, ..."
           multiline

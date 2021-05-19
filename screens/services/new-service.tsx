@@ -1,5 +1,5 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -17,7 +17,7 @@ import useImagePicker from "@hooks/useImagePicker";
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
 import { useFormik } from 'formik';
-import { createService, CreateServiceRequest } from "api/services";
+import { createService, getServiceById, updateService } from "api/services";
 
 type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
 type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;
@@ -26,8 +26,17 @@ type Props = {
   route: NewServiceScreenRouteProp;
 };
 
+interface EditServiceForm {
+  name: string;
+  city: string;
+  price: string;
+  description: string;
+}
+
 const NewServiceScreen = ({ route }: Props) => {
-  const formik = useFormik<CreateServiceRequest>({
+  const [oldImages, setOldImages] = useState<string[]>([]);
+  
+  const formik = useFormik<EditServiceForm>({
     initialValues: {
       name: '',
       city: '',
@@ -35,13 +44,33 @@ const NewServiceScreen = ({ route }: Props) => {
       description: '',
     },
     onSubmit: async (values) => {
+      const imgaesUris = images.map(img => img.uri);
+      const existingImages = imgaesUris.filter(img => oldImages.includes(img));
+      const newImages = imgaesUris.filter(img => !oldImages.includes(img));
+
       console.log(JSON.stringify(values, null, 2));
-      await createService(values);
+
+      if (route.params.serviceId) {
+        await updateService({
+          ...values,
+          price: parseInt(values.price),
+          id: route.params.serviceId,
+          existingImages: existingImages,
+          newImages: newImages,
+        });
+      } else {
+        await createService({
+          ...values,
+          price: parseInt(values.price),
+          images: newImages
+        });
+      }
     },
   });
 
   const {
     images,
+    initImages,
     isAnySelected,
     removeSelected,
     pickImage,
@@ -49,6 +78,27 @@ const NewServiceScreen = ({ route }: Props) => {
     selectImage,
     unselectImage,
   } = useImagePicker();
+
+  useEffect(() => {
+    const init = async () => {
+      if (route.params.serviceId) {
+        const service = await getServiceById(route.params.serviceId);
+        console.log(service.images);
+        
+        formik.setValues({
+          name: service.name,
+          city: service.city,
+          price: service.price.toString(),
+          description: service.description
+        }, false);
+        if (service.images?.length) {
+          initImages(service.images);
+          setOldImages(service.images);
+        }
+      }
+    }
+    init().then();
+  }, [route]);
 
   const renderImage = (
     image: { uri: string; selected: boolean },

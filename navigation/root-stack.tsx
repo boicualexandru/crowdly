@@ -11,7 +11,7 @@ import HomeTabsNavigation from "./home-tabs";
 
 type RootStackParamList = {
   HomeTabs: undefined;
-  NewService: undefined;
+  NewService: { serviceId?: string };
 };
 
 type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;

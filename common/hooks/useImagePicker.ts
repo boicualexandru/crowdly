@@ -9,6 +9,11 @@ const useImagePicker = (imagePickerOptions?: ImagePickerOptions) => {
   );
   const [isAnySelected, setIsAnySelected] = useState(false);
 
+  const initImages = (images: string[]) => setImages(images.map(img => ({
+    uri: img,
+    selected: false
+  })));
+
   const checkPickerPermisions = useCallback(async () => {
     if (Platform.OS !== "web") {
       const {
@@ -93,6 +98,7 @@ const useImagePicker = (imagePickerOptions?: ImagePickerOptions) => {
 
   return {
     images,
+    initImages,
     isAnySelected,
     removeSelected,
     pickImage,

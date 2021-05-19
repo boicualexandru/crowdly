@@ -101,7 +101,7 @@ const HomeTabsNavigation = ({
       <NewItemModal
         isOpen={newItemModalIsOpen}
         requestClose={() => setNewItemModalIsOpen(false)}
-        onNewService={() => navigation.navigate("NewService", { userId: "ew" })}
+        onNewService={() => navigation.navigate("NewService", { serviceId: "06e72ff5-e176-4643-988f-94ab14365bde" })}
       />
     </React.Fragment>
   );

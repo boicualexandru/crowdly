@@ -69,30 +69,109 @@ export const getServicesPage = async (
   };
 };
 
+export interface GetServiceResponse {
+  name: string;
+  city: string;
+  price: number;
+  description: string;
+  images: string[];
+}
+
+export const getServiceById = async (serviceId: string): Promise<GetServiceResponse> => {
+  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${serviceId}`, {
+    method: "GET",
+    headers: {
+      'Accept': "application/json",
+    },
+  });
+  
+  const response = await responseRaw.json();
+  return {
+    ...response,
+    price: parseInt(response.price),
+    images: response.imageUrls?.map((img: string) => `http://192.168.0.148:5000/vendors/${response.id}/${img}`)
+  };
+}
+
 export interface CreateServiceRequest {
   name: string;
   city: string;
-  price: string;
+  price: number;
   description: string;
+  images: string[];
 }
 
 export const createService = async (
   service: CreateServiceRequest
 ): Promise<string> => {
-  const responseRaw = await fetch("https://jsonbase.com/crowdly/services", {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...service,
-      id: "asd",
-    }),
+
+  var body = new FormData();
+  body.append('name', service.name);
+  body.append('city', service.city);
+  body.append('price', service.price.toString());
+  
+  service.images?.forEach(image => {
+    var formImage = {
+      uri: image,
+      type: 'image/jpeg',
+      name: 'photo.jpg',
+    };
+    body.append('formFiles', formImage);
   });
 
-  console.log(responseRaw);
+  const responseRaw = await fetch("http://192.168.0.148:5000/vendors", {
+    method: "POST",
+    headers: {
+      'Accept': "application/json",
+      'Content-Type': 'multipart/form-data',
+    },
+    body: body,
+  });
+
   const response = await responseRaw.json();
-  console.log(response);
-  return "asd";
+  return response.id;
+};
+
+export interface UpdateServiceRequest {
+  id: string;
+  name: string;
+  city: string;
+  price: number;
+  description: string;
+  existingImages: string[];
+  newImages: string[];
+}
+
+export const updateService = async (
+  service: UpdateServiceRequest
+): Promise<void> => {
+
+  var body = new FormData();
+  body.append('name', service.name);
+  body.append('city', service.city);
+  body.append('price', service.price.toString());
+
+  service.existingImages?.map(img => img.replace(/^.*[\\\/]/, '')).forEach(img => {
+    body.append('existingImageUrls', img);
+  });
+  
+  service.newImages?.forEach(image => {
+    var formImage = {
+      uri: image,
+      type: 'image/jpeg',
+      name: 'photo.jpg',
+    };
+    body.append('formFiles', formImage);
+  });
+
+  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${service.id}`, {
+    method: "PUT",
+    headers: {
+      'Accept': "application/json",
+      'Content-Type': 'multipart/form-data',
+    },
+    body: body,
+  });
+
+  const response = await responseRaw.json();
 };

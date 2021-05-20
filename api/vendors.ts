@@ -1,6 +1,6 @@
-import { DataPage } from "./../common/models/datapage";
+import { DataPage } from "../common/models/datapage";
 
-export interface ServiceDTO {
+export interface VendorDTO {
   id: string;
   name: string;
   city: string;
@@ -9,12 +9,12 @@ export interface ServiceDTO {
   isFavourite: boolean;
 }
 
-export interface GetServicesFilters {}
+export interface GetVendorsFilters {}
 
-export const getServicesPage = async (
-  filters: GetServicesFilters | undefined,
-  after?: ServiceDTO
-): Promise<DataPage<ServiceDTO>> => {
+export const getVendorsPage = async (
+  filters: GetVendorsFilters | undefined,
+  after?: VendorDTO
+): Promise<DataPage<VendorDTO>> => {
   const randomprice = 2000 + Math.floor(Math.random() * 100);
 
   return {
@@ -69,7 +69,7 @@ export const getServicesPage = async (
   };
 };
 
-export interface GetServiceResponse {
+export interface GetVendorResponse {
   name: string;
   city: string;
   price: number;
@@ -77,8 +77,8 @@ export interface GetServiceResponse {
   images: string[];
 }
 
-export const getServiceById = async (serviceId: string): Promise<GetServiceResponse> => {
-  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${serviceId}`, {
+export const getVendorById = async (vendorId: string): Promise<GetVendorResponse> => {
+  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${vendorId}`, {
     method: "GET",
     headers: {
       'Accept': "application/json",
@@ -93,7 +93,7 @@ export const getServiceById = async (serviceId: string): Promise<GetServiceRespo
   };
 }
 
-export interface CreateServiceRequest {
+export interface CreateVendorRequest {
   name: string;
   city: string;
   price: number;
@@ -101,16 +101,16 @@ export interface CreateServiceRequest {
   images: string[];
 }
 
-export const createService = async (
-  service: CreateServiceRequest
+export const createVendor = async (
+  vendor: CreateVendorRequest
 ): Promise<string> => {
 
   var body = new FormData();
-  body.append('name', service.name);
-  body.append('city', service.city);
-  body.append('price', service.price.toString());
+  body.append('name', vendor.name);
+  body.append('city', vendor.city);
+  body.append('price', vendor.price.toString());
   
-  service.images?.forEach(image => {
+  vendor.images?.forEach(image => {
     var formImage = {
       uri: image,
       type: 'image/jpeg',
@@ -132,7 +132,7 @@ export const createService = async (
   return response.id;
 };
 
-export interface UpdateServiceRequest {
+export interface UpdateVendorRequest {
   id: string;
   name: string;
   city: string;
@@ -142,20 +142,20 @@ export interface UpdateServiceRequest {
   newImages: string[];
 }
 
-export const updateService = async (
-  service: UpdateServiceRequest
+export const updateVendor = async (
+  vendor: UpdateVendorRequest
 ): Promise<void> => {
 
   var body = new FormData();
-  body.append('name', service.name);
-  body.append('city', service.city);
-  body.append('price', service.price.toString());
+  body.append('name', vendor.name);
+  body.append('city', vendor.city);
+  body.append('price', vendor.price.toString());
 
-  service.existingImages?.map(img => img.replace(/^.*[\\\/]/, '')).forEach(img => {
+  vendor.existingImages?.map(img => img.replace(/^.*[\\\/]/, '')).forEach(img => {
     body.append('existingImageUrls', img);
   });
   
-  service.newImages?.forEach(image => {
+  vendor.newImages?.forEach(image => {
     var formImage = {
       uri: image,
       type: 'image/jpeg',
@@ -164,7 +164,7 @@ export const updateService = async (
     body.append('formFiles', formImage);
   });
 
-  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${service.id}`, {
+  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${vendor.id}`, {
     method: "PUT",
     headers: {
       'Accept': "application/json",

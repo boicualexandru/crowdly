@@ -3,17 +3,17 @@ import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 
 import ThemeColors from "@theme/theme-colors";
-import { ServiceDTO } from "api/services";
+import { VendorDTO } from "api/vendors";
 
 interface Props {
-  service: ServiceDTO;
+  vendor: VendorDTO;
   onPress: () => void;
 }
 
-const ServiceCard = ({ service, onPress }: Props) => {
+const VendorCard = ({ vendor, onPress }: Props) => {
   return (
     <Card
-      key={service.id}
+      key={vendor.id}
       marginV-10
       flex
       selected={false}
@@ -24,7 +24,7 @@ const ServiceCard = ({ service, onPress }: Props) => {
     >
       <Card.Section
         imageSource={{
-          uri: service.imageUrl,
+          uri: vendor.imageUrl,
         }}
         imageStyle={{ height: 130 }}
       />
@@ -39,7 +39,7 @@ const ServiceCard = ({ service, onPress }: Props) => {
               $$$
             </Text>
             <Text text70 grey10>
-              {service.name}
+              {vendor.name}
             </Text>
 
             <View row>
@@ -53,7 +53,7 @@ const ServiceCard = ({ service, onPress }: Props) => {
               </View>
               <View>
                 <Text text90 grey50>
-                  {service.city}
+                  {vendor.city}
                 </Text>
               </View>
             </View>
@@ -61,7 +61,7 @@ const ServiceCard = ({ service, onPress }: Props) => {
         </View>
         <View>
           <Text text70 grey10>
-            {service.price} Lei
+            {vendor.price} Lei
           </Text>
         </View>
       </View>
@@ -69,4 +69,4 @@ const ServiceCard = ({ service, onPress }: Props) => {
   );
 };
 
-export default ServiceCard;
+export default VendorCard;

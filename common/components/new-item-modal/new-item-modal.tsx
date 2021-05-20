@@ -4,7 +4,7 @@ import { Text, Pressable, Modal, Alert, StyleSheet } from "react-native";
 interface Props {
   isOpen: boolean;
   requestClose: () => void;
-  onNewService: () => void;
+  onNewVendor: () => void;
 }
 
 const NewItemModal = (props: Props) => {
@@ -26,7 +26,7 @@ const NewItemModal = (props: Props) => {
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
-              // props.onNewService();
+              // props.onNewVendor();
               props.requestClose();
             }}
           >
@@ -35,7 +35,7 @@ const NewItemModal = (props: Props) => {
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
-              props.onNewService();
+              props.onNewVendor();
               props.requestClose();
             }}
           >

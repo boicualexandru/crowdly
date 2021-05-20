@@ -16,10 +16,10 @@ import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
 } from "./root-stack";
-import ServicesStackNavigation from "./services-stack";
+import VendorsStackNavigation from "./vendors-stack";
 
 type HomeTabsParamList = {
-  ServicesStack: undefined;
+  VendorsStack: undefined;
   Add: undefined;
   Profile: undefined;
 };
@@ -43,15 +43,15 @@ const HomeTabsNavigation = ({
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="ServicesStack"
+        initialRouteName="VendorsStack"
         tabBarOptions={{
           activeTintColor: ThemeColors.primary,
           showLabel: false,
         }}
       >
         <Tab.Screen
-          name="ServicesStack"
-          component={ServicesStackNavigation}
+          name="VendorsStack"
+          component={VendorsStackNavigation}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
               <FontAwesome5
@@ -101,7 +101,7 @@ const HomeTabsNavigation = ({
       <NewItemModal
         isOpen={newItemModalIsOpen}
         requestClose={() => setNewItemModalIsOpen(false)}
-        onNewService={() => navigation.navigate("NewService", { serviceId: "06e72ff5-e176-4643-988f-94ab14365bde" })}
+        onNewVendor={() => navigation.navigate("NewVendor", { vendorId: "06e72ff5-e176-4643-988f-94ab14365bde" })}
       />
     </React.Fragment>
   );

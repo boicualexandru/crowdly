@@ -5,13 +5,13 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 
-import NewServiceScreen from "@screens/services/new-service";
+import NewVendorScreen from "@screens/vendors/new-vendor";
 
 import HomeTabsNavigation from "./home-tabs";
 
 type RootStackParamList = {
   HomeTabs: undefined;
-  NewService: { serviceId?: string };
+  NewVendor: { vendorId?: string };
 };
 
 type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -28,7 +28,7 @@ const RootStackNavigation = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="NewService" component={NewServiceScreen} options={{
+      <Stack.Screen name="NewVendor" component={NewVendorScreen} options={{
         title: "Serviciu Nou"
       }} />
     </Stack.Navigator>

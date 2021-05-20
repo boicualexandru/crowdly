@@ -17,26 +17,26 @@ import useImagePicker from "@hooks/useImagePicker";
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
 import { useFormik } from 'formik';
-import { createService, getServiceById, updateService } from "api/services";
+import { createVendor, getVendorById, updateVendor } from "api/vendors";
 
-type NewServiceScreenNavigationProp = RootStackNavigationPropChild<"NewService">;
-type NewServiceScreenRouteProp = RootStackRoutePropChild<"NewService">;
+type NewVendorScreenNavigationProp = RootStackNavigationPropChild<"NewVendor">;
+type NewVendorScreenRouteProp = RootStackRoutePropChild<"NewVendor">;
 
 type Props = {
-  route: NewServiceScreenRouteProp;
+  route: NewVendorScreenRouteProp;
 };
 
-interface EditServiceForm {
+interface EditVendorForm {
   name: string;
   city: string;
   price: string;
   description: string;
 }
 
-const NewServiceScreen = ({ route }: Props) => {
+const NewVendorScreen = ({ route }: Props) => {
   const [oldImages, setOldImages] = useState<string[]>([]);
   
-  const formik = useFormik<EditServiceForm>({
+  const formik = useFormik<EditVendorForm>({
     initialValues: {
       name: '',
       city: '',
@@ -50,16 +50,16 @@ const NewServiceScreen = ({ route }: Props) => {
 
       console.log(JSON.stringify(values, null, 2));
 
-      if (route.params.serviceId) {
-        await updateService({
+      if (route.params.vendorId) {
+        await updateVendor({
           ...values,
           price: parseInt(values.price),
-          id: route.params.serviceId,
+          id: route.params.vendorId,
           existingImages: existingImages,
           newImages: newImages,
         });
       } else {
-        await createService({
+        await createVendor({
           ...values,
           price: parseInt(values.price),
           images: newImages
@@ -81,19 +81,19 @@ const NewServiceScreen = ({ route }: Props) => {
 
   useEffect(() => {
     const init = async () => {
-      if (route.params.serviceId) {
-        const service = await getServiceById(route.params.serviceId);
-        console.log(service.images);
+      if (route.params.vendorId) {
+        const vendor = await getVendorById(route.params.vendorId);
+        console.log(vendor.images);
         
         formik.setValues({
-          name: service.name,
-          city: service.city,
-          price: service.price.toString(),
-          description: service.description
+          name: vendor.name,
+          city: vendor.city,
+          price: vendor.price.toString(),
+          description: vendor.description
         }, false);
-        if (service.images?.length) {
-          initImages(service.images);
-          setOldImages(service.images);
+        if (vendor.images?.length) {
+          initImages(vendor.images);
+          setOldImages(vendor.images);
         }
       }
     }
@@ -269,4 +269,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewServiceScreen;
+export default NewVendorScreen;

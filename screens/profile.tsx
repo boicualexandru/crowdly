@@ -13,7 +13,7 @@ type ProfileScreenRouteProp = HomeTabsRoutePropChild<"Profile">;
 const ProfileScreen = () => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
-  const goToCreateNew = () => navigation.push("NewService", { userId: "asd2" });
+  const goToCreateNew = () => navigation.push("NewVendor", { userId: "asd2" });
 
   return (
     <View>

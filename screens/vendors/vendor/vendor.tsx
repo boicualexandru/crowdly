@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import {
-  ServicesStackNavigationPropChild,
-  ServicesStackRoutePropChild,
-} from "@navigation/services-stack";
+  VendorsStackNavigationPropChild,
+  VendorsStackRoutePropChild,
+} from "@navigation/vendors-stack";
 
 import IconButton from "@components/button/icon-button";
 import ImageSwiper from "@components/image-swiper/image-swiper";
 
-import { Service } from "@models/services/service";
+import { Vendor } from "@models/vendors/vendors";
 
 import ThemeColors from "@theme/theme-colors";
 import {
@@ -17,29 +17,29 @@ import {
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
 
-type ServiceScreenNavigationProp = ServicesStackNavigationPropChild<"Service">;
-type ServiceScreenRouteProp = ServicesStackRoutePropChild<"Service">;
+type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
+type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
 
 interface Props {
-  navigation: ServiceScreenNavigationProp;
-  route: ServiceScreenRouteProp;
+  navigation: VendorScreenNavigationProp;
+  route: VendorScreenRouteProp;
 }
 
-const useServiceState = (
-  navigation: ServiceScreenNavigationProp
-): [Service | undefined, (service: Service) => void] => {
-  const [service, setServiceValue] = useState<Service>();
+const useVendorState = (
+  navigation: VendorScreenNavigationProp
+): [Vendor | undefined, (vendor: Vendor) => void] => {
+  const [vendor, setVendorValue] = useState<Vendor>();
 
-  const setService = (service: Service) => {
+  const setVendor = (vendor: Vendor) => {
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <View style={{ flexDirection: "row" }}>
           <IconButton
             icon="heart"
-            solid={service?.isFavourite}
+            solid={vendor?.isFavourite}
             color={ThemeColors.primary}
             onPress={() =>
-              setService({ ...service, isFavourite: !service.isFavourite })
+              setVendor({ ...vendor, isFavourite: !vendor.isFavourite })
             }
           />
           <IconButton icon="share" />
@@ -47,19 +47,19 @@ const useServiceState = (
       ),
     });
 
-    return setServiceValue(service);
+    return setVendorValue(vendor);
   };
 
-  return [service, setService];
+  return [vendor, setVendor];
 };
 
-const ServiceScreen = ({ navigation, route }: Props) => {
+const VendorScreen = ({ navigation, route }: Props) => {
   const { id, name } = route.params;
 
-  const [service, setService] = useServiceState(navigation);
+  const [vendor, setVendor] = useVendorState(navigation);
 
   useEffect(() => {
-    setService({
+    setVendor({
       id: id,
       city: "Cluj-Napoca",
       email: "test@test.com",
@@ -73,7 +73,7 @@ const ServiceScreen = ({ navigation, route }: Props) => {
     });
   }, [route.params]);
 
-  if (service == null) return null;
+  if (vendor == null) return null;
 
   return (
     <View style={{ flex: 1 }}>
@@ -85,7 +85,7 @@ const ServiceScreen = ({ navigation, route }: Props) => {
           alignContent: "flex-start",
         }}
       >
-        <ImageSwiper images={service.images} topGradient ratio={16.0 / 10} />
+        <ImageSwiper images={vendor.images} topGradient ratio={16.0 / 10} />
 
         <View style={styles.descriptionContainer}>
           <View style={styles.descriptionContent}>
@@ -95,7 +95,7 @@ const ServiceScreen = ({ navigation, route }: Props) => {
                 ThemeTypographyColorStyles.text_dark_87,
               ]}
             >
-              {service.name}
+              {vendor.name}
             </Text>
             <Text
               style={[
@@ -103,12 +103,12 @@ const ServiceScreen = ({ navigation, route }: Props) => {
                 ThemeTypographyColorStyles.text_dark_60,
               ]}
             >
-              {service.city}
+              {vendor.city}
             </Text>
           </View>
-          {/* <ReviewStars {...service.rating} style={Spacing.mt_4} /> */}
+          {/* <ReviewStars {...vendor.rating} style={Spacing.mt_4} /> */}
         </View>
-        {/* <LocationTabsContainer screenProps={service} style={{ flex: 1, width: '100%', alignSelf: 'stretch', backgroundColor: 'blue' }} /> */}
+        {/* <LocationTabsContainer screenProps={vendor} style={{ flex: 1, width: '100%', alignSelf: 'stretch', backgroundColor: 'blue' }} /> */}
       </View>
     </View>
   );
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ServiceScreen;
+export default VendorScreen;

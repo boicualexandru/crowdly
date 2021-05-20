@@ -1,4 +1,4 @@
-import { getServicesPage, ServiceDTO } from "api/services";
+import { getVendorsPage, VendorDTO } from "api/vendors";
 import React, { useCallback } from "react";
 import {
   ActivityIndicator,
@@ -9,37 +9,37 @@ import {
 } from "react-native";
 
 import {
-  ServicesStackNavigationPropChild,
-  ServicesStackRoutePropChild,
-} from "@navigation/services-stack";
+  VendorsStackNavigationPropChild,
+  VendorsStackRoutePropChild,
+} from "@navigation/vendors-stack";
 
-import ServiceCard from "@components/service-card/service-card";
+import VendorCard from "@components/vendor-card/vendor-card";
 
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
 
 import ThemeColors from "@theme/theme-colors";
 
-type ServicesScreenNavigationProp = ServicesStackNavigationPropChild<"Services">;
-type ServicesScreenRouteProp = ServicesStackRoutePropChild<"Services">;
+type VendorsScreenNavigationProp = VendorsStackNavigationPropChild<"Vendors">;
+type VendorsScreenRouteProp = VendorsStackRoutePropChild<"Vendors">;
 
 interface Props {
-  navigation: ServicesScreenNavigationProp;
-  route: ServicesScreenRouteProp;
+  navigation: VendorsScreenNavigationProp;
+  route: VendorsScreenRouteProp;
 }
 
-const ServicesScreen = ({ navigation }: Props) => {
+const VendorsScreen = ({ navigation }: Props) => {
   const { data, hasMore, loadMore, isRefreshing, refresh } = useInfiniteScroll(
-    getServicesPage
+    getVendorsPage
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: ServiceDTO }) => (
-      <ServiceCard
-        service={item}
+    ({ item }: { item: VendorDTO }) => (
+      <VendorCard
+        vendor={item}
         onPress={() =>
-          navigation.navigate("Service", { id: item.id, name: item.name })
+          navigation.navigate("Vendor", { id: item.id, name: item.name })
         }
-      ></ServiceCard>
+      ></VendorCard>
     ),
     []
   );
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ServicesScreen;
+export default VendorsScreen;

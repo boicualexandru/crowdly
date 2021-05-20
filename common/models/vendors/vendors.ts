@@ -1,4 +1,4 @@
-export interface Service {
+export interface Vendor {
   id: string;
   name: string;
   city: string;

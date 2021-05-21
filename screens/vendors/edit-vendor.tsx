@@ -19,11 +19,11 @@ import { ThemeTypography } from "@theme/theme-typography";
 import { useFormik } from 'formik';
 import { createVendor, getVendorById, updateVendor } from "api/vendors";
 
-type NewVendorScreenNavigationProp = RootStackNavigationPropChild<"NewVendor">;
-type NewVendorScreenRouteProp = RootStackRoutePropChild<"NewVendor">;
+type EditVendorScreenNavigationProp = RootStackNavigationPropChild<"EditVendor">;
+type EditVendorScreenRouteProp = RootStackRoutePropChild<"EditVendor">;
 
 type Props = {
-  route: NewVendorScreenRouteProp;
+  route: EditVendorScreenRouteProp;
 };
 
 interface EditVendorForm {
@@ -33,7 +33,7 @@ interface EditVendorForm {
   description: string;
 }
 
-const NewVendorScreen = ({ route }: Props) => {
+const EditVendorScreen = ({ route }: Props) => {
   const [oldImages, setOldImages] = useState<string[]>([]);
   
   const formik = useFormik<EditVendorForm>({
@@ -269,4 +269,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewVendorScreen;
+export default EditVendorScreen;

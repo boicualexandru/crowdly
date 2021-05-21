@@ -24,6 +24,7 @@ type EditVendorScreenRouteProp = RootStackRoutePropChild<"EditVendor">;
 
 type Props = {
   route: EditVendorScreenRouteProp;
+  navigation: EditVendorScreenNavigationProp;
 };
 
 interface EditVendorForm {
@@ -33,7 +34,7 @@ interface EditVendorForm {
   description: string;
 }
 
-const EditVendorScreen = ({ route }: Props) => {
+const EditVendorScreen = ({ route, navigation }: Props) => {
   const [oldImages, setOldImages] = useState<string[]>([]);
   
   const formik = useFormik<EditVendorForm>({
@@ -81,6 +82,10 @@ const EditVendorScreen = ({ route }: Props) => {
 
   useEffect(() => {
     const init = async () => {
+      navigation.setOptions({
+        title: route.params.vendorId ? "Editeaza Serviciul" : "Serviciu Nou"
+      });
+
       if (route.params.vendorId) {
         const vendor = await getVendorById(route.params.vendorId);
         console.log(vendor.images);

@@ -1,4 +1,5 @@
 import { DataPage } from "../common/models/datapage";
+import { API_BASE_URL, IMAGES_BASE_URL } from '@env';
 
 export interface VendorDTO {
   id: string;
@@ -78,7 +79,7 @@ export interface GetVendorResponse {
 }
 
 export const getVendorById = async (vendorId: string): Promise<GetVendorResponse> => {
-  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${vendorId}`, {
+  const responseRaw = await fetch(`${API_BASE_URL}/vendors/${vendorId}`, {
     method: "GET",
     headers: {
       'Accept': "application/json",
@@ -89,7 +90,7 @@ export const getVendorById = async (vendorId: string): Promise<GetVendorResponse
   return {
     ...response,
     price: parseInt(response.price),
-    images: response.imageUrls?.map((img: string) => `http://192.168.0.148:5000/vendors/${response.id}/${img}`)
+    images: response.imageUrls?.map((img: string) => `${IMAGES_BASE_URL}/vendors/${response.id}/${img}`)
   };
 }
 
@@ -119,7 +120,7 @@ export const createVendor = async (
     body.append('formFiles', formImage);
   });
 
-  const responseRaw = await fetch("http://192.168.0.148:5000/vendors", {
+  const responseRaw = await fetch(`${API_BASE_URL}/vendors`, {
     method: "POST",
     headers: {
       'Accept': "application/json",
@@ -164,7 +165,7 @@ export const updateVendor = async (
     body.append('formFiles', formImage);
   });
 
-  const responseRaw = await fetch(`http://192.168.0.148:5000/vendors/${vendor.id}`, {
+  const responseRaw = await fetch(`${API_BASE_URL}/vendors/${vendor.id}`, {
     method: "PUT",
     headers: {
       'Accept': "application/json",

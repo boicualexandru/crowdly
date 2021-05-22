@@ -1,6 +1,13 @@
-import { RootStackNavigationPropChild, RootStackRoutePropChild } from "@navigation/root-stack";
-import React from "react";
-import { View, Text } from "react-native";
+import { login } from "api/auth";
+import { AuthActionType } from "context/authActions";
+import { AuthContext } from "context/authContext";
+import React, { useContext } from "react";
+import { View, Text, Pressable } from "react-native";
+
+import {
+  RootStackNavigationPropChild,
+  RootStackRoutePropChild,
+} from "@navigation/root-stack";
 
 type LoginScreenNavigationProp = RootStackNavigationPropChild<"Login">;
 type LoginScreenRouteProp = RootStackRoutePropChild<"Login">;
@@ -10,12 +17,32 @@ type Props = {
   route: LoginScreenRouteProp;
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation, route }: Props) => {
+  const { state, dispatch } = useContext(AuthContext);
+
+  const onLogin = async () => {
+    const loginResponse = await login({
+      username: "USER01",
+      password: "Testtest0!",
+    });
+    if (!loginResponse.success) return;
+
+    console.log("State Before: ", state);
+    dispatch({
+      type: AuthActionType.Login,
+      payload: {
+        username: loginResponse.username,
+        jwtToken: loginResponse.jwtToken,
+      },
+    });
+  };
   return (
     <View>
-      <Text>Login</Text>
+      <Pressable onPress={async () => await onLogin()}>
+        <Text>Login</Text>
+      </Pressable>
     </View>
-  )
-}
+  );
+};
 
 export default LoginScreen;

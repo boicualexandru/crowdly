@@ -1,16 +1,23 @@
-import React from "react";
-import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import RootStackNavigation from "./navigation/root-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { AuthContext } from "context/authContext";
+import { authReducer } from "context/authReducer";
+import { initialAuthState } from "context/authState";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import React, { useReducer } from "react";
+
+import RootStackNavigation from "./navigation/root-stack";
 
 export default function App() {
+  const [state, dispatch] = useReducer(authReducer, initialAuthState);
   return (
-    <React.Fragment>
-      <NavigationContainer>
-        <RootStackNavigation />
-      </NavigationContainer>
-      <ExpoStatusBar style="auto" />
-    </React.Fragment>
+    <AuthContext.Provider value={{ state, dispatch }}>
+      <React.Fragment>
+        <NavigationContainer>
+          <RootStackNavigation />
+        </NavigationContainer>
+        <ExpoStatusBar style="auto" />
+      </React.Fragment>
+    </AuthContext.Provider>
 
     // <React.Fragment>
     //   <IconRegistry icons={EvaIconsPack} />

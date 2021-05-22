@@ -23,8 +23,8 @@ type EditVendorScreenNavigationProp = RootStackNavigationPropChild<"EditVendor">
 type EditVendorScreenRouteProp = RootStackRoutePropChild<"EditVendor">;
 
 type Props = {
-  route: EditVendorScreenRouteProp;
   navigation: EditVendorScreenNavigationProp;
+  route: EditVendorScreenRouteProp;
 };
 
 interface EditVendorForm {

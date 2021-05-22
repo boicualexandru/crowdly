@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 
+import LoginScreen from "@screens/login";
 import EditVendorScreen from "@screens/vendors/edit-vendor";
 
 import HomeTabsNavigation from "./home-tabs";
@@ -12,6 +13,7 @@ import HomeTabsNavigation from "./home-tabs";
 type RootStackParamList = {
   HomeTabs: undefined;
   EditVendor: { vendorId?: string };
+  Login: undefined;
 };
 
 type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -28,9 +30,20 @@ const RootStackNavigation = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="EditVendor" component={EditVendorScreen} options={{
-        title: "Serviciu Nou"
-      }} />
+      <Stack.Screen
+        name="EditVendor"
+        component={EditVendorScreen}
+        options={{
+          title: "Serviciu Nou",
+        }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          title: "Conecteaza-te",
+        }}
+      />
     </Stack.Navigator>
   );
 };

@@ -3,6 +3,14 @@ import { AuthState } from "./authState";
 
 export function authReducer(state: AuthState, action: AuthActions): AuthState {
   switch (action.type) {
+    case AuthActionType.Load:
+      return {
+        ...state,
+        hasLoaded: true,
+        isAuthenticated: action.payload.isAuthenticated,
+        username: action.payload.isAuthenticated ? action.payload.username : undefined,
+        token: action.payload.isAuthenticated ? action.payload.jwtToken : undefined,
+      };
     case AuthActionType.Login:
       return {
         ...state,

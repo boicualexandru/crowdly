@@ -1,14 +1,54 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
+import { AuthActionType } from "context/authActions";
 import { AuthContext } from "context/authContext";
 import { authReducer } from "context/authReducer";
 import { initialAuthState } from "context/authState";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import React, { useReducer } from "react";
+import jwt_decode from "jwt-decode";
+import React, { useEffect, useReducer } from "react";
+import { ActivityIndicator } from "react-native";
+
+import ThemeColors from "@theme/theme-colors";
 
 import RootStackNavigation from "./navigation/root-stack";
 
 export default function App() {
   const [state, dispatch] = useReducer(authReducer, initialAuthState);
+
+  useEffect(() => {
+    (async () => {
+      const jwtToken = await AsyncStorage.getItem("jwtToken");
+      if (jwtToken == null) {
+        dispatch({
+          type: AuthActionType.Load,
+          payload: { isAuthenticated: false },
+        });
+        return;
+      }
+
+      var decodedToken = jwt_decode<{ username: string }>(jwtToken);
+
+      dispatch({
+        type: AuthActionType.Load,
+        payload: {
+          isAuthenticated: true,
+          jwtToken: jwtToken,
+          username: decodedToken.username,
+        },
+      });
+    })();
+  }, []);
+
+  if (!state.hasLoaded)
+    return (
+      <ActivityIndicator
+        size="large"
+        color={ThemeColors.primary}
+        style={{ marginVertical: 16 }}
+      />
+    );
+
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       <React.Fragment>

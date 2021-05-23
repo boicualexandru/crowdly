@@ -47,3 +47,36 @@ export const login = async (loginModel: LoginModel): Promise<LoginResponse> => {
 export const logout = async (): Promise<void> => {
   await AsyncStorage.removeItem("jwtToken");
 };
+
+export interface RegisterModel {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export const register = async (
+  registerModel: RegisterModel
+): Promise<LoginResponse> => {
+  const responseRaw = await fetch(`${API_BASE_URL}/authenticate/register`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(registerModel),
+  });
+
+  if (responseRaw.status != 200) return { success: false };
+
+  const jwtToken = await responseRaw.text();
+
+  var decodedToken = jwt_decode<{ username: string }>(jwtToken);
+
+  await AsyncStorage.setItem("jwtToken", jwtToken);
+
+  return {
+    success: true,
+    jwtToken: jwtToken,
+    username: decodedToken.username,
+  };
+};

@@ -7,6 +7,7 @@ import { AuthContext } from "context/authContext";
 import React, { useContext } from "react";
 
 import LoginScreen from "@screens/login";
+import RegisterScreen from "@screens/register";
 import EditVendorScreen from "@screens/vendors/edit-vendor";
 
 import HomeTabsNavigation from "./home-tabs";
@@ -15,6 +16,7 @@ type RootStackParamList = {
   HomeTabs: undefined;
   EditVendor: { vendorId?: string };
   Login: undefined;
+  Register: undefined;
 };
 
 type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -47,6 +49,13 @@ const RootStackNavigation = () => {
         component={LoginScreen}
         options={{
           title: "Conecteaza-te",
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{
+          title: "Creeaza un cont nou",
         }}
       />
     </Stack.Navigator>

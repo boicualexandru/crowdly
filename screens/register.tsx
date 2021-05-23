@@ -1,4 +1,4 @@
-import { login, logout } from "api/auth";
+import { logout, register } from "api/auth";
 import { AuthActionType } from "context/authActions";
 import { AuthContext } from "context/authContext";
 import { useFormik } from "formik";
@@ -15,39 +15,41 @@ import TextField from "@components/form/text-field";
 
 import ThemeColors from "@theme/theme-colors";
 
-type LoginScreenNavigationProp = RootStackNavigationPropChild<"Login">;
-type LoginScreenRouteProp = RootStackRoutePropChild<"Login">;
+type RegisterScreenNavigationProp = RootStackNavigationPropChild<"Register">;
+type RegisterScreenRouteProp = RootStackRoutePropChild<"Register">;
 
 type Props = {
-  navigation: LoginScreenNavigationProp;
-  route: LoginScreenRouteProp;
+  navigation: RegisterScreenNavigationProp;
+  route: RegisterScreenRouteProp;
 };
 
-interface LoginForm {
+interface RegisterForm {
   username: string;
+  email: string;
   password: string;
 }
 
-const LoginScreen = ({ navigation, route }: Props) => {
+const RegisterScreen = ({ navigation, route }: Props) => {
   const { state, dispatch } = useContext(AuthContext);
 
-  const formik = useFormik<LoginForm>({
+  const formik = useFormik<RegisterForm>({
     initialValues: {
       username: "",
+      email: "",
       password: "",
     },
     onSubmit: async (values) => {
       console.log(JSON.stringify(values, null, 2));
-      console.log("State Before Login: ", state);
+      console.log("State Before Register: ", state);
 
-      const loginResponse = await login({ ...values });
-      if (!loginResponse.success) return;
+      const registerResponse = await register({ ...values });
+      if (!registerResponse.success) return;
 
       dispatch({
         type: AuthActionType.Login,
         payload: {
-          username: loginResponse.username,
-          jwtToken: loginResponse.jwtToken,
+          username: registerResponse.username,
+          jwtToken: registerResponse.jwtToken,
         },
       });
     },
@@ -80,6 +82,14 @@ const LoginScreen = ({ navigation, route }: Props) => {
           containerStyle={styles.textField}
         />
         <TextField
+          label="Email"
+          onChangeText={formik.handleChange("email")}
+          value={formik.values.email}
+          containerStyle={styles.textField}
+          autoCompleteType="email"
+          textContentType="emailAddress"
+        />
+        <TextField
           label="Parola"
           onChangeText={formik.handleChange("password")}
           value={formik.values.password}
@@ -92,12 +102,12 @@ const LoginScreen = ({ navigation, route }: Props) => {
       <View>
         <Button
           onPress={() => formik.handleSubmit()}
-          label="Conecteaza-te"
+          label="Inregistreaza-te"
           style={{ marginTop: 16 }}
         />
         <Button
-          onPress={() => navigation.replace("Register")}
-          label="Creeaza un cont nou"
+          onPress={() => navigation.replace("Login")}
+          label="Conecteaza-te la un cont existent"
           style={{ marginTop: 16, backgroundColor: "transparent" }}
           labelStyle={{ color: ThemeColors.black }}
         />
@@ -116,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

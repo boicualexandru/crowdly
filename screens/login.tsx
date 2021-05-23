@@ -1,4 +1,4 @@
-import { login, logout } from "api/auth";
+import useAuthApi from "api/auth";
 import { AuthActionType } from "context/authActions";
 import { AuthContext } from "context/authContext";
 import { useFormik } from "formik";
@@ -30,6 +30,7 @@ interface LoginForm {
 
 const LoginScreen = ({ navigation, route }: Props) => {
   const { state, dispatch } = useContext(AuthContext);
+  const { login, logout } = useAuthApi();
 
   const formik = useFormik<LoginForm>({
     initialValues: {
@@ -98,6 +99,12 @@ const LoginScreen = ({ navigation, route }: Props) => {
         <Button
           onPress={() => navigation.replace("Register")}
           label="Creeaza un cont nou"
+          style={{ marginTop: 16, backgroundColor: "transparent" }}
+          labelStyle={{ color: ThemeColors.black }}
+        />
+        <Button
+          onPress={onLogout}
+          label="Logout"
           style={{ marginTop: 16, backgroundColor: "transparent" }}
           labelStyle={{ color: ThemeColors.black }}
         />

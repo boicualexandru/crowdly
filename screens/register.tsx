@@ -1,4 +1,4 @@
-import { logout, register } from "api/auth";
+import useAuthApi from "api/auth";
 import { AuthActionType } from "context/authActions";
 import { AuthContext } from "context/authContext";
 import { useFormik } from "formik";
@@ -31,6 +31,7 @@ interface RegisterForm {
 
 const RegisterScreen = ({ navigation, route }: Props) => {
   const { state, dispatch } = useContext(AuthContext);
+  const { register, logout } = useAuthApi();
 
   const formik = useFormik<RegisterForm>({
     initialValues: {

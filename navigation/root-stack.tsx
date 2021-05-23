@@ -3,7 +3,8 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import React from "react";
+import { AuthContext } from "context/authContext";
+import React, { useContext } from "react";
 
 import LoginScreen from "@screens/login";
 import EditVendorScreen from "@screens/vendors/edit-vendor";
@@ -21,8 +22,12 @@ type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootStackNavigation = () => {
+  const { state } = useContext(AuthContext);
+
   return (
-    <Stack.Navigator initialRouteName="HomeTabs">
+    <Stack.Navigator
+      initialRouteName={state.isAuthenticated ? "HomeTabs" : "Login"}
+    >
       <Stack.Screen
         name="HomeTabs"
         component={HomeTabsNavigation}

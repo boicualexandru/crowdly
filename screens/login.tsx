@@ -51,6 +51,8 @@ const LoginScreen = ({ navigation, route }: Props) => {
           jwtToken: loginResponse.jwtToken,
         },
       });
+
+      navigation.navigate("HomeTabs", { screen: "VendorsStack" });
     },
   });
 

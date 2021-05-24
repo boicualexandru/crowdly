@@ -53,6 +53,8 @@ const RegisterScreen = ({ navigation, route }: Props) => {
           jwtToken: registerResponse.jwtToken,
         },
       });
+      
+      navigation.navigate("HomeTabs", { screen: "VendorsStack" });
     },
   });
 

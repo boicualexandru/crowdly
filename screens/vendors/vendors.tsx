@@ -1,4 +1,4 @@
-import { getVendorsPage, VendorDTO } from "api/vendors";
+import useVendorsApi from "api/vendors";
 import React, { useCallback } from "react";
 import {
   ActivityIndicator,
@@ -28,6 +28,7 @@ interface Props {
 }
 
 const VendorsScreen = ({ navigation }: Props) => {
+  const { getVendorsPage } = useVendorsApi();
   const { data, hasMore, loadMore, isRefreshing, refresh } = useInfiniteScroll(
     getVendorsPage
   );

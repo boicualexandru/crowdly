@@ -3,7 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "context/authContext";
 import jwt_decode from "jwt-decode";
 import { useContext } from "react";
-// import axios from 'axios';
 
 export interface LoginModel {
   username: string;
@@ -31,77 +30,61 @@ export interface RegisterModel {
 const useAuthApi = () => {
   const { state, dispatch } = useContext(AuthContext);
 
-  const login = async (loginModel: LoginModel): Promise<LoginResponse> => {
-    // const response = await axios({
-    //   method: 'post',
-    //   url: `${API_BASE_URL}/authenticate/login`,
-    //   data: loginModel
-    // });
-    
-    // if (response.status != 200) return { success: false };
+  return {
+    login: async (loginModel: LoginModel): Promise<LoginResponse> => {
+      console.log("jwtToken -- ", state?.token);
+      const responseRaw = await fetch(`${API_BASE_URL}/authenticate/login`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: state?.token ?? "",
+        },
+        body: JSON.stringify(loginModel),
+      });
 
-    // const jwtToken = response.data.token;
+      if (responseRaw.status != 200) return { success: false };
 
-    // console.log('jwtToken -- ', jwtToken);
-    
-    console.log('jwtToken -- ', state?.token);
-    const responseRaw = await fetch(`${API_BASE_URL}/authenticate/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Authorization": state?.token ?? ''
-      },
-      body: JSON.stringify(loginModel),
-    });
+      const jwtToken = await responseRaw.text();
 
-    if (responseRaw.status != 200) return { success: false };
+      var decodedToken = jwt_decode<{ username: string }>(jwtToken);
 
-    const jwtToken = await responseRaw.text();
+      await AsyncStorage.setItem("jwtToken", jwtToken);
 
-    var decodedToken = jwt_decode<{ username: string }>(jwtToken);
+      return {
+        success: true,
+        jwtToken: jwtToken,
+        username: decodedToken.username,
+      };
+    },
+    logout: async (): Promise<void> => {
+      await AsyncStorage.removeItem("jwtToken");
+    },
+    register: async (registerModel: RegisterModel): Promise<LoginResponse> => {
+      const responseRaw = await fetch(`${API_BASE_URL}/authenticate/register`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(registerModel),
+      });
 
-    await AsyncStorage.setItem("jwtToken", jwtToken);
+      if (responseRaw.status != 200) return { success: false };
 
-    return {
-      success: true,
-      jwtToken: jwtToken,
-      username: decodedToken.username,
-    };
+      const jwtToken = await responseRaw.text();
+
+      var decodedToken = jwt_decode<{ username: string }>(jwtToken);
+
+      await AsyncStorage.setItem("jwtToken", jwtToken);
+
+      return {
+        success: true,
+        jwtToken: jwtToken,
+        username: decodedToken.username,
+      };
+    },
   };
-
-  const logout = async (): Promise<void> => {
-    await AsyncStorage.removeItem("jwtToken");
-  };
-
-  const register = async (
-    registerModel: RegisterModel
-  ): Promise<LoginResponse> => {
-    const responseRaw = await fetch(`${API_BASE_URL}/authenticate/register`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(registerModel),
-    });
-
-    if (responseRaw.status != 200) return { success: false };
-
-    const jwtToken = await responseRaw.text();
-
-    var decodedToken = jwt_decode<{ username: string }>(jwtToken);
-
-    await AsyncStorage.setItem("jwtToken", jwtToken);
-
-    return {
-      success: true,
-      jwtToken: jwtToken,
-      username: decodedToken.username,
-    };
-  };
-
-  return { login, logout, register };
-}
+};
 
 export default useAuthApi;

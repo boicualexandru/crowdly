@@ -1,4 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
+import useVendorsApi from "api/vendors";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -16,8 +18,6 @@ import useImagePicker from "@hooks/useImagePicker";
 
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
-import { useFormik } from 'formik';
-import { createVendor, getVendorById, updateVendor } from "api/vendors";
 
 type EditVendorScreenNavigationProp = RootStackNavigationPropChild<"EditVendor">;
 type EditVendorScreenRouteProp = RootStackRoutePropChild<"EditVendor">;
@@ -35,19 +35,22 @@ interface EditVendorForm {
 }
 
 const EditVendorScreen = ({ route, navigation }: Props) => {
+  const { updateVendor, createVendor, getVendorById } = useVendorsApi();
   const [oldImages, setOldImages] = useState<string[]>([]);
-  
+
   const formik = useFormik<EditVendorForm>({
     initialValues: {
-      name: '',
-      city: '',
-      price: '',
-      description: '',
+      name: "",
+      city: "",
+      price: "",
+      description: "",
     },
     onSubmit: async (values) => {
-      const imgaesUris = images.map(img => img.uri);
-      const existingImages = imgaesUris.filter(img => oldImages.includes(img));
-      const newImages = imgaesUris.filter(img => !oldImages.includes(img));
+      const imgaesUris = images.map((img) => img.uri);
+      const existingImages = imgaesUris.filter((img) =>
+        oldImages.includes(img)
+      );
+      const newImages = imgaesUris.filter((img) => !oldImages.includes(img));
 
       console.log(JSON.stringify(values, null, 2));
 
@@ -63,7 +66,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
         await createVendor({
           ...values,
           price: parseInt(values.price),
-          images: newImages
+          images: newImages,
         });
       }
     },
@@ -83,25 +86,28 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
   useEffect(() => {
     const init = async () => {
       navigation.setOptions({
-        title: route.params.vendorId ? "Editeaza Serviciul" : "Serviciu Nou"
+        title: route.params.vendorId ? "Editeaza Serviciul" : "Serviciu Nou",
       });
 
       if (route.params.vendorId) {
         const vendor = await getVendorById(route.params.vendorId);
         console.log(vendor.images);
-        
-        formik.setValues({
-          name: vendor.name,
-          city: vendor.city,
-          price: vendor.price.toString(),
-          description: vendor.description
-        }, false);
+
+        formik.setValues(
+          {
+            name: vendor.name,
+            city: vendor.city,
+            price: vendor.price.toString(),
+            description: vendor.description,
+          },
+          false
+        );
         if (vendor.images?.length) {
           initImages(vendor.images);
           setOldImages(vendor.images);
         }
       }
-    }
+    };
     init().then();
   }, [route]);
 
@@ -182,14 +188,14 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
         <TextField
           label="Numele Serviciului"
           placeholder="Ex. DJ"
-          onChangeText={formik.handleChange('name')}
+          onChangeText={formik.handleChange("name")}
           value={formik.values.name}
           containerStyle={styles.textField}
         />
         <TextField
           label="Oras"
           placeholder="Ex: Iasi"
-          onChangeText={formik.handleChange('city')}
+          onChangeText={formik.handleChange("city")}
           value={formik.values.city}
           containerStyle={styles.textField}
         />
@@ -197,7 +203,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           label="Pret"
           placeholder="Ex: 1200"
           rightText="Lei"
-          onChangeText={formik.handleChange('price')}
+          onChangeText={formik.handleChange("price")}
           value={formik.values.price}
           containerStyle={styles.textField}
           keyboardType={"numeric"}
@@ -207,7 +213,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           placeholder="Ex: Salut, ..."
           multiline
           numberOfLines={4}
-          onChangeText={formik.handleChange('description')}
+          onChangeText={formik.handleChange("description")}
           value={formik.values.description}
           containerStyle={styles.textField}
         />
@@ -234,7 +240,11 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       </View>
       <Divider style={{ marginTop: 16 }} />
       <View>
-        <Button onPress={() => formik.handleSubmit()} label="Salveaza" style={{ marginVertical: 16 }} />
+        <Button
+          onPress={() => formik.handleSubmit()}
+          label="Salveaza"
+          style={{ marginVertical: 16 }}
+        />
       </View>
     </ScrollView>
   );

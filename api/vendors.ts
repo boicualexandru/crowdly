@@ -9,8 +9,8 @@ export interface VendorDTO {
   name: string;
   city: string;
   price: number;
-  imageUrl: string;
-  isFavourite: boolean;
+  thumbnailUrl: string;
+  // isFavourite: boolean;
   category: VendorCategoryType;
 }
 
@@ -144,62 +144,17 @@ const useVendorsApi = () => {
       filters: GetVendorsFilters | undefined,
       after?: VendorDTO
     ): Promise<DataPage<VendorDTO>> => {
-      const randomprice = 2000 + Math.floor(Math.random() * 100);
+      const responseRaw = await state.axiosInstance?.get(`vendors`);
+      const response = responseRaw?.data as VendorDTO[];
+
+      const responseParsed = response.map((vendor) => ({
+        ...vendor,
+        thumbnailUrl: getImageUrl(vendor.id, vendor.thumbnailUrl),
+      }));
 
       return {
-        data: [
-          {
-            id: Math.random().toString(),
-            name: "Charlie",
-            city: "Sibiu, Romania",
-            price: randomprice + 10,
-            imageUrl:
-              "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-            category: VendorCategoryType.Location,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Opal Events",
-            city: "Brasov, Romania",
-            price: randomprice + 20,
-            imageUrl:
-              "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-            category: VendorCategoryType.Location,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Sun Garden",
-            city: "Cluj-Napoca, Romania",
-            price: randomprice + 30,
-            imageUrl:
-              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-            category: VendorCategoryType.Location,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Sun Garden",
-            city: "Cluj-Napoca, Romania",
-            price: randomprice + 40,
-            imageUrl:
-              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-            category: VendorCategoryType.Location,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Sun Garden",
-            city: "Cluj-Napoca, Romania",
-            price: randomprice + 50,
-            imageUrl:
-              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-            category: VendorCategoryType.Location,
-          },
-        ],
-        hasMore: randomprice % 100 < 80,
+        data: responseParsed,
+        hasMore: true,
       };
     },
   };

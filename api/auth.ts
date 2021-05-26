@@ -27,8 +27,19 @@ export interface RegisterModel {
   password: string;
 }
 
+export interface JwtClaimsModel {
+  ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']: string;
+  ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']: string;
+  jti: string;
+  exp: number;
+  iss: string;
+  aud: string;
+}
+
 const useAuthApi = () => {
   const { state, dispatch } = useContext(AuthContext);
+
+  const authorizationHeaderValue = state?.token ? `Bearer ${state.token}` : '';
 
   return {
     login: async (loginModel: LoginModel): Promise<LoginResponse> => {
@@ -38,23 +49,26 @@ const useAuthApi = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: state?.token ?? "",
+          Authorization: authorizationHeaderValue,
         },
         body: JSON.stringify(loginModel),
       });
 
       if (responseRaw.status != 200) return { success: false };
 
-      const jwtToken = await responseRaw.text();
+      const response = await responseRaw.json();
+      const jwtToken = response.token;
 
-      var decodedToken = jwt_decode<{ username: string }>(jwtToken);
+      var decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
+      console.log("decodedToken: ", decodedToken);
+      
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
       return {
         success: true,
         jwtToken: jwtToken,
-        username: decodedToken.username,
+        username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
       };
     },
     logout: async (): Promise<void> => {
@@ -72,16 +86,17 @@ const useAuthApi = () => {
 
       if (responseRaw.status != 200) return { success: false };
 
-      const jwtToken = await responseRaw.text();
+      const response = await responseRaw.json();
+      const jwtToken = response.token;
 
-      var decodedToken = jwt_decode<{ username: string }>(jwtToken);
+      var decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
       return {
         success: true,
         jwtToken: jwtToken,
-        username: decodedToken.username,
+        username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
       };
     },
   };

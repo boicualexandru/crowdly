@@ -11,6 +11,7 @@ export interface VendorDTO {
   price: number;
   imageUrl: string;
   isFavourite: boolean;
+  category: VendorCategoryType;
 }
 
 export interface GetVendorsFilters {}
@@ -21,6 +22,7 @@ export interface GetVendorResponse {
   price: number;
   description: string;
   images: string[];
+  category: VendorCategoryType;
 }
 
 export interface CreateVendorRequest {
@@ -29,6 +31,7 @@ export interface CreateVendorRequest {
   price: number;
   description: string;
   images: string[];
+  category: VendorCategoryType;
 }
 
 export interface UpdateVendorRequest {
@@ -39,10 +42,31 @@ export interface UpdateVendorRequest {
   description: string;
   existingImages: string[];
   newImages: string[];
+  category: VendorCategoryType;
 }
+
+export enum VendorCategoryType {
+  None = 0,
+  Location = 1,
+  Music = 2,
+  Photo = 3,
+  Video = 4,
+  Food = 5,
+}
+
+export const vendorCategoryOptions = [
+  { label: '', value: VendorCategoryType.None },
+  { label: 'Locatie', value: VendorCategoryType.Location },
+  { label: 'Muzica', value: VendorCategoryType.Music },
+  { label: 'Fotograf', value: VendorCategoryType.Photo },
+  { label: 'Video', value: VendorCategoryType.Video },
+  { label: 'Catering', value: VendorCategoryType.Food },
+]
 
 const useVendorsApi = () => {
   const { state, dispatch } = useContext(AuthContext);
+
+  const authorizationHeaderValue = state?.token ? `Bearer ${state.token}` : '';
 
   return {
     getVendorsPage: async (
@@ -102,15 +126,22 @@ const useVendorsApi = () => {
         hasMore: randomprice % 100 < 80,
       };
     },
-    getVendorById: async (vendorId: string): Promise<GetVendorResponse> => {
+    getVendorById: async (vendorId: string): Promise<GetVendorResponse> => {      
       const responseRaw = await fetch(`${API_BASE_URL}/vendors/${vendorId}`, {
         method: "GET",
         headers: {
           Accept: "application/json",
-          Authorization: state?.token ?? "",
+          Authorization: authorizationHeaderValue,
         },
       });
 
+      console.log(`${API_BASE_URL}/vendors/${vendorId}`);
+      console.log(responseRaw.status);
+      console.log({
+        Accept: "application/json",
+        Authorization: authorizationHeaderValue,
+      });
+      
       const response = await responseRaw.json();
       return {
         ...response,
@@ -125,6 +156,7 @@ const useVendorsApi = () => {
       body.append("name", vendor.name);
       body.append("city", vendor.city);
       body.append("price", vendor.price.toString());
+      body.append("category", vendor.category.toString());
 
       vendor.images?.forEach((image) => {
         var formImage = {
@@ -140,7 +172,7 @@ const useVendorsApi = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
-          Authorization: state?.token ?? "",
+          Authorization: authorizationHeaderValue,
         },
         body: body,
       });
@@ -153,6 +185,7 @@ const useVendorsApi = () => {
       body.append("name", vendor.name);
       body.append("city", vendor.city);
       body.append("price", vendor.price.toString());
+      body.append("category", vendor.category.toString());
 
       vendor.existingImages
         ?.map((img) => img.replace(/^.*[\\\/]/, ""))
@@ -174,7 +207,7 @@ const useVendorsApi = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
-          Authorization: state?.token ?? "",
+          Authorization: authorizationHeaderValue,
         },
         body: body,
       });

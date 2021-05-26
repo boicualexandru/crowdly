@@ -1,5 +1,5 @@
 import { AuthActions, AuthActionType } from "./authActions";
-import { AuthState } from "./authState";
+import { AuthState, getAxiosInstance } from "./authState";
 
 export function authReducer(state: AuthState, action: AuthActions): AuthState {
   switch (action.type) {
@@ -10,6 +10,7 @@ export function authReducer(state: AuthState, action: AuthActions): AuthState {
         isAuthenticated: action.payload.isAuthenticated,
         username: action.payload.isAuthenticated ? action.payload.username : undefined,
         token: action.payload.isAuthenticated ? action.payload.jwtToken : undefined,
+        axiosInstance: getAxiosInstance(action.payload.isAuthenticated ? action.payload.jwtToken : undefined),
       };
     case AuthActionType.Login:
       return {
@@ -17,6 +18,7 @@ export function authReducer(state: AuthState, action: AuthActions): AuthState {
         isAuthenticated: true,
         username: action.payload.username,
         token: action.payload.jwtToken,
+        axiosInstance: getAxiosInstance(action.payload.jwtToken),
       };
     case AuthActionType.Logout:
       return {
@@ -24,6 +26,7 @@ export function authReducer(state: AuthState, action: AuthActions): AuthState {
         isAuthenticated: false,
         username: undefined,
         token: undefined,
+        axiosInstance: getAxiosInstance(),
       };
   }
 }

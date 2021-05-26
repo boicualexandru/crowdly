@@ -1,4 +1,3 @@
-import { API_BASE_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "context/authContext";
 import jwt_decode from "jwt-decode";
@@ -28,8 +27,8 @@ export interface RegisterModel {
 }
 
 export interface JwtClaimsModel {
-  ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']: string;
-  ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']: string;
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]: string;
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]: string;
   jti: string;
   exp: number;
   iss: string;
@@ -37,57 +36,45 @@ export interface JwtClaimsModel {
 }
 
 const useAuthApi = () => {
-  const { state, dispatch } = useContext(AuthContext);
-
-  const authorizationHeaderValue = state?.token ? `Bearer ${state.token}` : '';
+  const { state } = useContext(AuthContext);
 
   return {
     login: async (loginModel: LoginModel): Promise<LoginResponse> => {
-      console.log("jwtToken -- ", state?.token);
-      const responseRaw = await fetch(`${API_BASE_URL}/authenticate/login`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: authorizationHeaderValue,
-        },
-        body: JSON.stringify(loginModel),
-      });
+      const response = await state.axiosInstance?.post(
+        "authenticate/login",
+        loginModel
+      );
 
-      if (responseRaw.status != 200) return { success: false };
+      if (response.status != 200) return { success: false };
 
-      const response = await responseRaw.json();
-      const jwtToken = response.token;
+      const jwtToken = response.data.token;
 
       var decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
       console.log("decodedToken: ", decodedToken);
-      
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
       return {
         success: true,
         jwtToken: jwtToken,
-        username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+        username:
+          decodedToken[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+          ],
       };
     },
     logout: async (): Promise<void> => {
       await AsyncStorage.removeItem("jwtToken");
     },
     register: async (registerModel: RegisterModel): Promise<LoginResponse> => {
-      const responseRaw = await fetch(`${API_BASE_URL}/authenticate/register`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(registerModel),
-      });
+      const response = await state.axiosInstance?.post(
+        "authenticate/register",
+        registerModel
+      );
 
-      if (responseRaw.status != 200) return { success: false };
+      if (response.status != 200) return { success: false };
 
-      const response = await responseRaw.json();
-      const jwtToken = response.token;
+      const jwtToken = response.data.token;
 
       var decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
 
@@ -96,7 +83,10 @@ const useAuthApi = () => {
       return {
         success: true,
         jwtToken: jwtToken,
-        username: decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+        username:
+          decodedToken[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+          ],
       };
     },
   };

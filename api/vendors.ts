@@ -1,4 +1,4 @@
-import { API_BASE_URL, IMAGES_BASE_URL } from "@env";
+import { IMAGES_BASE_URL } from "@env";
 import { AuthContext } from "context/authContext";
 import { useContext } from "react";
 
@@ -55,99 +55,30 @@ export enum VendorCategoryType {
 }
 
 export const vendorCategoryOptions = [
-  { label: '', value: VendorCategoryType.None },
-  { label: 'Locatie', value: VendorCategoryType.Location },
-  { label: 'Muzica', value: VendorCategoryType.Music },
-  { label: 'Fotograf', value: VendorCategoryType.Photo },
-  { label: 'Video', value: VendorCategoryType.Video },
-  { label: 'Catering', value: VendorCategoryType.Food },
-]
+  { label: "", value: VendorCategoryType.None },
+  { label: "Locatie", value: VendorCategoryType.Location },
+  { label: "Muzica", value: VendorCategoryType.Music },
+  { label: "Fotograf", value: VendorCategoryType.Photo },
+  { label: "Video", value: VendorCategoryType.Video },
+  { label: "Catering", value: VendorCategoryType.Food },
+];
+
+const getImageUrl = (vendorId: string, imageFileName: string) =>
+  `${IMAGES_BASE_URL}/vendors/${vendorId}/${imageFileName}`;
 
 const useVendorsApi = () => {
-  const { state, dispatch } = useContext(AuthContext);
-
-  const authorizationHeaderValue = state?.token ? `Bearer ${state.token}` : '';
+  const { state } = useContext(AuthContext);
 
   return {
-    getVendorsPage: async (
-      filters: GetVendorsFilters | undefined,
-      after?: VendorDTO
-    ): Promise<DataPage<VendorDTO>> => {
-      const randomprice = 2000 + Math.floor(Math.random() * 100);
+    getVendorById: async (vendorId: string): Promise<GetVendorResponse> => {
+      const responseRaw = await state.axiosInstance?.get(`vendors/${vendorId}`);
+      const response = responseRaw?.data;
 
-      return {
-        data: [
-          {
-            id: Math.random().toString(),
-            name: "Charlie",
-            city: "Sibiu, Romania",
-            price: randomprice + 10,
-            imageUrl:
-              "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Opal Events",
-            city: "Brasov, Romania",
-            price: randomprice + 20,
-            imageUrl:
-              "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Sun Garden",
-            city: "Cluj-Napoca, Romania",
-            price: randomprice + 30,
-            imageUrl:
-              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Sun Garden",
-            city: "Cluj-Napoca, Romania",
-            price: randomprice + 40,
-            imageUrl:
-              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-          },
-          {
-            id: Math.random().toString(),
-            name: "Sun Garden",
-            city: "Cluj-Napoca, Romania",
-            price: randomprice + 50,
-            imageUrl:
-              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-            isFavourite: false,
-          },
-        ],
-        hasMore: randomprice % 100 < 80,
-      };
-    },
-    getVendorById: async (vendorId: string): Promise<GetVendorResponse> => {      
-      const responseRaw = await fetch(`${API_BASE_URL}/vendors/${vendorId}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          Authorization: authorizationHeaderValue,
-        },
-      });
-
-      console.log(`${API_BASE_URL}/vendors/${vendorId}`);
-      console.log(responseRaw.status);
-      console.log({
-        Accept: "application/json",
-        Authorization: authorizationHeaderValue,
-      });
-      
-      const response = await responseRaw.json();
       return {
         ...response,
         price: parseInt(response.price),
-        images: response.imageUrls?.map(
-          (img: string) => `${IMAGES_BASE_URL}/vendors/${response.id}/${img}`
+        images: response.imageUrls?.map((imageFileName: string) =>
+          getImageUrl(response.id, imageFileName)
         ),
       };
     },
@@ -167,18 +98,13 @@ const useVendorsApi = () => {
         body.append("formFiles", formImage);
       });
 
-      const responseRaw = await fetch(`${API_BASE_URL}/vendors`, {
-        method: "POST",
+      const responseRaw = await state.axiosInstance?.post("vendors", body, {
         headers: {
-          Accept: "application/json",
           "Content-Type": "multipart/form-data",
-          Authorization: authorizationHeaderValue,
         },
-        body: body,
       });
 
-      const response = await responseRaw.json();
-      return response.id;
+      return responseRaw?.data.id;
     },
     updateVendor: async (vendor: UpdateVendorRequest): Promise<void> => {
       var body = new FormData();
@@ -202,17 +128,79 @@ const useVendorsApi = () => {
         body.append("formFiles", formImage);
       });
 
-      const responseRaw = await fetch(`${API_BASE_URL}/vendors/${vendor.id}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-          Authorization: authorizationHeaderValue,
-        },
-        body: body,
-      });
+      const responseRaw = await state.axiosInstance?.put(
+        `vendors/${vendor.id}`,
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      const response = await responseRaw.json();
+      const response = responseRaw.data;
+    },
+    getVendorsPage: async (
+      filters: GetVendorsFilters | undefined,
+      after?: VendorDTO
+    ): Promise<DataPage<VendorDTO>> => {
+      const randomprice = 2000 + Math.floor(Math.random() * 100);
+
+      return {
+        data: [
+          {
+            id: Math.random().toString(),
+            name: "Charlie",
+            city: "Sibiu, Romania",
+            price: randomprice + 10,
+            imageUrl:
+              "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+            isFavourite: false,
+            category: VendorCategoryType.Location,
+          },
+          {
+            id: Math.random().toString(),
+            name: "Opal Events",
+            city: "Brasov, Romania",
+            price: randomprice + 20,
+            imageUrl:
+              "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+            isFavourite: false,
+            category: VendorCategoryType.Location,
+          },
+          {
+            id: Math.random().toString(),
+            name: "Sun Garden",
+            city: "Cluj-Napoca, Romania",
+            price: randomprice + 30,
+            imageUrl:
+              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+            isFavourite: false,
+            category: VendorCategoryType.Location,
+          },
+          {
+            id: Math.random().toString(),
+            name: "Sun Garden",
+            city: "Cluj-Napoca, Romania",
+            price: randomprice + 40,
+            imageUrl:
+              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+            isFavourite: false,
+            category: VendorCategoryType.Location,
+          },
+          {
+            id: Math.random().toString(),
+            name: "Sun Garden",
+            city: "Cluj-Napoca, Romania",
+            price: randomprice + 50,
+            imageUrl:
+              "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+            isFavourite: false,
+            category: VendorCategoryType.Location,
+          },
+        ],
+        hasMore: randomprice % 100 < 80,
+      };
     },
   };
 };

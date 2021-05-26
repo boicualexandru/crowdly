@@ -38,9 +38,6 @@ const LoginScreen = ({ navigation, route }: Props) => {
       password: "",
     },
     onSubmit: async (values) => {
-      console.log(JSON.stringify(values, null, 2));
-      console.log("State Before Login: ", state);
-
       const loginResponse = await login({ ...values });
       if (!loginResponse.success) return;
 
@@ -57,7 +54,6 @@ const LoginScreen = ({ navigation, route }: Props) => {
   });
 
   const onLogout = async () => {
-    console.log("State Before Logout: ", state);
     await logout();
 
     dispatch({

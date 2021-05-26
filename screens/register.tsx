@@ -40,8 +40,6 @@ const RegisterScreen = ({ navigation, route }: Props) => {
       password: "",
     },
     onSubmit: async (values) => {
-      console.log(JSON.stringify(values, null, 2));
-      console.log("State Before Register: ", state);
 
       const registerResponse = await register({ ...values });
       if (!registerResponse.success) return;
@@ -57,15 +55,6 @@ const RegisterScreen = ({ navigation, route }: Props) => {
       navigation.navigate("HomeTabs", { screen: "VendorsStack" });
     },
   });
-
-  const onLogout = async () => {
-    console.log("State Before Logout: ", state);
-    await logout();
-
-    dispatch({
-      type: AuthActionType.Logout,
-    });
-  };
 
   return (
     <ScrollView

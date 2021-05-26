@@ -55,8 +55,6 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       );
       const newImages = imgaesUris.filter((img) => !oldImages.includes(img));
 
-      console.log(JSON.stringify(values, null, 2));
-
       if (route.params.vendorId) {
         await updateVendor({
           ...values,
@@ -94,7 +92,6 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
 
       if (route.params.vendorId) {
         const vendor = await getVendorById(route.params.vendorId);
-        console.log(vendor.images);
 
         formik.setValues(
           {

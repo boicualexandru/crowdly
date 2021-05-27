@@ -14,7 +14,9 @@ export interface VendorDTO {
   category: VendorCategoryType;
 }
 
-export interface GetVendorsFilters {}
+export interface VendorsFiltersModel {
+  city?: string;
+}
 
 export interface GetVendorResponse {
   name: string;
@@ -53,6 +55,13 @@ export enum VendorCategoryType {
   Video = 4,
   Food = 5,
 }
+
+export const availableCities = [
+  'Cluj-Napoca, Romania',
+  'Iasi, Romania',
+  'Brasov, Romania',
+  'Bucuresti, Romania',
+]
 
 export const vendorCategoryOptions = [
   { label: "", value: VendorCategoryType.None },
@@ -141,7 +150,7 @@ const useVendorsApi = () => {
       const response = responseRaw.data;
     },
     getVendorsPage: async (
-      filters: GetVendorsFilters | undefined,
+      filters: VendorsFiltersModel | undefined,
       after?: VendorDTO
     ): Promise<DataPage<VendorDTO>> => {
       const responseRaw = await state.axiosInstance?.get(`vendors`);

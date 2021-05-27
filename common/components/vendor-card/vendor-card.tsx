@@ -13,7 +13,6 @@ interface Props {
 const VendorCard = ({ vendor, onPress }: Props) => {
   return (
     <Card
-      key={vendor.id}
       marginV-10
       flex
       selected={false}

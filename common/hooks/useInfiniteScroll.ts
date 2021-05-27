@@ -5,7 +5,7 @@ import { DataPage } from "@models/datapage";
 
 const useInfiniteScroll = <T, F>(
   getData: (filters?: F, after?: T) => Promise<DataPage<T>>,
-  initialFilters?: F | undefined
+  initialFilters: F
 ) => {
   const [allDataPage, setAllDataPage] = useState<DataPage<T>>({
     data: [],
@@ -13,7 +13,7 @@ const useInfiniteScroll = <T, F>(
   });
   const [error, setError] = useState<any>(null);
 
-  const [filters, setFilters] = useState(initialFilters);
+  const [filters, setFilters] = useState<F>(initialFilters);
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -67,6 +67,7 @@ const useInfiniteScroll = <T, F>(
     data: allDataPage.data,
     hasMore: allDataPage.hasMore,
     error,
+    filters,
     applyFilters,
     isLoadingMore,
     loadMore,

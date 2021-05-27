@@ -1,4 +1,4 @@
-import useVendorsApi from "api/vendors";
+import useVendorsApi, { VendorDTO, VendorsFiltersModel } from "api/vendors";
 import React, { useCallback } from "react";
 import {
   ActivityIndicator,
@@ -18,6 +18,7 @@ import VendorCard from "@components/vendor-card/vendor-card";
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
 
 import ThemeColors from "@theme/theme-colors";
+import VendorFilters from "./vendorsFilters";
 
 type VendorsScreenNavigationProp = VendorsStackNavigationPropChild<"Vendors">;
 type VendorsScreenRouteProp = VendorsStackRoutePropChild<"Vendors">;
@@ -29,12 +30,14 @@ interface Props {
 
 const VendorsScreen = ({ navigation }: Props) => {
   const { getVendorsPage } = useVendorsApi();
-  const { data, hasMore, loadMore, isRefreshing, refresh } = useInfiniteScroll(
-    getVendorsPage
+  const { data, hasMore, loadMore, isRefreshing, refresh, filters, applyFilters } = useInfiniteScroll<VendorDTO, VendorsFiltersModel>(
+    getVendorsPage, {
+      city: "Cluj_Napoca"
+    }
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: VendorDTO }) => (
+    ({ item, index }: { item: VendorDTO, index: number }) => (
       <VendorCard
         vendor={item}
         onPress={() =>
@@ -57,6 +60,15 @@ const VendorsScreen = ({ navigation }: Props) => {
     );
   }, [hasMore]);
 
+  const renderHeader = useCallback(() => {
+    return (
+      <VendorFilters
+        filters={filters}
+        style={{ width: '100%', paddingHorizontal: 16, marginBottom: 8 }}
+        onApply={applyFilters} />
+    );
+  }, [filters]);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -65,10 +77,11 @@ const VendorsScreen = ({ navigation }: Props) => {
         }
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id + Math.random().toString()}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
+        ListHeaderComponent={renderHeader}
       />
     </SafeAreaView>
   );

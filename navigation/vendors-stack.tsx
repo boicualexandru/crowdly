@@ -26,7 +26,7 @@ const Stack = createStackNavigator<VendorsStackParamList>();
 const VendorsStackNavigation = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Vendors" component={VendorsScreen} />
+      <Stack.Screen name="Vendors" component={VendorsScreen} options={{title: 'Servicii'}} />
       <Stack.Screen
         name="Vendor"
         component={VendorScreen}

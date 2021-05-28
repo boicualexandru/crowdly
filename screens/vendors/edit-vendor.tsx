@@ -218,17 +218,22 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           value={formik.values.description}
           containerStyle={styles.textField}
         />
-        <Picker
-          selectedValue={formik.values.category}
-          onValueChange={(itemValue, itemIndex) =>
-            formik.setFieldValue("category", itemValue)
-          }>
-            {
-              vendorCategoryOptions.map(option => (
-                <Picker.Item label={option.label} value={option.value} key={option.value} />
-              ))
-            }
-        </Picker>
+        <View style={styles.textField}>
+          <Text style={styles.inputLabel}>
+            Categoria
+          </Text>
+          <Picker
+            selectedValue={formik.values.category}
+            onValueChange={(itemValue, itemIndex) =>
+              formik.setFieldValue("category", itemValue)
+            }>
+              {
+                vendorCategoryOptions.map(option => (
+                  <Picker.Item label={option.label} value={option.value} key={option.value} />
+                ))
+              }
+          </Picker>
+        </View>
         <Divider style={{ marginTop: 16 }} />
         <View style={[styles.row, { marginTop: 16 }]}>
           <View style={styles.columnHalf}>
@@ -293,6 +298,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  inputLabel: {
+    ...ThemeTypography.body2,
+    marginBottom: 4,
+    color: ThemeColors.textDark,
+    fontWeight: "bold",
   },
 });
 

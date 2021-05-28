@@ -17,6 +17,7 @@ export interface ButtonProps extends PressableProps {
   labelStyle?: StyleProp<TextStyle>;
   leftIcon?: string;
   rightIcon?: string;
+  outlined?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
@@ -27,9 +28,9 @@ const Button = (props: ButtonProps) => {
   )
 
   return (
-    <Pressable {...props} style={[styles.button, buttonStyle]}>
+    <Pressable {...props} style={[styles.button, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]}>
       {props.leftIcon && renderIcon(props.leftIcon)}
-      <Text style={[styles.label, props.labelStyle]}>{props.label}</Text>
+      <Text style={[styles.label, props.outlined ? {color: ThemeColors.primary}: null, props.labelStyle]}>{props.label}</Text>
     </Pressable>
   );
 };
@@ -37,6 +38,8 @@ const Button = (props: ButtonProps) => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: ThemeColors.primary,
+    borderWidth: 2,
+    borderColor: ThemeColors.primary,
     height: 40,
     borderRadius: 4,
     flexDirection: "row",

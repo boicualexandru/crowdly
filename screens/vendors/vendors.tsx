@@ -1,4 +1,8 @@
-import useVendorsApi, { VendorDTO, VendorsFiltersModel } from "api/vendors";
+import useVendorsApi, {
+  initialVendorsFilters,
+  VendorDTO,
+  VendorsFiltersModel,
+} from "api/vendors";
 import React, { useCallback } from "react";
 import {
   ActivityIndicator,
@@ -39,9 +43,10 @@ const VendorsScreen = ({ navigation }: Props) => {
     refresh,
     filters,
     applyFilters,
-  } = useInfiniteScroll<VendorDTO, VendorsFiltersModel>(getVendorsPage, {
-    city: "Brasov, Romania",
-  });
+  } = useInfiniteScroll<VendorDTO, VendorsFiltersModel>(
+    getVendorsPage,
+    initialVendorsFilters
+  );
 
   const renderItem = useCallback(
     ({ item, index }: { item: VendorDTO; index: number }) => (
@@ -72,7 +77,7 @@ const VendorsScreen = ({ navigation }: Props) => {
       <VendorFilters
         filters={filters}
         style={{ width: "100%", paddingHorizontal: 16 }}
-        onApply={applyFilters}
+        requestApply={applyFilters}
       />
     );
   }, [filters]);

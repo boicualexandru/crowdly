@@ -16,6 +16,7 @@ export interface VendorDTO {
 
 export interface VendorsFiltersModel {
   city?: string;
+  category?: VendorCategoryType;
 }
 
 export interface GetVendorResponse {
@@ -57,7 +58,7 @@ export enum VendorCategoryType {
 }
 
 export const availableCities = [
-  { value: "", label: "Alege orasul" },
+  { value: "", label: "Toate orasele" },
   { value: "Cluj-Napoca, Romania", label: "Cluj-Napoca, Romania" },
   { value: "Iasi, Romania", label: "Iasi, Romania" },
   { value: "Brasov, Romania", label: "Brasov, Romania" },
@@ -65,13 +66,18 @@ export const availableCities = [
 ];
 
 export const vendorCategoryOptions = [
-  { label: "", value: VendorCategoryType.None },
+  { label: "Nicio categorie", value: VendorCategoryType.None },
   { label: "Locatie", value: VendorCategoryType.Location },
   { label: "Muzica", value: VendorCategoryType.Music },
   { label: "Fotograf", value: VendorCategoryType.Photo },
   { label: "Video", value: VendorCategoryType.Video },
   { label: "Catering", value: VendorCategoryType.Food },
 ];
+
+export const initialVendorsFilters: VendorsFiltersModel = {
+  city: "Brasov, Romania",
+  category: VendorCategoryType.None,
+};
 
 const getImageUrl = (vendorId: string, imageFileName: string) =>
   `${IMAGES_BASE_URL}/vendors/${vendorId}/${imageFileName}`;

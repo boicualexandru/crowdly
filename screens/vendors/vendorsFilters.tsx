@@ -9,7 +9,7 @@ import VendorsFiltersModal from "./vendorsFiltersModal";
 
 interface Props extends ViewProps {
   filters: VendorsFiltersModel;
-  onApply: (filters: VendorsFiltersModel) => void;
+  requestApply: (filters: VendorsFiltersModel) => void;
 }
 
 const VendorFilters = (props: Props) => {
@@ -21,7 +21,10 @@ const VendorFilters = (props: Props) => {
         <Picker
           selectedValue={props.filters.city}
           onValueChange={(itemValue, itemIndex) => {
-            props.onApply({ ...props.filters, city: itemValue.toString() });
+            props.requestApply({
+              ...props.filters,
+              city: itemValue.toString(),
+            });
           }}
           style={{ minWidth: 100, backgroundColor: "transparent" }}
         >
@@ -34,54 +37,12 @@ const VendorFilters = (props: Props) => {
       <VendorsFiltersModal
         isOpen={isModalOpen}
         requestClose={() => setIsModalOpen(false)}
-      />
-      {/* <Dropdown 
-        selectedId={props.filters.cityId} options={Cities} 
-        placeholderLabel="Toate Orașele"
-        onSelect={(cityId: number) => {
-          props.onApply({...props.filters, cityId: cityId});
+        requestApply={(f) => {
+          props.requestApply(f);
+          setIsModalOpen(false);
         }}
-        style={[Spacing.px_8, Spacing.py_8]} />
-      <View style={styles.iconsWrapper}>
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.SelectableBackgroundBorderless()}
-          onPress={() => setSearchModalVisible(true)}>
-          <Text style={[TypographyScaleStyles.caption, TypographyColorStyles.text_dark_60]}
-            numberOfLines={1} ellipsizeMode="tail">{props.filters.searchText}</Text>
-        </TouchableNativeFeedback>
-        </View>
-        <IconButton
-          icon="search"
-          onPress={() => setSearchModalVisible(true)}
-          style={[Spacing.px_8, { height: 40 }]}
-          iconStyle={[{ fontSize: 24 }, hasSearchTextApplied() ? TypographyColorStyles.text_primary: null]} />
-        <IconButton
-          icon="filter-list"
-          onPress={() => setIsModalVisible(true)}
-          style={[Spacing.px_8, { height: 40 }]}
-          iconStyle={[{ fontSize: 24 }, hasFiltersApplied() ? TypographyColorStyles.text_primary: null]} />
-      </View>
-
-      <FiltersModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}>
-        <LocationsFiltersForm
-          filters={props.filters}
-          onApply={(f: LocationFiltersModel) => {
-            props.onApply({ ...f, cityId: props.filters.cityId });
-            setIsModalVisible(false);
-          }}
-          onClose={() => setIsModalVisible(false)} />
-      </FiltersModal>
-
-      <SearchModal visible={searchModalVisible} 
-        text={props.filters.searchText}
-        onClose={() => setSearchModalVisible(false)}
-        onApply={(text) => { 
-          props.onApply({...props.filters, searchText: text});
-          setSearchModalVisible(false); 
-        }} /> */}
+        filters={props.filters}
+      />
     </View>
   );
 };

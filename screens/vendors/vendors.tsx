@@ -18,6 +18,7 @@ import VendorCard from "@components/vendor-card/vendor-card";
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
 
 import ThemeColors from "@theme/theme-colors";
+
 import VendorFilters from "./vendorsFilters";
 
 type VendorsScreenNavigationProp = VendorsStackNavigationPropChild<"Vendors">;
@@ -30,14 +31,20 @@ interface Props {
 
 const VendorsScreen = ({ navigation }: Props) => {
   const { getVendorsPage } = useVendorsApi();
-  const { data, hasMore, loadMore, isRefreshing, refresh, filters, applyFilters } = useInfiniteScroll<VendorDTO, VendorsFiltersModel>(
-    getVendorsPage, {
-      city: "Cluj_Napoca"
-    }
-  );
+  const {
+    data,
+    hasMore,
+    loadMore,
+    isRefreshing,
+    refresh,
+    filters,
+    applyFilters,
+  } = useInfiniteScroll<VendorDTO, VendorsFiltersModel>(getVendorsPage, {
+    city: "Brasov, Romania",
+  });
 
   const renderItem = useCallback(
-    ({ item, index }: { item: VendorDTO, index: number }) => (
+    ({ item, index }: { item: VendorDTO; index: number }) => (
       <VendorCard
         vendor={item}
         onPress={() =>
@@ -64,8 +71,9 @@ const VendorsScreen = ({ navigation }: Props) => {
     return (
       <VendorFilters
         filters={filters}
-        style={{ width: '100%', paddingHorizontal: 16, marginBottom: 8 }}
-        onApply={applyFilters} />
+        style={{ width: "100%", paddingHorizontal: 16 }}
+        onApply={applyFilters}
+      />
     );
   }, [filters]);
 

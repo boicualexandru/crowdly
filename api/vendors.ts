@@ -57,11 +57,12 @@ export enum VendorCategoryType {
 }
 
 export const availableCities = [
-  'Cluj-Napoca, Romania',
-  'Iasi, Romania',
-  'Brasov, Romania',
-  'Bucuresti, Romania',
-]
+  { value: "", label: "Alege orasul" },
+  { value: "Cluj-Napoca, Romania", label: "Cluj-Napoca, Romania" },
+  { value: "Iasi, Romania", label: "Iasi, Romania" },
+  { value: "Brasov, Romania", label: "Brasov, Romania" },
+  { value: "Bucuresti, Romania", label: "Bucuresti, Romania" },
+];
 
 export const vendorCategoryOptions = [
   { label: "", value: VendorCategoryType.None },
@@ -151,19 +152,22 @@ const useVendorsApi = () => {
     },
     getVendorsPage: async (
       filters: VendorsFiltersModel | undefined,
-      after?: VendorDTO
+      skip?: number
     ): Promise<DataPage<VendorDTO>> => {
-      const responseRaw = await state.axiosInstance?.get(`vendors`);
-      const response = responseRaw?.data as VendorDTO[];
+      const responseRaw = await state.axiosInstance?.get(`vendors`, {
+        params: { ...filters, skip },
+      });
 
-      const responseParsed = response.map((vendor) => ({
+      const response = responseRaw?.data as DataPage<VendorDTO>;
+
+      const parsedVendors = response.data.map((vendor) => ({
         ...vendor,
         thumbnailUrl: getImageUrl(vendor.id, vendor.thumbnailUrl),
       }));
 
       return {
-        data: responseParsed,
-        hasMore: true,
+        data: parsedVendors,
+        hasMore: response.hasMore,
       };
     },
   };

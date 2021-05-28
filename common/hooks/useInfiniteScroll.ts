@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { DataPage } from "@models/datapage";
 
 const useInfiniteScroll = <T, F>(
-  getData: (filters?: F, after?: T) => Promise<DataPage<T>>,
+  getData: (filters?: F, skip?: number) => Promise<DataPage<T>>,
   initialFilters: F
 ) => {
   const [allDataPage, setAllDataPage] = useState<DataPage<T>>({
@@ -29,10 +29,7 @@ const useInfiniteScroll = <T, F>(
     setError(null);
 
     try {
-      const result = await getData(
-        filters,
-        allDataPage.data?.[allDataPage.data.length - 1]
-      );
+      const result = await getData(filters, allDataPage.data.length);
       setAllDataPage((existingDataPage) => ({
         data: [...existingDataPage.data, ...result.data],
         hasMore: result.hasMore,
@@ -44,23 +41,26 @@ const useInfiniteScroll = <T, F>(
     setIsLoadingMore(false);
   }, [allDataPage, filters]);
 
-  const refresh = useCallback(async () => {
-    setIsRefreshing(true);
-    setError(null);
+  const refresh = useCallback(
+    async (filtersArg?: F) => {
+      setIsRefreshing(true);
+      setError(null);
 
-    try {
-      const result = await getData(filters);
-      setAllDataPage(result);
-    } catch (ex) {
-      setError(ex);
-    }
+      try {
+        const result = await getData(filtersArg ?? filters, 0);
+        setAllDataPage(result);
+      } catch (ex) {
+        setError(ex);
+      }
 
-    setIsRefreshing(false);
-  }, [filters]);
+      setIsRefreshing(false);
+    },
+    [filters]
+  );
 
   const applyFilters = useCallback(async (filters: F) => {
     setFilters(filters);
-    refresh();
+    refresh(filters);
   }, []);
 
   return {

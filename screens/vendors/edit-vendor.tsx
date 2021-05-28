@@ -1,10 +1,12 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import useVendorsApi, { vendorCategoryOptions, VendorCategoryType } from "api/vendors";
+import useVendorsApi, {
+  vendorCategoryOptions,
+  VendorCategoryType,
+} from "api/vendors";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import {Picker} from '@react-native-picker/picker';
 
 import {
   RootStackNavigationPropChild,
@@ -13,6 +15,7 @@ import {
 
 import Button from "@components/button/button";
 import Divider from "@components/divider/divider";
+import PickerField from "@components/form/picker-field";
 import TextField from "@components/form/text-field";
 
 import useImagePicker from "@hooks/useImagePicker";
@@ -178,7 +181,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       {isAnySelected ? renderRemoveImageButton() : renderImageSelectionNote()}
     </>
   );
-  
+
   return (
     <ScrollView
       style={{
@@ -218,22 +221,14 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           value={formik.values.description}
           containerStyle={styles.textField}
         />
-        <View style={styles.textField}>
-          <Text style={styles.inputLabel}>
-            Categoria
-          </Text>
-          <Picker
-            selectedValue={formik.values.category}
-            onValueChange={(itemValue, itemIndex) =>
-              formik.setFieldValue("category", itemValue)
-            }>
-              {
-                vendorCategoryOptions.map(option => (
-                  <Picker.Item label={option.label} value={option.value} key={option.value} />
-                ))
-              }
-          </Picker>
-        </View>
+        <PickerField
+          label="Categoria"
+          items={vendorCategoryOptions}
+          selectedValue={formik.values.category}
+          onValueChange={(itemValue, itemIndex) =>
+            formik.setFieldValue("category", itemValue)
+          }
+        />
         <Divider style={{ marginTop: 16 }} />
         <View style={[styles.row, { marginTop: 16 }]}>
           <View style={styles.columnHalf}>

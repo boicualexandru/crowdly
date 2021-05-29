@@ -14,7 +14,7 @@ import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
-import { VendorDetails } from "api/vendors";
+import useVendorsApi, { VendorDetails } from "api/vendors";
 
 type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
@@ -33,7 +33,7 @@ const useVendorState = (
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <View style={{ flexDirection: "row" }}>
-          { vendor.isEditable ? <IconButton icon="edit" /> : null }
+          { vendor.isEditable ? <IconButton icon="pen" onPress={() => navigation.navigate("EditVendor", {vendorId: vendor.id})} /> : null }
           <IconButton
             icon="heart"
             solid={vendor?.isFavourite}
@@ -57,20 +57,13 @@ const VendorScreen = ({ navigation, route }: Props) => {
   const { id, name } = route.params;
 
   const [vendor, setVendor] = useVendorState(navigation);
+  const {getVendorById} = useVendorsApi();
 
   useEffect(() => {
-    setVendor({
-      id: id,
-      city: "Cluj-Napoca",
-      email: "test@test.com",
-      images: [
-        "https://images.unsplash.com/photo-1615646549461-b9b9c118f300?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
-        "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1067&q=80",
-      ],
-      name: name,
-      tel: "1234",
-      isFavourite: false,
-    });
+    (async (): Promise<void> => {
+      const vendorResponse = await getVendorById(id);
+      setVendor(vendorResponse);
+    })().then();
   }, [route.params]);
 
   if (vendor == null) return null;

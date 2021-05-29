@@ -67,6 +67,7 @@ const VendorsCategoriesScreen = ({ navigation }: Props) => {
               categoryName: category.label,
             })
           }
+          key={category.label}
         >
           <Image
             source={{

@@ -51,7 +51,7 @@ const AboutTab = ({ vendor }: Props) => {
               icon="phone"
               color={ThemeColors.white}
               backgroundColor={ThemeColors.primary}
-              onPress={() => Linking.openURL(`tel:${vendor.tel}`)}
+              onPress={() => Linking.openURL(`tel:${vendor.phone}`)}
             />
           </View>
           <View style={styles.button}>
@@ -69,22 +69,22 @@ const AboutTab = ({ vendor }: Props) => {
               backgroundColor={ThemeColors.primary}
               onPress={() =>
                 Linking.openURL(
-                  `http://www.google.com/maps/place/${vendor.lat},${vendor.lon}`
+                  `http://www.google.com/maps/place/${vendor.latitude},${vendor.longitude}`
                 )
               }
             />
           </View>
         </View>
       </View>
-      {vendor.lon && vendor.lat ? (
+      {vendor.longitude && vendor.latitude ? (
         <Pressable
           onPress={() =>
             Linking.openURL(
-              `http://www.google.com/maps/place/${vendor.lat},${vendor.lon}`
+              `http://www.google.com/maps/place/${vendor.latitude},${vendor.longitude}`
             )
           }
         >
-          <MapImage lon={vendor.lon} lat={vendor.lat} aspectRatio={6 / 4} />
+          <MapImage lon={vendor.longitude} lat={vendor.latitude} aspectRatio={6 / 4} />
         </Pressable>
       ) : null}
     </ScrollView>

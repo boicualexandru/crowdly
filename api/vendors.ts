@@ -10,7 +10,7 @@ export interface Vendor {
   name: string;
   city: string;
   price: number;
-  thumbnailUrl: string;
+  thumbnail: string;
   // isFavourite: boolean;
   category: VendorCategoryType;
 }
@@ -24,15 +24,15 @@ export interface VendorDetails {
   id: string;
   name: string;
   city: string;
-  lon?: number;
-  lat?: number;
-  price: number;
+  longitude?: number;
+  latitude?: number;
+  phone: string;
+  email: string;
   description: string;
+  price: number;
   images: string[];
   isEditable: boolean;
   category: VendorCategoryType;
-  tel: string;
-  email: string;
   isFavourite: boolean;
 }
 
@@ -103,15 +103,10 @@ const useVendorsApi = () => {
       return {
         ...response,
         price: parseInt(response.price),
-        images: response.imageUrls?.map((imageFileName: string) =>
+        images: response.images?.map((imageFileName: string) =>
           getImageUrl(response.id, imageFileName)
         ),
-        lat: 46.7704502, // TODO: use real value from server
-        lon: 23.6263488,
-        tel: "0749876543",
-        email: "constact@coolcompany.com",
         isFavourite: false,
-        description: "Brief description",
       };
     },
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {
@@ -148,7 +143,7 @@ const useVendorsApi = () => {
       vendor.existingImages
         ?.map((img) => img.replace(/^.*[\\\/]/, ""))
         .forEach((img) => {
-          body.append("existingImageUrls", img);
+          body.append("existingImages", img);
         });
 
       vendor.newImages?.forEach((image) => {
@@ -184,8 +179,11 @@ const useVendorsApi = () => {
 
       const parsedVendors = response.data.map((vendor) => ({
         ...vendor,
-        thumbnailUrl: getImageUrl(vendor.id, vendor.thumbnailUrl),
+        thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
       }));
+
+      console.log(response.data);
+      
 
       return {
         data: parsedVendors,

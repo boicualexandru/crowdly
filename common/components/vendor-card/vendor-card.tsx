@@ -23,7 +23,7 @@ const VendorCard = ({ vendor, onPress }: Props) => {
     >
       <Card.Section
         imageSource={{
-          uri: vendor.thumbnailUrl,
+          uri: vendor.thumbnail,
         }}
         imageStyle={{ height: 130 }}
       />

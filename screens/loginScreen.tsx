@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation, route }: Props) => {
         },
       });
 
-      navigation.navigate("HomeTabs", { screen: "VendorsStack" });
+      navigation.replace("HomeTabs", { screen: "VendorsStack" });
     },
   });
 

@@ -1,10 +1,13 @@
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { View } from "react-native";
 
 import ProfileScreen from "@screens/profileScreen";
 
@@ -20,6 +23,7 @@ import VendorsStackNavigation from "./vendorsStack";
 
 type HomeTabsParamList = {
   VendorsStack: undefined;
+  EventsStack: undefined;
   Add: undefined;
   Profile: undefined;
 };
@@ -54,12 +58,35 @@ const HomeTabsNavigation = ({
           component={VendorsStackNavigation}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
-              <FontAwesome5
-                name="star"
+              <Feather
+                name="briefcase"
                 color={color}
                 size={size}
                 solid={focused}
               />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="EventsStack"
+          component={VendorsStackNavigation}
+          options={{
+            tabBarIcon: ({ color, size, focused }) => (
+              <Feather
+                name="calendar"
+                color={color}
+                size={size}
+                solid={focused}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            tabBarIcon: ({ color, size, focused }) => (
+              <Feather name="user" color={color} size={size} solid={focused} />
             ),
           }}
         />
@@ -68,12 +95,24 @@ const HomeTabsNavigation = ({
           component={NullComponent}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
-              <FontAwesome5
-                name="plus"
-                color={color}
-                size={size}
-                solid={focused}
-              />
+              <View style={styles.plusButton}>
+                <LinearGradient
+                  colors={[ThemeColors.primary, "#FF0049"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+                <Feather
+                  name="plus"
+                  color={ThemeColors.white}
+                  size={size}
+                  solid={focused}
+                />
+              </View>
             ),
           }}
           listeners={{
@@ -81,20 +120,6 @@ const HomeTabsNavigation = ({
               setNewItemModalIsOpen(true);
               e.preventDefault();
             },
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            tabBarIcon: ({ color, size, focused }) => (
-              <FontAwesome5
-                name="user"
-                color={color}
-                size={size}
-                solid={focused}
-              />
-            ),
           }}
         />
       </Tab.Navigator>
@@ -106,6 +131,19 @@ const HomeTabsNavigation = ({
     </React.Fragment>
   );
 };
+
+const styles = StyleSheet.create({
+  plusButton: {
+    height: "140%",
+    top: -20,
+    position: "relative",
+    aspectRatio: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 200,
+    overflow: "hidden",
+  },
+});
 
 export default HomeTabsNavigation;
 

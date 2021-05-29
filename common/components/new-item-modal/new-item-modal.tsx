@@ -1,5 +1,12 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
-import { Text, Pressable, Modal, Alert, StyleSheet } from "react-native";
+import { Text, Pressable, Modal, Alert, StyleSheet, View } from "react-native";
+
+import ThemeColors from "@theme/theme-colors";
+import {
+  ThemeTypography,
+  ThemeTypographyColorStyles,
+} from "@theme/theme-typography";
 
 interface Props {
   isOpen: boolean;
@@ -22,25 +29,37 @@ const NewItemModal = (props: Props) => {
         style={[styles.centeredView, styles.modalOverlay]}
         onPress={() => props.requestClose()}
       >
-        <Pressable style={styles.modalView} onPress={(e) => e.preventDefault()}>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => {
-              // props.onNewVendor();
-              props.requestClose();
-            }}
-          >
-            <Text style={styles.textStyle}>Eveniment Nou</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => {
-              props.onNewVendor();
-              props.requestClose();
-            }}
-          >
-            <Text style={styles.textStyle}>Serviciu Nou</Text>
-          </Pressable>
+        <Pressable
+          style={[styles.button]}
+          onPress={(e) => {
+            e.preventDefault();
+            // props.onNewVendor();
+            props.requestClose();
+          }}
+        >
+          <MaterialCommunityIcons
+            name="calendar-plus"
+            color={ThemeColors.white}
+            size={50}
+            style={styles.buttonIcon}
+          />
+          <Text style={styles.textStyle}>Eveniment Nou</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.button]}
+          onPress={(e) => {
+            e.preventDefault();
+            props.onNewVendor();
+            props.requestClose();
+          }}
+        >
+          <MaterialCommunityIcons
+            name="briefcase-plus-outline"
+            color={ThemeColors.white}
+            size={50}
+            style={styles.buttonIcon}
+          />
+          <Text style={styles.textStyle}>Serviciu Nou</Text>
         </Pressable>
       </Pressable>
     </Modal>
@@ -50,40 +69,30 @@ const NewItemModal = (props: Props) => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
   modalOverlay: {
     backgroundColor: "#ffffffa0",
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   button: {
-    borderRadius: 20,
-    padding: 10,
-    marginVertical: 10,
+    width: 150,
+    height: 150,
+    borderRadius: 200,
+    marginHorizontal: 10,
     elevation: 2,
+    backgroundColor: ThemeColors.primary,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  buttonClose: {
-    backgroundColor: "#2196F3",
+  buttonIcon: {
+    marginBottom: 12,
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    ...ThemeTypography.subtitle1,
+    ...ThemeTypographyColorStyles.text_white,
   },
 });
 

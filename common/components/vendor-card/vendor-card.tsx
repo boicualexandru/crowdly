@@ -3,10 +3,10 @@ import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 
 import ThemeColors from "@theme/theme-colors";
-import { VendorDTO } from "api/vendors";
+import { Vendor } from "api/vendors";
 
 interface Props {
-  vendor: VendorDTO;
+  vendor: Vendor;
   onPress: () => void;
 }
 

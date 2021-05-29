@@ -1,6 +1,6 @@
 import useVendorsApi, {
   initialVendorsFilters,
-  VendorDTO,
+  Vendor,
   VendorsFiltersModel,
 } from "api/vendors";
 import React, { useCallback } from "react";
@@ -43,13 +43,13 @@ const VendorsScreen = ({ navigation }: Props) => {
     refresh,
     filters,
     applyFilters,
-  } = useInfiniteScroll<VendorDTO, VendorsFiltersModel>(
+  } = useInfiniteScroll<Vendor, VendorsFiltersModel>(
     getVendorsPage,
     initialVendorsFilters
   );
 
   const renderItem = useCallback(
-    ({ item, index }: { item: VendorDTO; index: number }) => (
+    ({ item, index }: { item: Vendor; index: number }) => (
       <VendorCard
         vendor={item}
         onPress={() =>

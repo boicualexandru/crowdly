@@ -5,7 +5,7 @@ import { AuthContext } from "@context/authContext";
 
 import { DataPage } from "./models/datapage";
 
-export interface VendorDTO {
+export interface Vendor {
   id: string;
   name: string;
   city: string;
@@ -20,13 +20,18 @@ export interface VendorsFiltersModel {
   category?: VendorCategoryType;
 }
 
-export interface GetVendorResponse {
+export interface VendorDetails {
+  id: string;
   name: string;
   city: string;
   price: number;
   description: string;
   images: string[];
+  isEditable: boolean;
   category: VendorCategoryType;
+  tel: string;
+  email: string;
+  isFavourite: boolean;
 }
 
 export interface CreateVendorRequest {
@@ -87,7 +92,7 @@ const useVendorsApi = () => {
   const { state } = useContext(AuthContext);
 
   return {
-    getVendorById: async (vendorId: string): Promise<GetVendorResponse> => {
+    getVendorById: async (vendorId: string): Promise<VendorDetails> => {
       const responseRaw = await state.axiosInstance?.get(`vendors/${vendorId}`);
       const response = responseRaw?.data;
 
@@ -97,6 +102,9 @@ const useVendorsApi = () => {
         images: response.imageUrls?.map((imageFileName: string) =>
           getImageUrl(response.id, imageFileName)
         ),
+        tel: '0749876543', // TODO: use real value from server
+        email: 'constact@coolcompany.com', // TODO: use real value from server
+        isFavourite: false, // TODO: use real value from server
       };
     },
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {
@@ -160,12 +168,12 @@ const useVendorsApi = () => {
     getVendorsPage: async (
       filters: VendorsFiltersModel | undefined,
       skip?: number
-    ): Promise<DataPage<VendorDTO>> => {
+    ): Promise<DataPage<Vendor>> => {
       const responseRaw = await state.axiosInstance?.get(`vendors`, {
         params: { ...filters, skip },
       });
 
-      const response = responseRaw?.data as DataPage<VendorDTO>;
+      const response = responseRaw?.data as DataPage<Vendor>;
 
       const parsedVendors = response.data.map((vendor) => ({
         ...vendor,

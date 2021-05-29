@@ -9,13 +9,12 @@ import {
 import IconButton from "@components/button/icon-button";
 import ImageSwiper from "@components/image-swiper/image-swiper";
 
-import { Vendor } from "@models/vendors/vendors";
-
 import ThemeColors from "@theme/theme-colors";
 import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
+import { VendorDetails } from "api/vendors";
 
 type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
@@ -27,13 +26,14 @@ interface Props {
 
 const useVendorState = (
   navigation: VendorScreenNavigationProp
-): [Vendor | undefined, (vendor: Vendor) => void] => {
-  const [vendor, setVendorValue] = useState<Vendor>();
+): [VendorDetails | undefined, (vendor: VendorDetails) => void] => {
+  const [vendor, setVendorValue] = useState<VendorDetails>();
 
-  const setVendor = (vendor: Vendor) => {
+  const setVendor = (vendor: VendorDetails) => {
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <View style={{ flexDirection: "row" }}>
+          { vendor.isEditable ? <IconButton icon="edit" /> : null }
           <IconButton
             icon="heart"
             solid={vendor?.isFavourite}

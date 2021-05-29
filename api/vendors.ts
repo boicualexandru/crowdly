@@ -24,6 +24,8 @@ export interface VendorDetails {
   id: string;
   name: string;
   city: string;
+  lon?: number;
+  lat?: number;
   price: number;
   description: string;
   images: string[];
@@ -102,10 +104,12 @@ const useVendorsApi = () => {
         images: response.imageUrls?.map((imageFileName: string) =>
           getImageUrl(response.id, imageFileName)
         ),
-        tel: '0749876543', // TODO: use real value from server
-        email: 'constact@coolcompany.com', // TODO: use real value from server
-        isFavourite: false, // TODO: use real value from server,
-        description: 'Brief description', // TODO: use real value from server,
+        lat: 46.7704502, // TODO: use real value from server
+        lon: 23.6263488,
+        tel: '0749876543',
+        email: 'constact@coolcompany.com',
+        isFavourite: false,
+        description: 'Brief description',
       };
     },
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {

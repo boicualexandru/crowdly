@@ -99,7 +99,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
         <Button
           onPress={() => navigation.replace("Login")}
           label="Conecteaza-te la un cont existent"
-          style={{ marginTop: 16, backgroundColor: "transparent" }}
+          style={{ marginTop: 16, backgroundColor: "transparent", borderWidth: 0 }}
           labelStyle={{ color: ThemeColors.black }}
         />
       </View>

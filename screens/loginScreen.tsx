@@ -97,13 +97,13 @@ const LoginScreen = ({ navigation, route }: Props) => {
         <Button
           onPress={() => navigation.replace("Register")}
           label="Creeaza un cont nou"
-          style={{ marginTop: 16, backgroundColor: "transparent" }}
+          style={{ marginTop: 16, backgroundColor: "transparent", borderWidth: 0 }}
           labelStyle={{ color: ThemeColors.black }}
         />
         <Button
           onPress={onLogout}
           label="Logout"
-          style={{ marginTop: 16, backgroundColor: "transparent" }}
+          style={{ marginTop: 16, backgroundColor: "transparent", borderWidth: 0 }}
           labelStyle={{ color: ThemeColors.black }}
         />
       </View>

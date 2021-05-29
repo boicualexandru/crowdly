@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { alpha } from "./mixins";
 import ThemeColors from "./theme-colors";
 
-export const ThemeTypography = {
+export const ThemeTypography = StyleSheet.create({
   cardTitle: { fontSize: 58, fontWeight: "300", lineHeight: 80 },
   cardSubtitle: { fontSize: 58, fontWeight: "300", lineHeight: 80 },
   h1: {
@@ -67,7 +67,7 @@ export const ThemeTypography = {
     letterSpacing: 1.5,
     textTransform: "uppercase",
   },
-};
+});
 
 export const ThemeTypographyColorStyles = StyleSheet.create({
   text_dark_87: {

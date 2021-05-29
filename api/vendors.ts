@@ -104,7 +104,8 @@ const useVendorsApi = () => {
         ),
         tel: '0749876543', // TODO: use real value from server
         email: 'constact@coolcompany.com', // TODO: use real value from server
-        isFavourite: false, // TODO: use real value from server
+        isFavourite: false, // TODO: use real value from server,
+        description: 'Brief description', // TODO: use real value from server,
       };
     },
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {

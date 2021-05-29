@@ -1,3 +1,6 @@
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import useVendorsApi, { VendorDetails } from "api/vendors";
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -14,7 +17,8 @@ import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
-import useVendorsApi, { VendorDetails } from "api/vendors";
+
+import AboutTab from "./aboutTab";
 
 type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
@@ -33,7 +37,14 @@ const useVendorState = (
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <View style={{ flexDirection: "row" }}>
-          { vendor.isEditable ? <IconButton icon="pen" onPress={() => navigation.navigate("EditVendor", {vendorId: vendor.id})} /> : null }
+          {vendor.isEditable ? (
+            <IconButton
+              icon="pen"
+              onPress={() =>
+                navigation.navigate("EditVendor", { vendorId: vendor.id })
+              }
+            />
+          ) : null}
           <IconButton
             icon="heart"
             solid={vendor?.isFavourite}
@@ -57,7 +68,7 @@ const VendorScreen = ({ navigation, route }: Props) => {
   const { id, name } = route.params;
 
   const [vendor, setVendor] = useVendorState(navigation);
-  const {getVendorById} = useVendorsApi();
+  const { getVendorById } = useVendorsApi();
 
   useEffect(() => {
     (async (): Promise<void> => {
@@ -101,9 +112,34 @@ const VendorScreen = ({ navigation, route }: Props) => {
           </View>
           {/* <ReviewStars {...vendor.rating} style={Spacing.mt_4} /> */}
         </View>
+        <VendorTabs vendor={vendor}></VendorTabs>
         {/* <LocationTabsContainer screenProps={vendor} style={{ flex: 1, width: '100%', alignSelf: 'stretch', backgroundColor: 'blue' }} /> */}
       </View>
     </View>
+  );
+};
+
+type VendorTabsParamList = {
+  About: VendorDetails;
+  Book: VendorDetails;
+};
+
+const Tab = createMaterialTopTabNavigator<VendorTabsParamList>();
+
+interface VendorTabsProps {
+  vendor: VendorDetails;
+}
+
+const VendorTabs = ({ vendor }: VendorTabsProps) => {
+  return (
+    <Tab.Navigator tabBarOptions={{indicatorStyle: {backgroundColor: ThemeColors.primary}}}>
+      <Tab.Screen name="About" options={{ title: "Despre" }}>
+        {() => <AboutTab vendor={vendor} />}
+      </Tab.Screen>
+      <Tab.Screen name="Book" options={{ title: "Programare" }}>
+        {() => <AboutTab vendor={vendor} />}
+      </Tab.Screen>
+    </Tab.Navigator>
   );
 };
 
@@ -115,6 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
+    backgroundColor: ThemeColors.white
   },
   descriptionContent: {
     flexDirection: "column",

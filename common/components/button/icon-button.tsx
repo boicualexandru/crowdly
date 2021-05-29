@@ -10,6 +10,7 @@ interface Props {
   solid?: boolean;
   color?: string;
   onPress?: (event: GestureResponderEvent) => void;
+  backgroundColor?: string;
 }
 
 const IconButton = (props: Props) => {
@@ -24,7 +25,7 @@ const IconButton = (props: Props) => {
     <Pressable
       onPress={props.onPress}
       android_ripple={{ radius: 24, color: "#00000051" }}
-      style={{ padding: 16 }}
+      style={{ padding: 16, borderRadius: 200, backgroundColor: props.backgroundColor ?? 'transparent' }}
     >
       <IconComponent
         name={props.icon}

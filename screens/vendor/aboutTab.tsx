@@ -46,34 +46,43 @@ const AboutTab = ({ vendor }: Props) => {
           </Text>
         </View>
         <View style={styles.buttonsContainer}>
-          <View style={styles.button}>
-            <IconButton
-              icon="phone"
-              color={ThemeColors.white}
-              backgroundColor={ThemeColors.primary}
-              onPress={() => Linking.openURL(`tel:${vendor.phone}`)}
-            />
-          </View>
-          <View style={styles.button}>
-            <IconButton
-              icon="envelope"
-              color={ThemeColors.white}
-              backgroundColor={ThemeColors.primary}
-              onPress={() => Linking.openURL(`mailto:${vendor.email}`)}
-            />
-          </View>
-          <View style={styles.button}>
-            <IconButton
-              icon="map"
-              color={ThemeColors.white}
-              backgroundColor={ThemeColors.primary}
-              onPress={() =>
-                Linking.openURL(
-                  `http://www.google.com/maps/place/${vendor.latitude},${vendor.longitude}`
-                )
-              }
-            />
-          </View>
+          {
+            vendor.phone ?
+            <View style={styles.button}>
+              <IconButton
+                icon="phone"
+                color={ThemeColors.white}
+                backgroundColor={ThemeColors.primary}
+                onPress={() => Linking.openURL(`tel:${vendor.phone}`)}
+              />
+            </View> : null
+          }
+          {
+            vendor.email ?
+            <View style={styles.button}>
+              <IconButton
+                icon="envelope"
+                color={ThemeColors.white}
+                backgroundColor={ThemeColors.primary}
+                onPress={() => Linking.openURL(`mailto:${vendor.email}`)}
+              />
+            </View> : null
+          }
+          {
+            vendor.latitude && vendor.longitude ?
+            <View style={styles.button}>
+              <IconButton
+                icon="map"
+                color={ThemeColors.white}
+                backgroundColor={ThemeColors.primary}
+                onPress={() =>
+                  Linking.openURL(
+                    `http://www.google.com/maps/place/${vendor.latitude},${vendor.longitude}`
+                  )
+                }
+              />
+            </View> : null
+          }
         </View>
       </View>
       {vendor.longitude && vendor.latitude ? (

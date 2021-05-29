@@ -1,9 +1,9 @@
 import useVendorsApi, {
-  initialVendorsFilters,
+  getInitialVendorsFilters,
   Vendor,
   VendorsFiltersModel,
 } from "api/vendors";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -33,7 +33,7 @@ interface Props {
   route: VendorsScreenRouteProp;
 }
 
-const VendorsScreen = ({ navigation }: Props) => {
+const VendorsScreen = ({ navigation, route }: Props) => {
   const { getVendorsPage } = useVendorsApi();
   const {
     data,
@@ -45,8 +45,14 @@ const VendorsScreen = ({ navigation }: Props) => {
     applyFilters,
   } = useInfiniteScroll<Vendor, VendorsFiltersModel>(
     getVendorsPage,
-    initialVendorsFilters
+    getInitialVendorsFilters(route.params?.categoryType)
   );
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: route.params?.categoryName ?? "Servicii",
+    });
+  }, [route.params]);
 
   const renderItem = useCallback(
     ({ item, index }: { item: Vendor; index: number }) => (

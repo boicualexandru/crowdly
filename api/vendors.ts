@@ -82,10 +82,12 @@ export const vendorCategoryOptions = [
   { label: "Catering", value: VendorCategoryType.Food },
 ];
 
-export const initialVendorsFilters: VendorsFiltersModel = {
-  city: "Brasov, Romania",
-  category: VendorCategoryType.None,
-};
+export const getInitialVendorsFilters = (
+  category?: VendorCategoryType
+): VendorsFiltersModel => ({
+  city: "",
+  category: category ?? VendorCategoryType.None,
+});
 
 const getImageUrl = (vendorId: string, imageFileName: string) =>
   `${IMAGES_BASE_URL}/vendors/${vendorId}/${imageFileName}`;
@@ -106,10 +108,10 @@ const useVendorsApi = () => {
         ),
         lat: 46.7704502, // TODO: use real value from server
         lon: 23.6263488,
-        tel: '0749876543',
-        email: 'constact@coolcompany.com',
+        tel: "0749876543",
+        email: "constact@coolcompany.com",
         isFavourite: false,
-        description: 'Brief description',
+        description: "Brief description",
       };
     },
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {

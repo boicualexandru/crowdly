@@ -12,9 +12,12 @@ import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,
 } from "./homeTabs";
+import VendorsCategoriesScreen from "@screens/vendorsCategoriesScreen";
+import { VendorCategoryType } from "api/vendors";
 
 type VendorsStackParamList = {
-  Vendors: undefined;
+  VendorsCategories: undefined;
+  Vendors: { categoryType: VendorCategoryType, categoryName: string };
   Vendor: { id: string; name: string };
 };
 
@@ -25,7 +28,8 @@ const Stack = createStackNavigator<VendorsStackParamList>();
 
 const VendorsStackNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="VendorsCategories">
+      <Stack.Screen name="VendorsCategories" component={VendorsCategoriesScreen} options={{title: 'Servicii'}} />
       <Stack.Screen name="Vendors" component={VendorsScreen} options={{title: 'Servicii'}} />
       <Stack.Screen
         name="Vendor"

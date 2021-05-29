@@ -10,6 +10,8 @@ interface Props {
   lat: number;
 }
 
+const apiKey = 'af2330df38004112bb28fb4d9bcfa713';
+
 const MapImage = (props: Props) => {
   return (
     <Image
@@ -20,7 +22,7 @@ const MapImage = (props: Props) => {
           props.lat
         };color:%23${ThemeColors.primary
           .slice(1)
-          .toLowerCase()};size:x-large&apiKey=1b48259b810e48ddb151889f9ea58db0`,
+          .toLowerCase()};size:x-large&apiKey=${apiKey}`,
       }}
       style={{
         width: props.width ?? "100%",

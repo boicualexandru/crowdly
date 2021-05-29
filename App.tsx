@@ -1,17 +1,18 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthActionType } from "context/authActions";
-import { AuthContext } from "context/authContext";
-import { authReducer } from "context/authReducer";
-import { initialAuthState } from "context/authState";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import jwt_decode from "jwt-decode";
 import React, { useEffect, useReducer } from "react";
 import { ActivityIndicator } from "react-native";
 
+import { AuthActionType } from "@context/authActions";
+import { AuthContext } from "@context/authContext";
+import { authReducer } from "@context/authReducer";
+import { initialAuthState } from "@context/authState";
+
 import ThemeColors from "@theme/theme-colors";
 
-import RootStackNavigation from "./navigation/root-stack";
+import RootStackNavigation from "./navigation/rootStack";
 
 export default function App() {
   const [state, dispatch] = useReducer(authReducer, initialAuthState);

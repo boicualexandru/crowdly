@@ -15,7 +15,7 @@ import {
 import {
   VendorsStackNavigationPropChild,
   VendorsStackRoutePropChild,
-} from "@navigation/vendors-stack";
+} from "@navigation/vendorsStack";
 
 import VendorCard from "@components/vendor-card/vendor-card";
 

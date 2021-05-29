@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import {
   VendorsStackNavigationPropChild,
   VendorsStackRoutePropChild,
-} from "@navigation/vendors-stack";
+} from "@navigation/vendorsStack";
 
 import IconButton from "@components/button/icon-button";
 import ImageSwiper from "@components/image-swiper/image-swiper";

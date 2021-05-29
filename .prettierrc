@@ -1,6 +1,6 @@
 {
   "tabWidth": 2,
   "useTabs": false,
-  "importOrder": ["^@(navigation|screens)/(.*)$", "^@components/(.*)$", "^@hooks/(.*)$", "^@models/(.*)$", "^@theme/(.*)$", "^[./]"],
+  "importOrder": ["^@(navigation|screens|context)/(.*)$", "^@components/(.*)$", "^@hooks/(.*)$", "^@models/(.*)$", "^@theme/(.*)$", "^[./]"],
   "importOrderSeparation": true
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCallback, useState } from "react";
 
-import { DataPage } from "@models/datapage";
+import { DataPage } from "api/models/datapage";
 
 const useInfiniteScroll = <T, F>(
   getData: (filters?: F, skip?: number) => Promise<DataPage<T>>,

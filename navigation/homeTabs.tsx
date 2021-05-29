@@ -6,7 +6,7 @@ import {
 import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
 import React, { useState } from "react";
 
-import ProfileScreen from "@screens/profile";
+import ProfileScreen from "@screens/profileScreen";
 
 import NewItemModal from "@components/new-item-modal/new-item-modal";
 
@@ -15,8 +15,8 @@ import ThemeColors from "@theme/theme-colors";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
-} from "./root-stack";
-import VendorsStackNavigation from "./vendors-stack";
+} from "./rootStack";
+import VendorsStackNavigation from "./vendorsStack";
 
 type HomeTabsParamList = {
   VendorsStack: undefined;

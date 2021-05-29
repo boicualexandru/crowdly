@@ -1,8 +1,9 @@
 import { IMAGES_BASE_URL } from "@env";
-import { AuthContext } from "context/authContext";
 import { useContext } from "react";
 
-import { DataPage } from "../common/models/datapage";
+import { AuthContext } from "@context/authContext";
+
+import { DataPage } from "./models/datapage";
 
 export interface VendorDTO {
   id: string;

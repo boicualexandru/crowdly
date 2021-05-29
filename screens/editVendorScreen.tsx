@@ -11,7 +11,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
-} from "@navigation/root-stack";
+} from "@navigation/rootStack";
 
 import Button from "@components/button/button";
 import Divider from "@components/divider/divider";

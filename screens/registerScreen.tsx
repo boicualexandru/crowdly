@@ -1,14 +1,14 @@
 import useAuthApi from "api/auth";
-import { AuthActionType } from "context/authActions";
-import { AuthContext } from "context/authContext";
 import { useFormik } from "formik";
 import React, { useContext } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 
+import { AuthActionType } from "@context/authActions";
+import { AuthContext } from "@context/authContext";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
-} from "@navigation/root-stack";
+} from "@navigation/rootStack";
 
 import Button from "@components/button/button";
 import TextField from "@components/form/text-field";
@@ -40,7 +40,6 @@ const RegisterScreen = ({ navigation, route }: Props) => {
       password: "",
     },
     onSubmit: async (values) => {
-
       const registerResponse = await register({ ...values });
       if (!registerResponse.success) return;
 
@@ -51,7 +50,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
           jwtToken: registerResponse.jwtToken,
         },
       });
-      
+
       navigation.navigate("HomeTabs", { screen: "VendorsStack" });
     },
   });

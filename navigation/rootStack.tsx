@@ -3,14 +3,14 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import { AuthContext } from "context/authContext";
 import React, { useContext } from "react";
 
-import LoginScreen from "@screens/login";
-import RegisterScreen from "@screens/register";
-import EditVendorScreen from "@screens/vendors/edit-vendor";
+import { AuthContext } from "@context/authContext";
+import EditVendorScreen from "@screens/editVendorScreen";
+import LoginScreen from "@screens/loginScreen";
+import RegisterScreen from "@screens/registerScreen";
 
-import HomeTabsNavigation from "./home-tabs";
+import HomeTabsNavigation from "./homeTabs";
 
 type RootStackParamList = {
   HomeTabs: undefined;

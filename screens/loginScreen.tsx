@@ -1,14 +1,14 @@
 import useAuthApi from "api/auth";
-import { AuthActionType } from "context/authActions";
-import { AuthContext } from "context/authContext";
 import { useFormik } from "formik";
 import React, { useContext } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 
+import { AuthActionType } from "@context/authActions";
+import { AuthContext } from "@context/authContext";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
-} from "@navigation/root-stack";
+} from "@navigation/rootStack";
 
 import Button from "@components/button/button";
 import TextField from "@components/form/text-field";

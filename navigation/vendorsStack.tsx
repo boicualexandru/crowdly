@@ -5,13 +5,13 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 
-import VendorScreen from "@screens/vendors/vendor/vendor";
-import VendorsScreen from "@screens/vendors/vendors";
+import VendorScreen from "@screens/vendor/vendorScreen";
+import VendorsScreen from "@screens/vendors/vendorsScreen";
 
 import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,
-} from "./home-tabs";
+} from "./homeTabs";
 
 type VendorsStackParamList = {
   Vendors: undefined;

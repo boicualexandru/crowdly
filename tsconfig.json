@@ -19,6 +19,9 @@
       "@screens/*": [
         "screens/*"
       ],
+      "@context/*": [
+        "context/*"
+      ],
       "@components/*": [
         "common/components/*"
       ],

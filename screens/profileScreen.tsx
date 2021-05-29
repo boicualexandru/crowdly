@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,
-} from "@navigation/home-tabs";
+} from "@navigation/homeTabs";
 import Button from "@components/button/button";
 
 type ProfileScreenNavigationProp = HomeTabsNavigationPropChild<"Profile">;

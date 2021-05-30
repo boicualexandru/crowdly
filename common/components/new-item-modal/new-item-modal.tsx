@@ -74,21 +74,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalOverlay: {
-    backgroundColor: "#ffffffa0",
+    backgroundColor: "#ffffffdd",
   },
   button: {
     width: 150,
     height: 150,
     borderRadius: 200,
     marginHorizontal: 10,
-    elevation: 2,
+    elevation: 3,
     backgroundColor: ThemeColors.primary,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },
   buttonIcon: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   textStyle: {
     ...ThemeTypography.subtitle1,

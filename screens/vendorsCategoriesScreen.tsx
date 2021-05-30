@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
     overflow: "hidden",
+    elevation: 3,
   },
   bgImage: {
     width: "100%",

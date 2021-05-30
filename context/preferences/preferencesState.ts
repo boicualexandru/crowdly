@@ -1,5 +1,5 @@
 export interface PreferencesState {
-  favoriteVendors?: string[];
+  favoriteVendors: string[];
 }
 
 export const initialPreferencesState: PreferencesState = {

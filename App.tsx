@@ -2,10 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import jwt_decode from "jwt-decode";
-import React, { useEffect, useReducer } from "react";
+import React, { useCallback, useEffect, useReducer } from "react";
 import { ActivityIndicator } from "react-native";
 
-import { AuthActionType } from "@context/auth/authActions";
+import { AuthActionType, LoadPayloadModel } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
 import { authReducer } from "@context/auth/authReducer";
 import { initialAuthState } from "@context/auth/authState";
@@ -28,38 +28,41 @@ export default function App() {
     initialPreferencesState
   );
 
-  useEffect(() => {
-    (async () => {
-      const jwtToken = await AsyncStorage.getItem("jwtToken");
-      if (jwtToken == null) {
-        authDispatch({
-          type: AuthActionType.Load,
-          payload: { isAuthenticated: false },
-        });
-        return;
-      }
+  const loadAuthState = useCallback(async () => {
+    const jwtToken = await AsyncStorage.getItem("jwtToken");
 
-      var decodedToken = jwt_decode<{ username: string }>(jwtToken);
-
-      authDispatch({
-        type: AuthActionType.Load,
-        payload: {
+    const actionPayload: LoadPayloadModel = jwtToken
+      ? {
           isAuthenticated: true,
           jwtToken: jwtToken,
-          username: decodedToken.username,
-        },
-      });
+          username: jwt_decode<{ username: string }>(jwtToken).username,
+        }
+      : {
+          isAuthenticated: false,
+        };
 
-      const preferencesJson = await AsyncStorage.getItem("preferences");
-      if (preferencesJson != null) {
-        const preferences: PreferencesState = JSON.parse(preferencesJson);
-        preferencesDispatch({
-          type: PreferencesActionType.Load,
-          payload: {
-            favoriteVendors: preferences.favoriteVendors ?? [],
-          },
-        });
-      }
+    authDispatch({
+      type: AuthActionType.Load,
+      payload: actionPayload,
+    });
+  }, []);
+
+  const loadPreferencesState = useCallback(async () => {
+    const preferencesJson = await AsyncStorage.getItem("preferences");
+    if (!preferencesJson) return;
+
+    const preferences: PreferencesState = JSON.parse(preferencesJson);
+    preferencesDispatch({
+      type: PreferencesActionType.Load,
+      payload: {
+        favoriteVendors: preferences.favoriteVendors ?? [],
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await Promise.all([loadAuthState(), loadPreferencesState()]);
     })();
   }, []);
 

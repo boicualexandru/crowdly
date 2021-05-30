@@ -1,9 +1,11 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import useVendorsApi, { VendorDetails } from "api/vendors";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
+import { PreferencesActionType } from "@context/preferences/preferencesActions";
+import { PreferencesContext } from "@context/preferences/preferencesContext";
 import {
   VendorsStackNavigationPropChild,
   VendorsStackRoutePropChild,
@@ -32,6 +34,7 @@ const useVendorState = (
   navigation: VendorScreenNavigationProp
 ): [VendorDetails | undefined, (vendor: VendorDetails) => void] => {
   const [vendor, setVendorValue] = useState<VendorDetails>();
+  const { state, dispatch } = useContext(PreferencesContext);
 
   const setVendor = (vendor: VendorDetails) => {
     navigation.setOptions({
@@ -47,10 +50,17 @@ const useVendorState = (
           ) : null}
           <IconButton
             icon="heart"
-            solid={vendor?.isFavourite}
+            solid={vendor.isFavourite}
             color={ThemeColors.primary}
             onPress={() =>
-              setVendor({ ...vendor, isFavourite: !vendor.isFavourite })
+              dispatch({
+                type: vendor.isFavourite
+                  ? PreferencesActionType.RemoveVendorFromFavorites
+                  : PreferencesActionType.AddVendorToFavorites,
+                payload: {
+                  vendorId: vendor.id,
+                },
+              })
             }
           />
           <IconButton icon="share" />
@@ -60,6 +70,14 @@ const useVendorState = (
 
     return setVendorValue(vendor);
   };
+
+  useEffect(() => {
+    if (vendor)
+      setVendor({
+        ...vendor,
+        isFavourite: state.favoriteVendors?.includes(vendor.id) ?? false,
+      });
+  }, [state.favoriteVendors]);
 
   return [vendor, setVendor];
 };
@@ -134,7 +152,11 @@ interface VendorTabsProps {
 
 const VendorTabs = ({ vendor }: VendorTabsProps) => {
   return (
-    <Tab.Navigator tabBarOptions={{indicatorStyle: {backgroundColor: ThemeColors.primary}}}>
+    <Tab.Navigator
+      tabBarOptions={{
+        indicatorStyle: { backgroundColor: ThemeColors.primary },
+      }}
+    >
       <Tab.Screen name="About" options={{ title: "Despre" }}>
         {() => <AboutTab vendor={vendor} />}
       </Tab.Screen>
@@ -153,7 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    backgroundColor: ThemeColors.white
+    backgroundColor: ThemeColors.white,
   },
   descriptionContent: {
     flexDirection: "column",

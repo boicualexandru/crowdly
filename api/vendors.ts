@@ -2,6 +2,7 @@ import { IMAGES_BASE_URL } from "@env";
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
+import { PreferencesContext } from "@context/preferences/preferencesContext";
 
 import { DataPage } from "./models/datapage";
 
@@ -96,6 +97,7 @@ const getImageUrl = (vendorId: string, imageFileName: string) =>
 
 const useVendorsApi = () => {
   const { state } = useContext(AuthContext);
+  const { state: preferencesState } = useContext(PreferencesContext);
 
   return {
     getVendorById: async (vendorId: string): Promise<VendorDetails> => {
@@ -108,7 +110,8 @@ const useVendorsApi = () => {
         images: response.images?.map((imageFileName: string) =>
           getImageUrl(response.id, imageFileName)
         ),
-        isFavourite: false,
+        isFavourite:
+          preferencesState.favoriteVendors?.includes(vendorId) ?? false,
       };
     },
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {
@@ -184,8 +187,8 @@ const useVendorsApi = () => {
         thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
       }));
 
-      console.log('getVendorsPage: ', response.data.length);
-      
+      console.log("getVendorsPage: ", response.data.length);
+
       return {
         data: parsedVendors,
         hasMore: response.hasMore,
@@ -200,7 +203,7 @@ const useVendorsApi = () => {
         ...vendor,
         thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
       }));
-      
+
       return parsedVendors;
     },
   };

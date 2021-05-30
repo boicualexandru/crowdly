@@ -9,6 +9,7 @@ import { View } from "react-native";
 import Button from "@components/button/button";
 import PickerField from "@components/form/picker-field";
 import BigModal from "@components/modal/big-modal";
+import RangeTextField from "@components/form/range-text-field";
 
 interface Props {
   isOpen: boolean;
@@ -43,6 +44,13 @@ const VendorsFiltersModal = (props: Props) => {
               }));
             }}
           />
+          <RangeTextField label="Pretul" values={{left: tempFilters.priceMin, right: tempFilters.priceMax}} onChanges={({left, right}) => {
+            setTempFilters((f) => ({
+              ...f,
+              priceMin: left,
+              priceMax: right,
+            }))
+          }} />
           <View style={{ flexDirection: "row", marginTop: 16 }}>
             <Button
               outlined

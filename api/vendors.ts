@@ -18,6 +18,8 @@ export interface Vendor {
 export interface VendorsFiltersModel {
   city?: string;
   category?: VendorCategoryType;
+  priceMin?: number;
+  priceMax?: number;
 }
 
 export interface VendorDetails {

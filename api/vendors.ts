@@ -189,6 +189,18 @@ const useVendorsApi = () => {
         hasMore: response.hasMore,
       };
     },
+    getMyVendors: async (): Promise<Vendor[]> => {
+      const responseRaw = await state.axiosInstance?.get(`vendors/editable`);
+
+      const response = responseRaw?.data as Vendor[];
+
+      const parsedVendors = response.map((vendor) => ({
+        ...vendor,
+        thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
+      }));
+      
+      return parsedVendors;
+    },
   };
 };
 

@@ -9,12 +9,11 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
 
-import ProfileScreen from "@screens/profileScreen";
-
 import NewItemModal from "@components/new-item-modal/new-item-modal";
 
 import ThemeColors from "@theme/theme-colors";
 
+import ProfileStackNavigation from "./profileStack";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
@@ -25,7 +24,7 @@ type HomeTabsParamList = {
   VendorsStack: undefined;
   EventsStack: undefined;
   Add: undefined;
-  Profile: undefined;
+  ProfileStack: undefined;
 };
 
 type HomeTabsNavigationProp = RootStackNavigationPropChild<"HomeTabs">;
@@ -82,8 +81,8 @@ const HomeTabsNavigation = ({
           }}
         />
         <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
+          name="ProfileStack"
+          component={ProfileStackNavigation}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
               <Feather name="user" color={color} size={size} solid={focused} />
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 200,
     overflow: "hidden",
-    elevation: 3
+    elevation: 3,
   },
 });
 

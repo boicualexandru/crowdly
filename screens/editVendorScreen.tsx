@@ -194,14 +194,14 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           placeholder="Ex. DJ"
           onChangeText={formik.handleChange("name")}
           value={formik.values.name}
-          containerStyle={styles.textField}
+          containerStyle={styles.fieldGroup}
         />
         <TextField
           label="Oras"
           placeholder="Ex: Iasi"
           onChangeText={formik.handleChange("city")}
           value={formik.values.city}
-          containerStyle={styles.textField}
+          containerStyle={styles.fieldGroup}
         />
         <TextField
           label="Pret"
@@ -209,7 +209,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           rightText="Lei"
           onChangeText={formik.handleChange("price")}
           value={formik.values.price}
-          containerStyle={styles.textField}
+          containerStyle={styles.fieldGroup}
           keyboardType={"numeric"}
         />
         <TextField
@@ -219,7 +219,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           numberOfLines={4}
           onChangeText={formik.handleChange("description")}
           value={formik.values.description}
-          containerStyle={styles.textField}
+          containerStyle={styles.fieldGroup}
         />
         <PickerField
           label="Categoria"
@@ -228,6 +228,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           onValueChange={(itemValue, itemIndex) =>
             formik.setFieldValue("category", itemValue)
           }
+          containerStyle={styles.fieldGroup}
         />
         <Divider style={{ marginTop: 16 }} />
         <View style={[styles.row, { marginTop: 16 }]}>
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     width: "50%",
   },
-  textField: {
+  fieldGroup: {
     marginTop: 16,
   },
   imageContainer: {

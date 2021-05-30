@@ -6,9 +6,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { AuthActionType } from "@context/authActions";
 import { AuthContext } from "@context/authContext";
 import {
-  HomeTabsNavigationPropChild,
-  HomeTabsRoutePropChild,
-} from "@navigation/homeTabs";
+  ProfileStackNavigationPropChild,
+  ProfileStackRoutePropChild,
+} from "@navigation/profileStack";
 
 import Divider from "@components/divider/divider";
 
@@ -18,8 +18,8 @@ import {
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
 
-type ProfileScreenNavigationProp = HomeTabsNavigationPropChild<"Profile">;
-type ProfileScreenRouteProp = HomeTabsRoutePropChild<"Profile">;
+type ProfileScreenNavigationProp = ProfileStackNavigationPropChild<"Profile">;
+type ProfileScreenRouteProp = ProfileStackRoutePropChild<"Profile">;
 
 type Props = {
   navigation: ProfileScreenNavigationProp;
@@ -59,12 +59,15 @@ const ProfileScreen = ({ navigation, route }: Props) => {
         <Divider />
         <Pressable style={styles.buttonItem}>
           <Feather name="calendar" color={ThemeColors.textDark} size={25} />
-          <Text style={styles.buttonItemText}>Evenimente Proprii</Text>
+          <Text style={styles.buttonItemText}>Evenimentele Mele</Text>
         </Pressable>
         <Divider />
-        <Pressable style={styles.buttonItem}>
+        <Pressable
+          style={styles.buttonItem}
+          onPress={() => navigation.push("MyVendors")}
+        >
           <Feather name="briefcase" color={ThemeColors.textDark} size={25} />
-          <Text style={styles.buttonItemText}>Servicii Proprii</Text>
+          <Text style={styles.buttonItemText}>Serviciile Mele</Text>
         </Pressable>
         <Divider />
       </View>

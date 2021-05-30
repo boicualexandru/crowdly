@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import { useContext } from "react";
 
-import { AuthContext } from "@context/authContext";
+import { AuthContext } from "@context/auth/authContext";
 
 export interface LoginModel {
   username: string;

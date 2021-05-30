@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/stack";
 import React, { useContext } from "react";
 
-import { AuthContext } from "@context/authContext";
+import { AuthContext } from "@context/auth/authContext";
 import EditVendorScreen from "@screens/editVendorScreen";
 import LoginScreen from "@screens/loginScreen";
 import RegisterScreen from "@screens/registerScreen";

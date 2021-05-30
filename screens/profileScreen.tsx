@@ -3,8 +3,8 @@ import React, { useCallback, useContext } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { AuthActionType } from "@context/authActions";
-import { AuthContext } from "@context/authContext";
+import { AuthActionType } from "@context/auth/authActions";
+import { AuthContext } from "@context/auth/authContext";
 import {
   ProfileStackNavigationPropChild,
   ProfileStackRoutePropChild,

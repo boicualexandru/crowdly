@@ -5,10 +5,10 @@ import jwt_decode from "jwt-decode";
 import React, { useEffect, useReducer } from "react";
 import { ActivityIndicator } from "react-native";
 
-import { AuthActionType } from "@context/authActions";
-import { AuthContext } from "@context/authContext";
-import { authReducer } from "@context/authReducer";
-import { initialAuthState } from "@context/authState";
+import { AuthActionType } from "@context/auth/authActions";
+import { AuthContext } from "@context/auth/authContext";
+import { authReducer } from "@context/auth/authReducer";
+import { initialAuthState } from "@context/auth/authState";
 
 import ThemeColors from "@theme/theme-colors";
 

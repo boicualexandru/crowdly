@@ -1,7 +1,7 @@
 import { IMAGES_BASE_URL } from "@env";
 import { useContext } from "react";
 
-import { AuthContext } from "@context/authContext";
+import { AuthContext } from "@context/auth/authContext";
 
 import { DataPage } from "./models/datapage";
 

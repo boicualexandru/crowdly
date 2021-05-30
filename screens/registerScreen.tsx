@@ -3,8 +3,8 @@ import { useFormik } from "formik";
 import React, { useContext } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 
-import { AuthActionType } from "@context/authActions";
-import { AuthContext } from "@context/authContext";
+import { AuthActionType } from "@context/auth/authActions";
+import { AuthContext } from "@context/auth/authContext";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,

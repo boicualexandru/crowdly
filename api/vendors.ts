@@ -182,9 +182,8 @@ const useVendorsApi = () => {
         thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
       }));
 
-      console.log(response.data);
+      console.log('getVendorsPage: ', response.data.length);
       
-
       return {
         data: parsedVendors,
         hasMore: response.hasMore,

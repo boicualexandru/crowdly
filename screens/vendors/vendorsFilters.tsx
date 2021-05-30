@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import { availableCities, VendorsFiltersModel } from "api/vendors";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { View, StyleSheet, ViewProps, Text } from "react-native";
 
 import IconButton from "@components/button/icon-button";
@@ -21,6 +21,9 @@ const VendorFilters = (props: Props) => {
         <Picker
           selectedValue={props.filters.city}
           onValueChange={(itemValue, itemIndex) => {
+            const city = itemValue.toString();
+            if (city == props.filters.city) return;
+
             props.requestApply({
               ...props.filters,
               city: itemValue.toString(),
@@ -60,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VendorFilters;
+export default memo(VendorFilters);

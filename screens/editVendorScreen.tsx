@@ -1,10 +1,11 @@
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
 import useVendorsApi, {
   vendorCategoryOptions,
   VendorCategoryType,
 } from "api/vendors";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -87,33 +88,34 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
     unselectImage,
   } = useImagePicker();
 
-  useEffect(() => {
-    const init = async () => {
-      navigation.setOptions({
-        title: route.params.vendorId ? "Editeaza Serviciul" : "Serviciu Nou",
-      });
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        navigation.setOptions({
+          title: route.params.vendorId ? "Editeaza Serviciul" : "Serviciu Nou",
+        });
 
-      if (route.params.vendorId) {
-        const vendor = await getVendorById(route.params.vendorId);
+        if (route.params.vendorId) {
+          const vendor = await getVendorById(route.params.vendorId);
 
-        formik.setValues(
-          {
-            name: vendor.name,
-            city: vendor.city,
-            price: vendor.price.toString(),
-            description: vendor.description,
-            category: vendor.category,
-          },
-          false
-        );
-        if (vendor.images?.length) {
-          initImages(vendor.images);
-          setOldImages(vendor.images);
+          formik.setValues(
+            {
+              name: vendor.name,
+              city: vendor.city,
+              price: vendor.price.toString(),
+              description: vendor.description,
+              category: vendor.category,
+            },
+            false
+          );
+          if (vendor.images?.length) {
+            initImages(vendor.images);
+            setOldImages(vendor.images);
+          }
         }
-      }
-    };
-    init().then();
-  }, [route]);
+      })();
+    }, [route.params])
+  );
 
   const renderImage = (
     image: { uri: string; selected: boolean },

@@ -1,9 +1,10 @@
+import { useFocusEffect } from "@react-navigation/native";
 import useVendorsApi, {
   getInitialVendorsFilters,
   Vendor,
   VendorsFiltersModel,
 } from "api/vendors";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -48,11 +49,13 @@ const VendorsScreen = ({ navigation, route }: Props) => {
     getInitialVendorsFilters(route.params?.categoryType)
   );
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: route.params?.categoryName ?? "Servicii",
-    });
-  }, [route.params]);
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        title: route.params?.categoryName ?? "Servicii",
+      });
+    }, [route.params])
+  );
 
   const renderItem = useCallback(
     ({ item, index }: { item: Vendor; index: number }) => (

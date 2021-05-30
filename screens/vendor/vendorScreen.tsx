@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { CompositeNavigationProp, RouteProp } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import useVendorsApi, { VendorDetails } from "api/vendors";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import {
@@ -70,12 +70,14 @@ const VendorScreen = ({ navigation, route }: Props) => {
   const [vendor, setVendor] = useVendorState(navigation);
   const { getVendorById } = useVendorsApi();
 
-  useEffect(() => {
-    (async (): Promise<void> => {
-      const vendorResponse = await getVendorById(id);
-      setVendor(vendorResponse);
-    })().then();
-  }, [route.params]);
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const vendorResponse = await getVendorById(id);
+        setVendor(vendorResponse);
+      })();
+    }, [route.params])
+  );
 
   if (vendor == null) return null;
 

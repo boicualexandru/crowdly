@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import React, { useCallback, useContext } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -36,31 +37,56 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   }, []);
 
   return (
-    <ScrollView>
-      <View style={styles.profileDetailContainer}>
-        <View style={styles.profileImageCircle}>
-          <Image
-            source={{
-              uri:
-                "https://mymodernmet.com/wp/wp-content/uploads/2019/09/100k-ai-faces-5.jpg",
-            }}
-            style={styles.profileImage}
-          />
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <View>
+        <View style={styles.profileDetailContainer}>
+          <View style={styles.profileImageCircle}>
+            <Image
+              source={{
+                uri:
+                  "https://mymodernmet.com/wp/wp-content/uploads/2019/09/100k-ai-faces-5.jpg",
+              }}
+              style={styles.profileImage}
+            />
+          </View>
+          <Text style={styles.profileName}>Monica Popescu</Text>
         </View>
-        <Text style={styles.profileName}>Monica Popescu</Text>
+        <Divider />
+        <Pressable style={styles.buttonItem}>
+          <Feather name="tag" color={ThemeColors.textDark} size={25} />
+          <Text style={styles.buttonItemText}>Tichetele Mele</Text>
+        </Pressable>
+        <Divider />
+        <Pressable style={styles.buttonItem}>
+          <Feather name="calendar" color={ThemeColors.textDark} size={25} />
+          <Text style={styles.buttonItemText}>Evenimente Proprii</Text>
+        </Pressable>
+        <Divider />
+        <Pressable style={styles.buttonItem}>
+          <Feather name="briefcase" color={ThemeColors.textDark} size={25} />
+          <Text style={styles.buttonItemText}>Servicii Proprii</Text>
+        </Pressable>
+        <Divider />
       </View>
-      <Divider />
-      <Pressable style={styles.buttonItem}>
-        <Text style={styles.buttonItemText}>Setari de Securitate</Text>
-      </Pressable>
-      <Pressable style={styles.buttonItem}>
-        <Text style={styles.buttonItemText}>Setarile Contului</Text>
-      </Pressable>
-      <Pressable style={styles.buttonItem} onPress={() => logout()}>
-        <Text style={[styles.buttonItemText, { color: "red" }]}>
-          Iesi din Cont
-        </Text>
-      </Pressable>
+      <View>
+        <Divider />
+        <Pressable style={styles.buttonItem}>
+          <Feather name="lock" color={ThemeColors.textDark} size={25} />
+          <Text style={styles.buttonItemText}>Setari de Securitate</Text>
+        </Pressable>
+        <Divider />
+        <Pressable style={styles.buttonItem}>
+          <Feather name="settings" color={ThemeColors.textDark} size={25} />
+          <Text style={styles.buttonItemText}>Setarile Contului</Text>
+        </Pressable>
+        <Divider />
+        <Pressable style={styles.buttonItem} onPress={() => logout()}>
+          <Feather name="log-out" color="red" size={25} />
+          <Text style={[styles.buttonItemText, { color: "red" }]}>
+            Iesi din Cont
+          </Text>
+        </Pressable>
+      </View>
       {/* <Pressable style={styles.buttonItem}
         onPress={() => navigation.navigate("Login")}>
         <Text style={[styles.buttonItemText, {color: 'green'}]}>Intra in Cont</Text>
@@ -70,6 +96,10 @@ const ProfileScreen = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    justifyContent: "space-between",
+    height: "100%",
+  },
   profileDetailContainer: {
     flexDirection: "column",
     alignItems: "center",
@@ -99,14 +129,17 @@ const styles = StyleSheet.create({
   buttonItem: {
     width: "100%",
     paddingVertical: 16,
-    justifyContent: "center",
+    paddingLeft: 16,
+    paddingRight: 42,
+    justifyContent: "flex-start",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: ThemeColors.gray,
+    flexDirection: "row",
   },
   buttonItemText: {
     ...ThemeTypography.body1,
     fontWeight: "bold",
+    textAlign: "center",
+    flex: 1,
   },
 });
 

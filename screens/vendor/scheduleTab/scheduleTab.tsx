@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import useSchdulePeriodsApi, { SchedulePeriod } from "api/schedulePeriods";
+import useSchdulePeriodsApi, { CreateSchedulePeriodModel, SchedulePeriod } from "api/schedulePeriods";
 import { VendorDetails } from "api/vendors";
 import React, { useCallback, useState } from "react";
 import {
@@ -12,6 +12,7 @@ import {
 
 import Button from "@components/button/button";
 import SchedulePeriodItem from "./schedulePeriodItem";
+import AddSchedulePeriodModal from "./addSchedulePeriodModal";
 
 interface Props {
   vendor: VendorDetails;
@@ -25,6 +26,7 @@ const ScheduleTab = ({ vendor }: Props) => {
   } = useSchdulePeriodsApi();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [data, setData] = useState<SchedulePeriod[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -41,6 +43,12 @@ const ScheduleTab = ({ vendor }: Props) => {
     setIsRefreshing(false);
   }, [vendor.id]);
 
+  const onCreate = useCallback(async (vendorId: string, period: CreateSchedulePeriodModel) => {
+    await createSchedulePeriodAsVendor(vendorId, period);
+    setIsCreateModalOpen(false);
+    await refresh();
+  }, []);
+
   const onDelete = useCallback(async (vendorId: string, periodId: string) => {
     await deleteSchedulePeriodAsVendor(vendorId, periodId);
     await refresh();
@@ -49,7 +57,7 @@ const ScheduleTab = ({ vendor }: Props) => {
   const renderListHeader = useCallback(() => {
     return (
       <View style={styles.listHeader}>
-        <Button label="Adauga" />
+        <Button label="Adauga" onPress={() => setIsCreateModalOpen(true)} />
       </View>
     );
   }, []);
@@ -78,6 +86,7 @@ const ScheduleTab = ({ vendor }: Props) => {
         keyExtractor={(item) => item.id + Math.random().toString()}
         contentContainerStyle={styles.listContent}
       />
+      <AddSchedulePeriodModal isOpen={isCreateModalOpen} requestClose={() => setIsCreateModalOpen(false)} requestCreate={async (period) => await onCreate(vendor.id, period)}/>
     </SafeAreaView>
   );
 };

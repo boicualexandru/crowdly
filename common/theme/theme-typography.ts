@@ -32,7 +32,7 @@ export const ThemeTypography = StyleSheet.create({
     fontSize: 24,
   },
   h6: {
-    fontFamily: "Roboto_medium",
+    fontFamily: "Roboto",
     fontSize: 20,
     letterSpacing: 0.15,
   },
@@ -42,7 +42,7 @@ export const ThemeTypography = StyleSheet.create({
     letterSpacing: 0.15,
   },
   subtitle2: {
-    fontFamily: "Roboto_medium",
+    fontFamily: "Roboto",
     fontSize: 14,
     letterSpacing: 0.1,
   },

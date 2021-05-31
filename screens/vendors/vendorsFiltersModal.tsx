@@ -8,8 +8,8 @@ import { View } from "react-native";
 
 import Button from "@components/button/button";
 import PickerField from "@components/form/picker-field";
-import BigModal from "@components/modal/big-modal";
 import RangeTextField from "@components/form/range-text-field";
+import BigModal from "@components/modal/big-modal";
 
 interface Props {
   isOpen: boolean;
@@ -32,38 +32,40 @@ const VendorsFiltersModal = (props: Props) => {
   return (
     <BigModal isOpen={props.isOpen} requestClose={props.requestClose}>
       <View style={{ width: "100%" }}>
-        <View>
-          <PickerField
-            label="Categoria"
-            items={vendorCategoryOptions}
-            selectedValue={tempFilters.category}
-            onValueChange={(itemValue) => {
-              setTempFilters((f) => ({
-                ...f,
-                category: itemValue as VendorCategoryType,
-              }));
-            }}
-          />
-          <RangeTextField label="Pretul" values={{left: tempFilters.priceMin, right: tempFilters.priceMax}} onChanges={({left, right}) => {
+        <PickerField
+          label="Categoria"
+          items={vendorCategoryOptions}
+          selectedValue={tempFilters.category}
+          onValueChange={(itemValue) => {
+            setTempFilters((f) => ({
+              ...f,
+              category: itemValue as VendorCategoryType,
+            }));
+          }}
+        />
+        <RangeTextField
+          label="Pretul"
+          values={{ left: tempFilters.priceMin, right: tempFilters.priceMax }}
+          onChanges={({ left, right }) => {
             setTempFilters((f) => ({
               ...f,
               priceMin: left,
               priceMax: right,
-            }))
-          }} />
-          <View style={{ flexDirection: "row", marginTop: 16 }}>
-            <Button
-              outlined
-              label="Inchide"
-              style={{ flex: 1, marginRight: 16 }}
-              onPress={props.requestClose}
-            />
-            <Button
-              label="Aplica"
-              style={{ flex: 1 }}
-              onPress={() => props.requestApply(tempFilters)}
-            />
-          </View>
+            }));
+          }}
+        />
+        <View style={{ flexDirection: "row", marginTop: 16 }}>
+          <Button
+            outlined
+            label="Inchide"
+            style={{ flex: 1, marginRight: 16 }}
+            onPress={props.requestClose}
+          />
+          <Button
+            label="Aplica"
+            style={{ flex: 1 }}
+            onPress={() => props.requestApply(tempFilters)}
+          />
         </View>
       </View>
     </BigModal>

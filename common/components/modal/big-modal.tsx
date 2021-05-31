@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     backgroundColor: "#ffffffa0",
-    padding: 16
+    padding: 16,
   },
   modalView: {
     margin: 20,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '100%'
+    width: "100%",
   },
 });
 

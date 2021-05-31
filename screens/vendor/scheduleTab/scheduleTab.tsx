@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import Button from "@components/button/button";
-import ScheduleItem from "./scheduleItem";
+import SchedulePeriodItem from "./schedulePeriodItem";
 
 interface Props {
   vendor: VendorDetails;
@@ -56,7 +56,7 @@ const ScheduleTab = ({ vendor }: Props) => {
 
   const renderItem = useCallback(
     ({ item, index }: { item: SchedulePeriod; index: number }) => (
-      <ScheduleItem
+      <SchedulePeriodItem
         period={item}
         onDelete={async (periodId: string) =>
           await onDelete(item.vendorId, periodId)

@@ -10,7 +10,7 @@ interface Props {
   onDelete: (periodId: string) => void;
 }
 
-const ScheduleItem = ({ period, onDelete }: Props) => {
+const SchedulePeriodItem = ({ period, onDelete }: Props) => {
   const attepDelete = useCallback(
     (periodId: string) => {
       Alert.alert(
@@ -53,7 +53,7 @@ const ScheduleItem = ({ period, onDelete }: Props) => {
   );
 };
 
-export default ScheduleItem
+export default SchedulePeriodItem
 
 const styles = StyleSheet.create({
   scheduleItem: {

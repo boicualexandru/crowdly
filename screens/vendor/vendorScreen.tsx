@@ -21,7 +21,7 @@ import {
 } from "@theme/theme-typography";
 
 import AboutTab from "./aboutTab";
-import ScheduleTab from "./scheduleTab";
+import ScheduleTab from "./scheduleTab/scheduleTab";
 
 type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;

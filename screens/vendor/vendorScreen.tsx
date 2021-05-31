@@ -21,6 +21,7 @@ import {
 } from "@theme/theme-typography";
 
 import AboutTab from "./aboutTab";
+import ScheduleTab from "./scheduleTab";
 
 type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
@@ -160,8 +161,8 @@ const VendorTabs = ({ vendor }: VendorTabsProps) => {
       <Tab.Screen name="About" options={{ title: "Despre" }}>
         {() => <AboutTab vendor={vendor} />}
       </Tab.Screen>
-      <Tab.Screen name="Book" options={{ title: "Programare" }}>
-        {() => <AboutTab vendor={vendor} />}
+      <Tab.Screen name="Book" options={{ title: "Rezervari" }}>
+        {() => <ScheduleTab vendor={vendor} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

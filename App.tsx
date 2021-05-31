@@ -4,6 +4,7 @@ import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import jwt_decode from "jwt-decode";
 import React, { useCallback, useEffect, useReducer } from "react";
 import { ActivityIndicator } from "react-native";
+import 'moment/locale/ro';
 
 import { AuthActionType, LoadPayloadModel } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";

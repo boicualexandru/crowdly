@@ -4,7 +4,9 @@ import { VendorDetails } from "api/vendors";
 import moment from "moment";
 import React, { useCallback, useState } from "react";
 import {
+  Alert,
   FlatList,
+  Pressable,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
@@ -48,6 +50,11 @@ const ScheduleTab = ({ vendor }: Props) => {
     setIsRefreshing(false);
   }, [vendor.id]);
 
+  const onDelete = useCallback(async (vendorId: string, periodId: string) => {
+    await deleteSchedulePeriodAsVendor(vendorId, periodId);
+    await refresh();
+  }, []);
+
   const renderListHeader = useCallback(() => {
     return (
       <View style={styles.listHeader}>
@@ -58,7 +65,12 @@ const ScheduleTab = ({ vendor }: Props) => {
 
   const renderItem = useCallback(
     ({ item, index }: { item: SchedulePeriod; index: number }) => (
-      <ScheduleItem period={item} />
+      <ScheduleItem
+        period={item}
+        onDelete={async (periodId: string) =>
+          await onDelete(item.vendorId, periodId)
+        }
+      />
     ),
     []
   );
@@ -81,22 +93,49 @@ const ScheduleTab = ({ vendor }: Props) => {
 
 interface ScheduleItemProps {
   period: SchedulePeriod;
+  onDelete: (periodId: string) => void;
 }
 
-const ScheduleItem = ({ period }: ScheduleItemProps) => {
+const ScheduleItem = ({ period, onDelete }: ScheduleItemProps) => {
+  const attepDelete = useCallback(
+    (periodId: string) => {
+      Alert.alert(
+        "Stergi rezervarea?",
+        "Aceasta rezervare va fi stearsa definitiv.",
+        [
+          {
+            text: "Nu",
+            style: "cancel",
+          },
+          {
+            text: "Da, Sterge",
+            onPress: () => onDelete(periodId),
+            style: "destructive",
+          },
+        ],
+        { cancelable: true }
+      );
+    },
+    [onDelete]
+  );
+
+  const getFormattedDate = useCallback(
+    (date: Date) => moment(date).format("Do MMMM"),
+    []
+  );
+
   return (
-    <View style={styles.scheduleItem}>
+    <Pressable
+      style={styles.scheduleItem}
+      onPress={() => attepDelete(period.id)}
+    >
       <View style={styles.intervalWrapper}>
-        <Text style={styles.date}>
-          {moment(period.startDate).format("Do MMMM")}
-        </Text>
+        <Text style={styles.date}>{getFormattedDate(period.startDate)}</Text>
         <View style={styles.datesDivider} />
-        <Text style={styles.date}>
-          {moment(period.endDate).format("Do MMMM")}
-        </Text>
+        <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
       </View>
       <Text style={styles.description}>{period.description}</Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -115,6 +154,7 @@ const styles = StyleSheet.create({
   scheduleItem: {
     width: "100%",
     backgroundColor: ThemeColors.white,
+    marginBottom: 16,
     padding: 16,
     borderRadius: 8,
     elevation: 3,
@@ -127,7 +167,6 @@ const styles = StyleSheet.create({
   date: {
     ...ThemeTypography.body1,
     ...ThemeTypographyColorStyles.text_dark_87,
-    fontSize: 20,
     textTransform: "uppercase",
   },
   datesDivider: {

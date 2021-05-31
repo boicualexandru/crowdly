@@ -28,9 +28,9 @@ const windowWidth = Dimensions.get("window").width;
 const ImageSwiper = (props: ImageSwiperProps) => {
   if (!(props.images && props.images.length)) return null;
 
-  const ratio = props.ratio || 16.0 / 9;
   const imageWidth = props.imageWidth || windowWidth;
-  let imageHeight = props.imageHeight || imageWidth / ratio;
+  let imageHeight = props.imageHeight || imageWidth / (props.ratio || 16.0 / 9);
+  const ratio = imageWidth / imageHeight;
   imageHeight = Math.min(imageHeight, 500);
 
   const sliderWidth = props.sliderWidth || imageWidth;

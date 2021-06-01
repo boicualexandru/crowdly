@@ -48,7 +48,10 @@ const SchedulePeriodItem = ({ period, onDelete }: Props) => {
         <View style={styles.datesDivider} />
         <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
       </View>
-      <Text style={styles.description}>{period.description}</Text>
+      {
+        period.description != null && period.description != '' &&
+        <Text style={styles.description}>{period.description}</Text>
+      }
     </Pressable>
   );
 };

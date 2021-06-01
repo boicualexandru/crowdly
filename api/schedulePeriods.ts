@@ -1,7 +1,7 @@
+import moment from "moment";
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
-import moment from "moment";
 
 export interface SchedulePeriod {
   id: string;
@@ -28,14 +28,14 @@ const useSchdulePeriodsApi = () => {
       const responseRaw = await state.axiosInstance?.get(
         `vendors/${vendorId}/schedulePeriods`
       );
-      
+
       const response = responseRaw?.data;
       // const response = (responseRaw?.data as SchedulePeriod[]).map(period => ({
       //   ...period,
       //   startDate: moment(period.startDate).toDate(),
       //   endDate: moment(period.endDate).toDate(),
       // }));
-      
+
       return response;
     },
     getUsersSchdulePeriods: async (): Promise<SchedulePeriod[]> => {
@@ -43,11 +43,13 @@ const useSchdulePeriodsApi = () => {
         `user/schedulePeriods`
       );
 
-      const response = (responseRaw?.data as SchedulePeriod[]).map(period => ({
-        ...period,
-        startDate: new Date(period.startDate),
-        endDate: new Date(period.endDate),
-      }));
+      const response = (responseRaw?.data as SchedulePeriod[]).map(
+        (period) => ({
+          ...period,
+          startDate: new Date(period.startDate),
+          endDate: new Date(period.endDate),
+        })
+      );
 
       return response;
     },

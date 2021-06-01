@@ -1,12 +1,9 @@
 import { CreateSchedulePeriodModel, SchedulePeriod } from "api/schedulePeriods";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import {
-  Calendar,
-} from "react-native-calendars";
 
 import Button from "@components/button/button";
+import Calendar from "@components/calendar/calendar";
 import TextField from "@components/form/text-field";
 import BigModal from "@components/modal/big-modal";
 
@@ -14,7 +11,6 @@ import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
-import useCalendar from "./useCalendar";
 
 interface Props {
   isOpen: boolean;
@@ -23,31 +19,18 @@ interface Props {
   requestClose: () => void;
 }
 
-const schedulePeriodInitialState: CreateSchedulePeriodModel = {
+const schedulePeriodInitialState: Partial<CreateSchedulePeriodModel> = {
   description: "",
-  startDate: new Date(),
-  endDate: new Date(),
 };
 
 const AddSchedulePeriodModal = (props: Props) => {
-  const [period, setPeriod] = useState<CreateSchedulePeriodModel>(
-    schedulePeriodInitialState
-  );
-  const [date, setDate] = useState(new Date());
-
-  const { markedDates, setUnavailablePeriods, onDayPress } = useCalendar();
-
-  useEffect(() => {
-    const unavailablePeriods = props.schedulePeriods.map((period) => ({
-      startDate: moment(period.startDate).toDate(),
-      endDate: moment(period.endDate).toDate(),
-    }));
-    setUnavailablePeriods(unavailablePeriods);
-  }, [props.schedulePeriods]);
+  const [schedulePeriod, setSchedulePeriod] = useState<
+    Partial<CreateSchedulePeriodModel>
+  >(schedulePeriodInitialState);
 
   useEffect(() => {
     if (props.isOpen) {
-      setPeriod(schedulePeriodInitialState);
+      setSchedulePeriod(schedulePeriodInitialState);
     }
   }, [props.isOpen]);
 
@@ -58,17 +41,24 @@ const AddSchedulePeriodModal = (props: Props) => {
         <TextField
           label="Descriere"
           onChangeText={(value) =>
-            setPeriod((p) => ({ ...p, description: value }))
+            setSchedulePeriod((p) => ({ ...p, description: value }))
           }
-          value={period.description}
+          value={schedulePeriod.description}
           containerStyle={styles.fieldGroup}
         />
         <View>
-          <Text>Filter</Text>
           <Calendar
-            markingType="period"
-            markedDates={markedDates}
-            onDayPress={(day) => onDayPress(moment(day.dateString).toDate())}
+            unavailablePeriods={props.schedulePeriods.map((period) => ({
+              startDate: new Date(period.startDate),
+              endDate: new Date(period.endDate),
+            }))}
+            onSelect={(period) =>
+              setSchedulePeriod((sp) => ({
+                ...sp,
+                startDate: period.startDate,
+                endDate: period.endDate ?? period.startDate,
+              }))
+            }
           />
         </View>
         <View style={{ flexDirection: "row", marginTop: 16 }}>
@@ -81,7 +71,13 @@ const AddSchedulePeriodModal = (props: Props) => {
           <Button
             label="Adauga"
             style={{ flex: 1 }}
-            onPress={() => props.requestCreate(period)}
+            onPress={() =>
+              props.requestCreate({
+                description: schedulePeriod.description as string,
+                startDate: schedulePeriod.startDate as Date,
+                endDate: schedulePeriod.endDate as Date,
+              })
+            }
           />
         </View>
       </View>

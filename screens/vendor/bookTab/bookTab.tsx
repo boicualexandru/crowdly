@@ -52,7 +52,10 @@ const BookTab = ({ vendor }: Props) => {
         <Calendar
           unavailablePeriods={unavailablePeriods}
           onSelect={(period) =>
-            setSelectedPeriod(period)
+            setSelectedPeriod({
+              startDate: period.startDate,
+              endDate: period.endDate ?? period.startDate
+            })
           }
         />
         <View style={{padding: 16}}>

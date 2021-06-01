@@ -34,14 +34,13 @@ const AddSchedulePeriodModal = (props: Props) => {
     }
   }, [props.isOpen]);
 
-  const isFormValid = useCallback(
-    () => {
-      return schedulePeriod.description != '' &&
+  const isFormValid = useCallback(() => {
+    return (
+      schedulePeriod.description != "" &&
       schedulePeriod.startDate != null &&
       schedulePeriod.endDate != null
-    },
-    [schedulePeriod],
-  )
+    );
+  }, [schedulePeriod]);
 
   return (
     <BigModal isOpen={props.isOpen} requestClose={props.requestClose}>

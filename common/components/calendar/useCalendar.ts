@@ -3,11 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { PeriodMarking } from "react-native-calendars";
 
 import ThemeColors from "@theme/theme-colors";
-
-export interface Period {
-  startDate: Date;
-  endDate: Date;
-}
+import { Period } from "api/schedulePeriods";
 
 export interface SelectedPeriod {
   startDate?: Date;

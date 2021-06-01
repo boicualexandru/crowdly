@@ -1,5 +1,5 @@
 import { CreateSchedulePeriodModel, SchedulePeriod } from "api/schedulePeriods";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 
 import Button from "@components/button/button";
@@ -33,6 +33,15 @@ const AddSchedulePeriodModal = (props: Props) => {
       setSchedulePeriod(schedulePeriodInitialState);
     }
   }, [props.isOpen]);
+
+  const isFormValid = useCallback(
+    () => {
+      return schedulePeriod.description != '' &&
+      schedulePeriod.startDate != null &&
+      schedulePeriod.endDate != null
+    },
+    [schedulePeriod],
+  )
 
   return (
     <BigModal isOpen={props.isOpen} requestClose={props.requestClose}>
@@ -71,6 +80,7 @@ const AddSchedulePeriodModal = (props: Props) => {
           <Button
             label="Adauga"
             style={{ flex: 1 }}
+            disabled={!isFormValid()}
             onPress={() =>
               props.requestCreate({
                 description: schedulePeriod.description as string,

@@ -11,6 +11,11 @@ export interface SchedulePeriod {
   bookedByUserId?: string;
 }
 
+export interface Period {
+  startDate: Date;
+  endDate: Date;
+}
+
 export interface CreateSchedulePeriodModel {
   description: string;
   startDate: Date;
@@ -29,6 +34,21 @@ const useSchdulePeriodsApi = () => {
       );
 
       const response = (responseRaw?.data as SchedulePeriod[]).map(period => ({
+        ...period,
+        startDate: new Date(period.startDate),
+        endDate: new Date(period.endDate),
+      }));
+
+      return response;
+    },
+    getUnavailablePeriodsByVendorId: async (
+      vendorId: string
+    ): Promise<Period[]> => {
+      const responseRaw = await state.axiosInstance?.get(
+        `vendors/${vendorId}/unavailablePeriods`
+      );
+
+      const response = (responseRaw?.data as Period[]).map(period => ({
         ...period,
         startDate: new Date(period.startDate),
         endDate: new Date(period.endDate),

@@ -18,6 +18,7 @@ export interface ButtonProps extends PressableProps {
   leftIcon?: string;
   rightIcon?: string;
   outlined?: boolean;
+  disabled?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
@@ -27,10 +28,12 @@ const Button = (props: ButtonProps) => {
     <FontAwesome5 name={icon} size={14} color={ThemeColors.white} style={styles.icon} />
   )
 
+  const color = props.disabled ? ThemeColors.gray : ThemeColors.primary;
+
   return (
-    <Pressable {...props} style={[styles.button, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]}>
+    <Pressable {...props} style={[styles.button, {backgroundColor: color, borderColor: color}, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]} onPress={props.disabled ? null : props.onPress}>
       {props.leftIcon && renderIcon(props.leftIcon)}
-      <Text style={[styles.label, props.outlined ? {color: ThemeColors.primary}: null, props.labelStyle]}>{props.label}</Text>
+      <Text style={[styles.label, props.outlined ? {color: color}: null, props.labelStyle]}>{props.label}</Text>
     </Pressable>
   );
 };

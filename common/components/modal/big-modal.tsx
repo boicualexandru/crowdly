@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Pressable, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface Props {
   children: JSX.Element;
@@ -17,14 +18,26 @@ const BigModal = (props: Props) => {
         props.requestClose();
       }}
     >
-      <Pressable
-        style={[styles.centeredView, styles.modalOverlay]}
-        onPress={() => props.requestClose()}
+      <ScrollView
+        style={styles.modalOverlay}
+        contentContainerStyle={{
+          justifyContent: "center",
+          flexGrow: 1,
+          padding: 16,
+        }}
       >
-        <Pressable style={styles.modalView} onPress={(e) => e.preventDefault()}>
-          {props.children}
+        <Pressable
+          style={[styles.centeredView]}
+          onPress={() => props.requestClose()}
+        >
+          <Pressable
+            style={styles.modalView}
+            onPress={(e) => e.preventDefault()}
+          >
+            {props.children}
+          </Pressable>
         </Pressable>
-      </Pressable>
+      </ScrollView>
     </Modal>
   );
 };
@@ -37,7 +50,6 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     backgroundColor: "#ffffffa0",
-    padding: 16,
   },
   modalView: {
     margin: 20,

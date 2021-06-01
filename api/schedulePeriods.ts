@@ -1,4 +1,3 @@
-import moment from "moment";
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
@@ -29,12 +28,11 @@ const useSchdulePeriodsApi = () => {
         `vendors/${vendorId}/schedulePeriods`
       );
 
-      const response = responseRaw?.data;
-      // const response = (responseRaw?.data as SchedulePeriod[]).map(period => ({
-      //   ...period,
-      //   startDate: moment(period.startDate).toDate(),
-      //   endDate: moment(period.endDate).toDate(),
-      // }));
+      const response = (responseRaw?.data as SchedulePeriod[]).map(period => ({
+        ...period,
+        startDate: new Date(period.startDate),
+        endDate: new Date(period.endDate),
+      }));
 
       return response;
     },

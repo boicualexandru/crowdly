@@ -49,8 +49,8 @@ const AddSchedulePeriodModal = (props: Props) => {
         <View>
           <Calendar
             unavailablePeriods={props.schedulePeriods.map((period) => ({
-              startDate: new Date(period.startDate),
-              endDate: new Date(period.endDate),
+              startDate: period.startDate,
+              endDate: period.endDate,
             }))}
             onSelect={(period) =>
               setSchedulePeriod((sp) => ({

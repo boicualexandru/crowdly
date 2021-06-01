@@ -37,14 +37,19 @@ const useVendorState = (
 ): [VendorDetails | undefined, (vendor: VendorDetails) => void] => {
   const [vendor, setVendorValue] = useState<VendorDetails>();
   const { state, dispatch } = useContext(PreferencesContext);
-
+  
   const setVendor = (vendor: VendorDetails) => {
     navigation.setOptions({
+      headerLeftContainerStyle: styles.headerButtonsWrapper,
+      headerRightContainerStyle: styles.headerButtonsWrapper,
       headerRight: ({ tintColor }) => (
         <View style={{ flexDirection: "row" }}>
           {vendor.isEditable ? (
             <IconButton
-              icon="pen"
+              icon="edit-2"
+              color={ThemeColors.textDark}
+              theme="Feather"
+              size={18}
               onPress={() =>
                 navigation.navigate("EditVendor", { vendorId: vendor.id })
               }
@@ -54,6 +59,7 @@ const useVendorState = (
             icon="heart"
             solid={vendor.isFavourite}
             color={ThemeColors.primary}
+            size={18}
             onPress={() =>
               dispatch({
                 type: vendor.isFavourite
@@ -65,7 +71,12 @@ const useVendorState = (
               })
             }
           />
-          <IconButton icon="share" />
+          <IconButton 
+            icon="share" 
+            color={ThemeColors.textDark}
+            theme="Feather"
+            size={18}
+          />
         </View>
       ),
     });
@@ -187,6 +198,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
   },
+  headerButtonsWrapper: {
+    backgroundColor: "#ffffffcc",
+    elevation: 3,
+    borderRadius: 200,
+    height: 48,
+    // width: 40,
+    marginTop: 4,
+    marginHorizontal: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
 export default VendorScreen;

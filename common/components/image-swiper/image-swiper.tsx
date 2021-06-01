@@ -61,7 +61,7 @@ const ImageSwiper = (props: ImageSwiperProps) => {
   };
 
   if (props.images.length === 1) {
-    return <View style={props.style}>{slide(props.images[0])}</View>;
+    return <View style={[props.style]}>{slide(props.images[0])}</View>;
   }
 
   return (
@@ -80,13 +80,6 @@ const ImageSwiper = (props: ImageSwiperProps) => {
       >
         {props.images.map(slide)}
       </Swiper>
-      {props.topGradient && (
-        <LinearGradient
-          locations={[0.7, 1]}
-          colors={["#FFFFFF44", "#FFFFFF00"]}
-          style={{ position: "absolute", width: "100%", height: 80 }}
-        />
-      )}
     </View>
   );
 };

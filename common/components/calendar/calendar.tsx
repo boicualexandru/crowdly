@@ -1,7 +1,9 @@
+import ThemeColors from "@theme/theme-colors";
+import { Period } from "api/schedulePeriods";
 import React from "react";
 import { Calendar as RNCalendar } from "react-native-calendars";
 
-import useCalendar, { Period, SelectedPeriod } from "./useCalendar";
+import useCalendar, { SelectedPeriod } from "./useCalendar";
 
 interface Props {
   unavailablePeriods: Period[];
@@ -16,6 +18,9 @@ const Calendar = (props: Props) => {
 
   return (
     <RNCalendar
+      theme={{
+        arrowColor: ThemeColors.primary,
+      }}
       markingType="period"
       markedDates={markedDates}
       onDayPress={(day) => onDayPress(new Date(day.dateString))}

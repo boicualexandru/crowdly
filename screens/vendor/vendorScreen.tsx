@@ -22,6 +22,7 @@ import {
 
 import AboutTab from "./aboutTab";
 import ScheduleTab from "./scheduleTab/scheduleTab";
+import BookTab from "./bookTab/bookTab";
 
 type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
@@ -142,6 +143,7 @@ const VendorScreen = ({ navigation, route }: Props) => {
 
 type VendorTabsParamList = {
   About: VendorDetails;
+  Schedule: VendorDetails;
   Book: VendorDetails;
 };
 
@@ -161,8 +163,11 @@ const VendorTabs = ({ vendor }: VendorTabsProps) => {
       <Tab.Screen name="About" options={{ title: "Despre" }}>
         {() => <AboutTab vendor={vendor} />}
       </Tab.Screen>
-      <Tab.Screen name="Book" options={{ title: "Rezervari" }}>
+      <Tab.Screen name="Schedule" options={{ title: "Rezervari" }}>
         {() => <ScheduleTab vendor={vendor} />}
+      </Tab.Screen>
+      <Tab.Screen name="Book" options={{ title: "Rezerva Acum" }}>
+        {() => <BookTab vendor={vendor} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

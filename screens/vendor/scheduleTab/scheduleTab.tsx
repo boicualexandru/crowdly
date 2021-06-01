@@ -1,5 +1,8 @@
 import { useFocusEffect } from "@react-navigation/native";
-import useSchdulePeriodsApi, { CreateSchedulePeriodModel, SchedulePeriod } from "api/schedulePeriods";
+import useSchdulePeriodsApi, {
+  CreateSchedulePeriodModel,
+  SchedulePeriod,
+} from "api/schedulePeriods";
 import { VendorDetails } from "api/vendors";
 import React, { useCallback, useState } from "react";
 import {
@@ -11,8 +14,9 @@ import {
 } from "react-native";
 
 import Button from "@components/button/button";
-import SchedulePeriodItem from "./schedulePeriodItem";
+
 import AddSchedulePeriodModal from "./addSchedulePeriodModal";
+import SchedulePeriodItem from "./schedulePeriodItem";
 
 interface Props {
   vendor: VendorDetails;
@@ -43,11 +47,14 @@ const ScheduleTab = ({ vendor }: Props) => {
     setIsRefreshing(false);
   }, [vendor.id]);
 
-  const onCreate = useCallback(async (vendorId: string, period: CreateSchedulePeriodModel) => {
-    await createSchedulePeriodAsVendor(vendorId, period);
-    setIsCreateModalOpen(false);
-    await refresh();
-  }, []);
+  const onCreate = useCallback(
+    async (vendorId: string, period: CreateSchedulePeriodModel) => {
+      await createSchedulePeriodAsVendor(vendorId, period);
+      setIsCreateModalOpen(false);
+      await refresh();
+    },
+    []
+  );
 
   const onDelete = useCallback(async (vendorId: string, periodId: string) => {
     await deleteSchedulePeriodAsVendor(vendorId, periodId);
@@ -86,7 +93,12 @@ const ScheduleTab = ({ vendor }: Props) => {
         keyExtractor={(item) => item.id + Math.random().toString()}
         contentContainerStyle={styles.listContent}
       />
-      <AddSchedulePeriodModal isOpen={isCreateModalOpen} requestClose={() => setIsCreateModalOpen(false)} requestCreate={async (period) => await onCreate(vendor.id, period)}/>
+      <AddSchedulePeriodModal
+        isOpen={isCreateModalOpen}
+        schedulePeriods={data}
+        requestClose={() => setIsCreateModalOpen(false)}
+        requestCreate={async (period) => await onCreate(vendor.id, period)}
+      />
     </SafeAreaView>
   );
 };

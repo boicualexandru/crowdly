@@ -1,12 +1,6 @@
-import { Period } from "api/schedulePeriods";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-
-import {
-  VendorsStackNavigationPropChild,
-  VendorsStackRoutePropChild,
-} from "@navigation/vendorsStack";
 
 import Button from "@components/button/button";
 
@@ -17,48 +11,74 @@ import {
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
 import IconButton from "@components/button/icon-button";
+import { CheckoutItem } from "@context/checkout/checkoutState";
+import { CheckoutContext } from "@context/checkout/checkoutContext";
+import { CheckoutActionType } from "@context/checkout/checkoutActions";
+import { vendorCategoryNameDictionary } from "api/vendors";
+import moment from "moment";
+import { CheckoutStackNavigationPropChild, CheckoutStackRoutePropChild } from "@navigation/checkoutStack";
 
-interface CheckoutItems {
-  vendorId: string;
-  vendorName: string;
-  vendorPrice: number;
-  period: Period;
-}
 
-export interface CheckoutScreenProps {
-  items: CheckoutItems[];
-}
-
-type CheckoutScreenNavigationProp = VendorsStackNavigationPropChild<"Checkout">;
-type CheckoutScreenRouteProp = VendorsStackRoutePropChild<"Checkout">;
+type CheckoutScreenNavigationProp = CheckoutStackNavigationPropChild<"Checkout">;
+type CheckoutScreenRouteProp = CheckoutStackRoutePropChild<"Checkout">;
 
 interface Props {
   navigation: CheckoutScreenNavigationProp;
   route: CheckoutScreenRouteProp;
 }
 
-const CheckoutScreen = ({ navigation, route }: Props) => {
-  const checkoutParams = route.params;
+interface RenderItemProps {
+  item: CheckoutItem,
+  startMoment: moment.Moment,
+  endMoment: moment.Moment,
+  days: number,
+}
 
-  const renderItem = useCallback((item: CheckoutItems, onRemove: () => void) => {
+const CheckoutScreen = ({ navigation, route }: Props) => {
+  const { state: checkoutState, dispatch: checkoutDispatch } = useContext(CheckoutContext);
+
+  const items: RenderItemProps[] = checkoutState.items.map(item => {
+    const startMoment = moment(item.period.startDate);
+    const endMoment = moment(item.period.endDate);
+    const days = moment.duration(endMoment.diff(startMoment)).asDays() + 1;
+
+    return {
+      item: item,
+      startMoment: startMoment,
+      endMoment: endMoment,
+      days: days,
+    }
+  });
+
+  const totalPrice = items.reduce((totalSum, curr) => totalSum + curr.item.vendorPrice * curr.days, 0);
+
+  const renderItem = useCallback(({item, startMoment, endMoment, days}: RenderItemProps, onRemove: () => void) => {
     return (
-      <View style={styles.item}>
-        <Image
-          source={{
-            uri:
-              "https://images.unsplash.com/photo-1524187208855-b6c2f1e78bce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80",
-          }}
-          style={styles.itemImage}
-        />
+      <View style={styles.item} key={item.vendorId + startMoment.toString()}>
+        {
+          item.vendorThumbnail ?
+          <Image
+            source={{
+              uri: item.vendorThumbnail,
+            }}
+            style={styles.itemImage}
+          /> : null
+        }
         <View style={styles.itemText}>
           <View>
-            <Text style={styles.itemCaption}>Locatie - 24 Mai - 28 Mai</Text>
-            <Text style={styles.itemTitle}>Sun Garden</Text>
+            <Text style={styles.itemCaption}>
+              {vendorCategoryNameDictionary[item.vendorCategory]} - 
+              {startMoment.format("Do MMMM")} - 
+              {days > 1 ? endMoment.format("Do MMMM") : null}</Text>
+            <Text style={styles.itemTitle}>{item.vendorName}</Text>
           </View>
-          <Text style={styles.itemPrice}>2400 Lei</Text>
-        </View>
-        <View style={{position: 'absolute', top: -8, right: -8}}>
-          <IconButton theme="Feather" icon="x-circle" size={30} color="red" onPress={onRemove} />
+          <View style={styles.itemPriceContainer}>
+            <Text style={styles.itemPrice}>
+              {days > 1 ? `${days} x ` : null}
+              {item.vendorPrice} Lei
+            </Text>
+            <IconButton theme="Feather" icon="trash-2" size={24} color={ThemeColors.primary} onPress={onRemove} />
+          </View>
         </View>
       </View>
     );
@@ -70,17 +90,23 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
         style={{ flex: 1 }}
         contentContainerStyle={ThemeBoxing.container}
       >
-        {renderItem(checkoutParams.items[0], () => {})}
-        {renderItem(checkoutParams.items[0], () => {})}
+        {
+          items.map((item, index) => renderItem(item, () => checkoutDispatch({
+            type: CheckoutActionType.RemoveItemFromCheckout,
+            payload: {
+              index: index
+            }
+          })))
+        }
       </ScrollView>
       <View style={styles.totalContainer}>
         <View>
           <Text style={styles.totalCaption}>TOTAL</Text>
-          <Text style={styles.totalPrice}>2400 Lei</Text>
+          <Text style={styles.totalPrice}>{totalPrice} Lei</Text>
         </View>
         <View style={{ marginLeft: 16 }}>
           <Text>
-            <Button label="Termina" style={{}} />
+            <Button label="Finalizeaza " style={{}} />
           </Text>
         </View>
       </View>
@@ -109,10 +135,10 @@ const styles = StyleSheet.create({
     width: 100,
     aspectRatio: 1,
     borderRadius: 16,
+    marginRight: 16,
   },
   itemText: {
     flex: 1,
-    marginLeft: 16,
     justifyContent: "space-between",
   },
   itemCaption: {
@@ -132,11 +158,15 @@ const styles = StyleSheet.create({
     ...ThemeTypographyColorStyles.text_dark_87,
     marginTop: 4,
   },
+  itemPriceContainer: {
+    marginTop: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   itemPrice: {
     ...ThemeTypography.h6,
     ...ThemeTypographyColorStyles.text_primary,
-    textAlign: "right",
-    marginTop: 4,
   },
   totalCaption: {
     ...ThemeTypography.caption,

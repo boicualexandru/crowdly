@@ -88,6 +88,15 @@ export const vendorCategoryOptions = [
   { label: "Catering", value: VendorCategoryType.Food },
 ];
 
+export const vendorCategoryNameDictionary = {
+  [VendorCategoryType.None]: "Nicio categorie",
+  [VendorCategoryType.Location]: "Locatie",
+  [VendorCategoryType.Music]: "Muzica",
+  [VendorCategoryType.Photo]: "Fotograf",
+  [VendorCategoryType.Video]: "Video",
+  [VendorCategoryType.Food]: "Catering",
+}
+
 export const getInitialVendorsFilters = (
   category?: VendorCategoryType
 ): VendorsFiltersModel => ({

@@ -1,11 +1,13 @@
 import Button from '@components/button/button';
 import Calendar from '@components/calendar/calendar';
 import { SelectedPeriod } from '@components/calendar/useCalendar';
+import { CheckoutActionType } from '@context/checkout/checkoutActions';
+import { CheckoutContext } from '@context/checkout/checkoutContext';
 import { useFocusEffect } from '@react-navigation/native';
 import ThemeColors from '@theme/theme-colors';
 import useSchdulePeriodsApi, { Period } from 'api/schedulePeriods';
 import { VendorDetails } from 'api/vendors'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { VendorScreenNavigationProp } from '../vendorScreen';
@@ -23,6 +25,7 @@ const BookTab = ({ vendor, navigation }: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [unavailablePeriods, setUnavailablePeriods] = useState<Period[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<SelectedPeriod>({});
+  const { dispatch: checkoutDispatch } = useContext(CheckoutContext);
   
   useFocusEffect(
     useCallback(() => {
@@ -42,25 +45,44 @@ const BookTab = ({ vendor, navigation }: Props) => {
 
   const onBook = useCallback(
     async () => {
-      try {
-        navigation.navigate("Checkout", {
-          items: [{
-            vendorId: vendor.id,
-            period: {
-              startDate: selectedPeriod.startDate as Date,
-              endDate: selectedPeriod.endDate as Date,
-            }
-          }]
-        })
-        // await bookSchedulePeriodAsUser(vendor.id, {
-        //   startDate: selectedPeriod.startDate as Date,
-        //   endDate: selectedPeriod.endDate as Date,
-        //   description: ''
-        // });
-        // alert('Rezervare adaugata cu success');
-      } catch {
-        alert('A aparut o problema');
-      }
+      checkoutDispatch({
+        type: CheckoutActionType.AddItemToCheckout,
+        payload: {
+          vendorId: vendor.id,
+          vendorName: vendor.name,
+          vendorPrice: vendor.price,
+          vendorThumbnail: vendor.images[0],
+          vendorCategory: vendor.category,
+          period: {
+            startDate: selectedPeriod.startDate as Date,
+            endDate: selectedPeriod.endDate as Date,
+          }
+        }
+      });
+
+      // for the home tab navigator it takes time to get updated after the dispatch, so the checkout tab will not show up imidiately
+      setTimeout(() => {
+        navigation.navigate("CheckoutStack");
+      }, 1000);
+      // try {
+      //   navigation.navigate("Checkout", {
+      //     items: [{
+      //       vendorId: vendor.id,
+      //       period: {
+      //         startDate: selectedPeriod.startDate as Date,
+      //         endDate: selectedPeriod.endDate as Date,
+      //       }
+      //     }]
+      //   })
+      //   // await bookSchedulePeriodAsUser(vendor.id, {
+      //   //   startDate: selectedPeriod.startDate as Date,
+      //   //   endDate: selectedPeriod.endDate as Date,
+      //   //   description: ''
+      //   // });
+      //   // alert('Rezervare adaugata cu success');
+      // } catch {
+      //   alert('A aparut o problema');
+      // }
     },
     [vendor.id, selectedPeriod],
   )
@@ -88,7 +110,7 @@ const BookTab = ({ vendor, navigation }: Props) => {
         />
         <View style={{padding: 16}}>
           <Button 
-            label="Pasul urmator" 
+            label="Selecteaza" 
             disabled={selectedPeriod.startDate == null || selectedPeriod.endDate == null}
             onPress={onBook} 
           />

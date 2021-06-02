@@ -21,12 +21,19 @@ import {
 import ThemeColors from "@theme/theme-colors";
 
 import RootStackNavigation from "./navigation/rootStack";
+import { CheckoutContext } from "@context/checkout/checkoutContext";
+import { checkoutReducer } from "@context/checkout/checkoutReducer";
+import { initialCheckoutState } from "@context/checkout/checkoutState";
 
 export default function App() {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
   const [preferencesState, preferencesDispatch] = useReducer(
     preferencesReducer,
     initialPreferencesState
+  );
+  const [checkoutState, checkoutDispatch] = useReducer(
+    checkoutReducer,
+    initialCheckoutState
   );
 
   const loadAuthState = useCallback(async () => {
@@ -81,12 +88,16 @@ export default function App() {
       <PreferencesContext.Provider
         value={{ state: preferencesState, dispatch: preferencesDispatch }}
       >
-        <React.Fragment>
-          <NavigationContainer>
-            <RootStackNavigation />
-          </NavigationContainer>
-          <ExpoStatusBar style="auto" />
-        </React.Fragment>
+        <CheckoutContext.Provider
+          value={{ state: checkoutState, dispatch: checkoutDispatch }}
+        >
+          <React.Fragment>
+            <NavigationContainer>
+              <RootStackNavigation />
+            </NavigationContainer>
+            <ExpoStatusBar style="auto" />
+          </React.Fragment>
+        </CheckoutContext.Provider>
       </PreferencesContext.Provider>
     </AuthContext.Provider>
 

@@ -16,6 +16,7 @@ interface Props {
 const BookTab = ({ vendor }: Props) => {
   const {
     getUnavailablePeriodsByVendorId,
+    bookSchedulePeriodAsUser
   } = useSchdulePeriodsApi();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [unavailablePeriods, setUnavailablePeriods] = useState<Period[]>([]);
@@ -36,6 +37,22 @@ const BookTab = ({ vendor }: Props) => {
 
     setIsRefreshing(false);
   }, [vendor.id]);
+
+  const onBook = useCallback(
+    async () => {
+      try {
+        await bookSchedulePeriodAsUser(vendor.id, {
+          startDate: selectedPeriod.startDate as Date,
+          endDate: selectedPeriod.endDate as Date,
+          description: ''
+        });
+        alert('Rezervare adaugata cu success');
+      } catch {
+        alert('A aparut o problema');
+      }
+    },
+    [vendor.id, selectedPeriod],
+  )
 
   if (isRefreshing) 
     return (
@@ -62,7 +79,7 @@ const BookTab = ({ vendor }: Props) => {
           <Button 
             label="Rezerva" 
             disabled={selectedPeriod.startDate == null || selectedPeriod.endDate == null}
-            onPress={() => {}} 
+            onPress={onBook} 
           />
         </View>
       </ScrollView>

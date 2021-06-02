@@ -21,6 +21,9 @@ export interface VendorsFiltersModel {
   category?: VendorCategoryType;
   priceMin?: number;
   priceMax?: number;
+  guests?: number;
+  periodStart?: Date;
+  periodEnd?: Date;
 }
 
 export interface VendorDetails {

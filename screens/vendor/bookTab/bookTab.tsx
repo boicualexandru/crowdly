@@ -8,12 +8,14 @@ import { VendorDetails } from 'api/vendors'
 import React, { useCallback, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
+import { VendorScreenNavigationProp } from '../vendorScreen';
 
 interface Props {
   vendor: VendorDetails;
+  navigation: VendorScreenNavigationProp;
 }
 
-const BookTab = ({ vendor }: Props) => {
+const BookTab = ({ vendor, navigation }: Props) => {
   const {
     getUnavailablePeriodsByVendorId,
     bookSchedulePeriodAsUser
@@ -41,12 +43,21 @@ const BookTab = ({ vendor }: Props) => {
   const onBook = useCallback(
     async () => {
       try {
-        await bookSchedulePeriodAsUser(vendor.id, {
-          startDate: selectedPeriod.startDate as Date,
-          endDate: selectedPeriod.endDate as Date,
-          description: ''
-        });
-        alert('Rezervare adaugata cu success');
+        navigation.navigate("Checkout", {
+          items: [{
+            vendorId: vendor.id,
+            period: {
+              startDate: selectedPeriod.startDate as Date,
+              endDate: selectedPeriod.endDate as Date,
+            }
+          }]
+        })
+        // await bookSchedulePeriodAsUser(vendor.id, {
+        //   startDate: selectedPeriod.startDate as Date,
+        //   endDate: selectedPeriod.endDate as Date,
+        //   description: ''
+        // });
+        // alert('Rezervare adaugata cu success');
       } catch {
         alert('A aparut o problema');
       }
@@ -77,7 +88,7 @@ const BookTab = ({ vendor }: Props) => {
         />
         <View style={{padding: 16}}>
           <Button 
-            label="Rezerva" 
+            label="Pasul urmator" 
             disabled={selectedPeriod.startDate == null || selectedPeriod.endDate == null}
             onPress={onBook} 
           />

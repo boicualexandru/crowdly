@@ -14,11 +14,13 @@ import {
 } from "./homeTabs";
 import VendorsCategoriesScreen from "@screens/vendorsCategoriesScreen";
 import { VendorCategoryType } from "api/vendors";
+import CheckoutScreen, { CheckoutScreenProps as CheckoutScreenParams } from "@screens/checkoutScreen";
 
 type VendorsStackParamList = {
   VendorsCategories: undefined;
   Vendors: { categoryType: VendorCategoryType, categoryName: string };
   Vendor: { id: string; name: string };
+  Checkout: CheckoutScreenParams;
 };
 
 type VendorsStackNavigationProp = HomeTabsNavigationPropChild<"VendorsStack">;
@@ -39,6 +41,7 @@ const VendorsStackNavigation = () => {
           title: "",
         }}
       />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} options={{title: 'Finalizeaza Selectia'}} />
     </Stack.Navigator>
   );
 };

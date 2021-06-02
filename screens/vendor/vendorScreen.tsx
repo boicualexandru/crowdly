@@ -24,7 +24,7 @@ import AboutTab from "./aboutTab";
 import ScheduleTab from "./scheduleTab/scheduleTab";
 import BookTab from "./bookTab/bookTab";
 
-type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
+export type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
 
 interface Props {
@@ -145,7 +145,7 @@ const VendorScreen = ({ navigation, route }: Props) => {
           </View>
           {/* <ReviewStars {...vendor.rating} style={Spacing.mt_4} /> */}
         </View>
-        <VendorTabs vendor={vendor}></VendorTabs>
+        <VendorTabs vendor={vendor} navigation={navigation}></VendorTabs>
         {/* <LocationTabsContainer screenProps={vendor} style={{ flex: 1, width: '100%', alignSelf: 'stretch', backgroundColor: 'blue' }} /> */}
       </View>
     </View>
@@ -162,9 +162,10 @@ const Tab = createMaterialTopTabNavigator<VendorTabsParamList>();
 
 interface VendorTabsProps {
   vendor: VendorDetails;
+  navigation: VendorScreenNavigationProp;
 }
 
-const VendorTabs = ({ vendor }: VendorTabsProps) => {
+const VendorTabs = ({ vendor, navigation }: VendorTabsProps) => {
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -172,13 +173,13 @@ const VendorTabs = ({ vendor }: VendorTabsProps) => {
       }}
     >
       <Tab.Screen name="About" options={{ title: "Despre" }}>
-        {() => <AboutTab vendor={vendor} />}
+        {() => <AboutTab vendor={vendor} navigation={navigation} />}
       </Tab.Screen>
       <Tab.Screen name="Schedule" options={{ title: "Rezervari" }}>
-        {() => <ScheduleTab vendor={vendor} />}
+        {() => <ScheduleTab vendor={vendor} navigation={navigation} />}
       </Tab.Screen>
       <Tab.Screen name="Book" options={{ title: "Rezerva Acum" }}>
-        {() => <BookTab vendor={vendor} />}
+        {() => <BookTab vendor={vendor} navigation={navigation} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

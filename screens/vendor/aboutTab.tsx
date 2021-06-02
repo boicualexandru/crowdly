@@ -20,9 +20,11 @@ import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
+import { VendorScreenNavigationProp } from "./vendorScreen";
 
 interface Props {
   vendor: VendorDetails;
+  navigation: VendorScreenNavigationProp;
 }
 
 const AboutTab = ({ vendor }: Props) => {

@@ -17,9 +17,11 @@ import Button from "@components/button/button";
 
 import AddSchedulePeriodModal from "./addSchedulePeriodModal";
 import SchedulePeriodItem from "./schedulePeriodItem";
+import { VendorScreenNavigationProp } from "../vendorScreen";
 
 interface Props {
   vendor: VendorDetails;
+  navigation: VendorScreenNavigationProp;
 }
 
 const ScheduleTab = ({ vendor }: Props) => {

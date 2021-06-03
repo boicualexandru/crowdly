@@ -92,11 +92,14 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
           ) : null}
           <View style={styles.itemText}>
             <View>
-              <Text style={styles.itemCaption}>
-                {vendorCategoryNameDictionary[item.vendorCategory]} -
-                {startMoment.format("Do MMMM")} -
-                {days > 1 ? endMoment.format("Do MMMM") : null}
-              </Text>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={styles.itemCaption}>
+                  {vendorCategoryNameDictionary[item.vendorCategory]}
+                </Text>
+                <Text style={styles.itemCaption}>
+                  {startMoment.format("Do MMM")} - {days > 1 ? endMoment.format("Do MMM") : null}
+                </Text>
+              </View>
               <Text style={styles.itemTitle}>{item.vendorName}</Text>
             </View>
             <View style={styles.itemPriceContainer}>

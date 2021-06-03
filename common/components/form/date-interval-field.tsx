@@ -33,7 +33,7 @@ const DateIntervalField = (props: Props) => {
 
   const getStringValue = useCallback((value: Date | undefined): string => {
     if (value == null) return "";
-      return moment(value).format("YYYY-MM-DD");
+      return moment(value).format("Do MMM YYYY");
   }, []);
 
   const stringValues = {
@@ -56,13 +56,13 @@ const DateIntervalField = (props: Props) => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Pressable style={[styles.inputWrapper]} onPress={() => setPickerOpenedFor("left")}>
           <Text {...props} style={styles.input}>
-            {stringValues.left ? moment(stringValues.left).format("YYYY-MM-DD") : ''}
+            {stringValues.left ?? ''}
           </Text>
         </Pressable>
         <Text style={styles.divider}>-</Text>
         <Pressable style={[styles.inputWrapper]} onPress={() => setPickerOpenedFor("right")}>
           <Text {...props} style={styles.input}>
-            {stringValues.right ? moment(stringValues.right).format("YYYY-MM-DD") : ''}
+            {stringValues.right ?? ''}
           </Text>
         </Pressable>
       </View>

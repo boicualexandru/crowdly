@@ -16,9 +16,11 @@ import IconButton from "@components/button/icon-button";
 import ThemeColors from "@theme/theme-colors";
 import { CheckoutContext } from "@context/checkout/checkoutContext";
 import { CheckoutActionType } from "@context/checkout/checkoutActions";
+import PaymentScreen from "@screens/paymentScreen";
 
 type CheckoutStackParamList = {
   Checkout: undefined;
+  Payment: undefined;
 };
 
 type CheckoutStackNavigationProp = HomeTabsNavigationPropChild<"CheckoutStack">;
@@ -47,6 +49,13 @@ const CheckoutStackNavigation = () => {
               />
             </View>
           )
+        }}
+      />
+      <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{ 
+          title: "Plata",
         }}
       />
     </Stack.Navigator>

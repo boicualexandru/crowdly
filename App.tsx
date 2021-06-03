@@ -26,6 +26,7 @@ import {
 } from "@context/preferences/preferencesState";
 
 import RootStackNavigation from "./navigation/rootStack";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 export default function App() {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
@@ -103,12 +104,17 @@ export default function App() {
         <CheckoutContext.Provider
           value={{ state: checkoutState, dispatch: checkoutDispatch }}
         >
-          <React.Fragment>
-            <NavigationContainer>
-              <RootStackNavigation />
-            </NavigationContainer>
-            <ExpoStatusBar style="auto" />
-          </React.Fragment>
+          <StripeProvider
+            publishableKey={"pk_test_7nqC7bY85h8f0bERWXbIC54Z00evalkYnc"}
+            // merchantIdentifier="merchant.identifier"
+          >
+            <React.Fragment>
+              <NavigationContainer>
+                <RootStackNavigation />
+              </NavigationContainer>
+              <ExpoStatusBar style="auto" />
+            </React.Fragment>
+          </StripeProvider>
         </CheckoutContext.Provider>
       </PreferencesContext.Provider>
     </AuthContext.Provider>

@@ -25,7 +25,7 @@ const BookTab = ({ vendor, navigation }: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [unavailablePeriods, setUnavailablePeriods] = useState<Period[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<SelectedPeriod>({});
-  const { dispatch: checkoutDispatch } = useContext(CheckoutContext);
+  const { state: checkoutState, dispatch: checkoutDispatch } = useContext(CheckoutContext);
   
   useFocusEffect(
     useCallback(() => {
@@ -36,8 +36,14 @@ const BookTab = ({ vendor, navigation }: Props) => {
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
 
-    const result = await getUnavailablePeriodsByVendorId(vendor.id);
-    setUnavailablePeriods(result);
+    const serverUnavailablePeriods = await getUnavailablePeriodsByVendorId(vendor.id);
+    const checkoutUnavailablePeriods = checkoutState.items
+      .filter(item => item.vendorId == vendor.id)
+      .map(item => item.period);
+
+    const allUnavailablePeriods = [...serverUnavailablePeriods, ...checkoutUnavailablePeriods];
+
+    setUnavailablePeriods(allUnavailablePeriods);
     setSelectedPeriod({});
 
     setIsRefreshing(false);

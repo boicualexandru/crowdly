@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   itemPriceContainer: {
-    marginTop: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

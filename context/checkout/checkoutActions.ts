@@ -1,9 +1,15 @@
 import { CheckoutState, CheckoutItem } from "./checkoutState";
 
 export enum CheckoutActionType {
+  Load,
   AddItemToCheckout,
   RemoveItemFromCheckout,
   ClearCheckout,
+}
+
+export interface Load {
+  type: CheckoutActionType.Load;
+  payload: CheckoutState;
 }
 
 export interface AddItemToCheckout {
@@ -23,6 +29,7 @@ export interface ClearCheckout {
 }
 
 export type CheckoutActions =
+  Load
   | AddItemToCheckout
   | RemoveItemFromCheckout
   | ClearCheckout;

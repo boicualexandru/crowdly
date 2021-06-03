@@ -23,7 +23,8 @@ import ThemeColors from "@theme/theme-colors";
 import RootStackNavigation from "./navigation/rootStack";
 import { CheckoutContext } from "@context/checkout/checkoutContext";
 import { checkoutReducer } from "@context/checkout/checkoutReducer";
-import { initialCheckoutState } from "@context/checkout/checkoutState";
+import { CheckoutState, initialCheckoutState } from "@context/checkout/checkoutState";
+import { CheckoutActionType } from "@context/checkout/checkoutActions";
 
 export default function App() {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
@@ -68,9 +69,20 @@ export default function App() {
     });
   }, []);
 
+  const loadCheckoutState = useCallback(async () => {
+    const checkoutJson = await AsyncStorage.getItem("checkout");
+    if (!checkoutJson) return;
+
+    const checkout: CheckoutState = JSON.parse(checkoutJson);
+    checkoutDispatch({
+      type: CheckoutActionType.Load,
+      payload: checkout,
+    });
+  }, []);
+
   useEffect(() => {
     (async () => {
-      await Promise.all([loadAuthState(), loadPreferencesState()]);
+      await Promise.all([loadAuthState(), loadPreferencesState(), loadCheckoutState()]);
     })();
   }, []);
 

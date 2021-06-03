@@ -8,20 +8,32 @@ export function checkoutReducer(
   action: CheckoutActions
 ): CheckoutState {
   switch (action.type) {
+    case CheckoutActionType.Load: {
+      return action.payload;
+    }
     case CheckoutActionType.AddItemToCheckout: {
-      return {
+      const newState = {
         ...state,
         items: [...state.items, action.payload],
       };
+      AsyncStorage.setItem("checkout", JSON.stringify(newState)).then();
+
+      return newState;
     }
     case CheckoutActionType.RemoveItemFromCheckout: {
-      return {
+      const newState = {
         ...state,
         items: state.items.filter((_, index) => index !== action.payload.index),
       };
+      AsyncStorage.setItem("checkout", JSON.stringify(newState)).then();
+
+      return newState;
     }
     case CheckoutActionType.ClearCheckout: {
-      return { ...initialCheckoutState };
+      const newState = { ...initialCheckoutState };
+      AsyncStorage.setItem("checkout", JSON.stringify(newState)).then();
+
+      return newState;
     }
   }
 }

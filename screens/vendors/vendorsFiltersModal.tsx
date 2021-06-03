@@ -1,17 +1,15 @@
 import {
-  vendorCategoryOptions,
-  VendorCategoryType,
   VendorsFiltersModel,
 } from "api/vendors";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import Button from "@components/button/button";
-import PickerField from "@components/form/picker-field";
 import RangeTextField from "@components/form/range-text-field";
 import BigModal from "@components/modal/big-modal";
 import TextField from "@components/form/text-field";
 import DateIntervalField from "@components/form/date-interval-field";
+import { ThemeTypography } from "@theme/theme-typography";
 
 interface Props {
   isOpen: boolean;
@@ -34,18 +32,7 @@ const VendorsFiltersModal = (props: Props) => {
   return (
     <BigModal isOpen={props.isOpen} requestClose={props.requestClose}>
       <View style={{ width: "100%" }}>
-        <PickerField
-          label="Categoria"
-          items={vendorCategoryOptions}
-          selectedValue={tempFilters.category}
-          onValueChange={(itemValue) => {
-            setTempFilters((f) => ({
-              ...f,
-              category: itemValue as VendorCategoryType,
-            }));
-          }}
-          containerStyle={styles.fieldGroup}
-        />
+        <Text style={[ThemeTypography.h6, {fontWeight: 'bold'}]}>Filtre Avansate</Text>
         <RangeTextField
           label="In intervalul de pret"
           values={{ left: tempFilters.priceMin, right: tempFilters.priceMax }}

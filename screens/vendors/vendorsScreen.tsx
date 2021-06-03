@@ -104,6 +104,7 @@ const VendorsScreen = ({ navigation, route }: Props) => {
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
         ListHeaderComponent={renderHeader}
+        keyboardShouldPersistTaps="always"
       />
     </SafeAreaView>
   );

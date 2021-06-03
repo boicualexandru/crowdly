@@ -25,6 +25,7 @@ const BigModal = (props: Props) => {
           flexGrow: 1,
           padding: 16,
         }}
+        keyboardShouldPersistTaps="always"
       >
         <Pressable
           style={[styles.centeredView]}

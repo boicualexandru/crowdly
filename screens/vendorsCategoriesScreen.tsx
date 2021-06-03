@@ -57,7 +57,10 @@ interface Props {
 
 const VendorsCategoriesScreen = ({ navigation }: Props) => {
   return (
-    <ScrollView contentContainerStyle={ThemeBoxing.container}>
+    <ScrollView 
+      contentContainerStyle={ThemeBoxing.container}
+      keyboardShouldPersistTaps="always"
+    >
       {categoriesLabels.map((category) => (
         <Pressable
           style={styles.categoryContainer}

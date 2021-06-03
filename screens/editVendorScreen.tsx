@@ -189,6 +189,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       style={{
         paddingHorizontal: 16,
       }}
+      keyboardShouldPersistTaps="always"
     >
       <View>
         <TextField

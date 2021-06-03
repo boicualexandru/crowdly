@@ -127,6 +127,7 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={ThemeBoxing.container}
+        keyboardShouldPersistTaps="always"
       >
         {items.map((item, index) =>
           renderItem(item, () =>

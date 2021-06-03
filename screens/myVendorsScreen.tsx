@@ -57,6 +57,7 @@ const MyVendorsScreen = ({ navigation }: Props) => {
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id + Math.random().toString()}
+        keyboardShouldPersistTaps="always"
       />
     </SafeAreaView>
   )

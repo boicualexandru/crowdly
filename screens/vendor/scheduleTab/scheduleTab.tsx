@@ -94,6 +94,7 @@ const ScheduleTab = ({ vendor }: Props) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id + Math.random().toString()}
         contentContainerStyle={styles.listContent}
+        keyboardShouldPersistTaps="always"
       />
       <AddSchedulePeriodModal
         isOpen={isCreateModalOpen}

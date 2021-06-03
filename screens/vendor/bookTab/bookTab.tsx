@@ -105,7 +105,9 @@ const BookTab = ({ vendor, navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView 
+        keyboardShouldPersistTaps="always"
+      >
         <Calendar
           unavailablePeriods={unavailablePeriods}
           onSelect={(period) =>

@@ -37,7 +37,10 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+    <ScrollView 
+      contentContainerStyle={styles.scrollViewContainer} 
+      keyboardShouldPersistTaps="always"
+    >
       <View>
         <View style={styles.profileDetailContainer}>
           <View style={styles.profileImageCircle}>

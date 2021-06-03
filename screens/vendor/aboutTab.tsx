@@ -35,6 +35,7 @@ const AboutTab = ({ vendor }: Props) => {
         flexDirection: "column",
         alignItems: "flex-start",
       }}
+      keyboardShouldPersistTaps="always"
     >
       <View style={ThemeBoxing.container}>
         <View>

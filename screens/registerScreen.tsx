@@ -64,6 +64,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
         justifyContent: "center",
         height: "100%",
       }}
+      keyboardShouldPersistTaps="always"
     >
       <View>
         <TextField

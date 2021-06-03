@@ -1,15 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import jwt_decode from "jwt-decode";
+import "moment/locale/ro";
 import React, { useCallback, useEffect, useReducer } from "react";
-import { ActivityIndicator } from "react-native";
-import 'moment/locale/ro';
 
 import { AuthActionType, LoadPayloadModel } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
 import { authReducer } from "@context/auth/authReducer";
 import { initialAuthState } from "@context/auth/authState";
+import { CheckoutActionType } from "@context/checkout/checkoutActions";
+import { CheckoutContext } from "@context/checkout/checkoutContext";
+import { checkoutReducer } from "@context/checkout/checkoutReducer";
+import {
+  CheckoutState,
+  initialCheckoutState,
+} from "@context/checkout/checkoutState";
 import { PreferencesActionType } from "@context/preferences/preferencesActions";
 import { PreferencesContext } from "@context/preferences/preferencesContext";
 import { preferencesReducer } from "@context/preferences/preferencesReducer";
@@ -18,13 +25,7 @@ import {
   PreferencesState,
 } from "@context/preferences/preferencesState";
 
-import ThemeColors from "@theme/theme-colors";
-
 import RootStackNavigation from "./navigation/rootStack";
-import { CheckoutContext } from "@context/checkout/checkoutContext";
-import { checkoutReducer } from "@context/checkout/checkoutReducer";
-import { CheckoutState, initialCheckoutState } from "@context/checkout/checkoutState";
-import { CheckoutActionType } from "@context/checkout/checkoutActions";
 
 export default function App() {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
@@ -82,18 +83,17 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      await Promise.all([loadAuthState(), loadPreferencesState(), loadCheckoutState()]);
+      await SplashScreen.preventAutoHideAsync();
+      await Promise.all([
+        loadAuthState(),
+        loadPreferencesState(),
+        loadCheckoutState(),
+      ]);
+      await SplashScreen.hideAsync();
     })();
   }, []);
 
-  if (!authState.hasLoaded)
-    return (
-      <ActivityIndicator
-        size="large"
-        color={ThemeColors.primary}
-        style={{ marginVertical: 16 }}
-      />
-    );
+  if (!authState.hasLoaded) return null;
 
   return (
     <AuthContext.Provider value={{ state: authState, dispatch: authDispatch }}>
@@ -112,32 +112,5 @@ export default function App() {
         </CheckoutContext.Provider>
       </PreferencesContext.Provider>
     </AuthContext.Provider>
-
-    // <React.Fragment>
-    //   <IconRegistry icons={EvaIconsPack} />
-    //   <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-
-    //     <TopNavigation
-    //       accessoryLeft={BackAction}
-    //       title='Application'
-    //       style={{marginTop: StatusBar.currentHeight}}
-    //     />
-
-    //     <Layout style={styles.container}>
-    //     {/* <Text style={{colo: 40}}/> */}
-    //     <List style={{ width: "100%" }} data={data} renderItem={renderItem} />
-    //     </Layout>
-
-    //     <BottomNavigation style={styles.bottomNavigation} {...navigationState}>
-    //       <BottomNavigationTab icon={PersonIcon}/>
-    //       <BottomNavigationTab icon={EmailIcon}/>
-    //       <BottomNavigationTab icon={PlusIcon}/>
-    //       <BottomNavigationTab icon={EmailIcon}/>
-    //       <BottomNavigationTab icon={EmailIcon}/>
-    //     </BottomNavigation>
-
-    //   </ApplicationProvider>
-    //   <ExpoStatusBar style="auto" />
-    // </React.Fragment>
   );
 }

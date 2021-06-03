@@ -4,10 +4,10 @@
     "slug": "crowdly",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon_2.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/splash_2.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -21,9 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon_2.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.boicualexandru.crowdly"
     },
     "web": {
       "favicon": "./assets/favicon.png"

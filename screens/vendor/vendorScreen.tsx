@@ -175,9 +175,12 @@ const VendorTabs = ({ vendor, navigation }: VendorTabsProps) => {
       <Tab.Screen name="About" options={{ title: "Despre" }}>
         {() => <AboutTab vendor={vendor} navigation={navigation} />}
       </Tab.Screen>
-      <Tab.Screen name="Schedule" options={{ title: "Rezervari" }}>
-        {() => <ScheduleTab vendor={vendor} navigation={navigation} />}
-      </Tab.Screen>
+      {
+        vendor.isEditable ?
+        <Tab.Screen name="Schedule" options={{ title: "Rezervari" }}>
+          {() => <ScheduleTab vendor={vendor} navigation={navigation} />}
+        </Tab.Screen> : null
+      }
       <Tab.Screen name="Book" options={{ title: "Rezerva Acum" }}>
         {() => <BookTab vendor={vendor} navigation={navigation} />}
       </Tab.Screen>

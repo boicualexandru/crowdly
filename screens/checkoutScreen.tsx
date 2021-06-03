@@ -1,4 +1,3 @@
-import useCheckoutApi, { ConfirmCheckoutModel } from "api/checkout";
 import { vendorCategoryNameDictionary } from "api/vendors";
 import moment from "moment";
 import React, { useCallback, useContext } from "react";
@@ -42,7 +41,6 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
   const { state: checkoutState, dispatch: checkoutDispatch } = useContext(
     CheckoutContext
   );
-  const { confirmCheckout } = useCheckoutApi();
 
   const items: RenderItemProps[] = checkoutState.items.map((item) => {
     const startMoment = moment(item.period.startDate);
@@ -61,19 +59,6 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
     (totalSum, curr) => totalSum + curr.item.vendorPrice * curr.days,
     0
   );
-
-  const onConfirmCheckout = useCallback(async () => {
-    const checkoutModel: ConfirmCheckoutModel = {
-      items: checkoutState.items.map((item) => ({
-        vendorId: item.vendorId,
-        startDate: item.period.startDate,
-        endDate: item.period.endDate,
-      })),
-    };
-
-    const schedulePeriods = await confirmCheckout(checkoutModel);
-    checkoutDispatch({ type: CheckoutActionType.ClearCheckout });
-  }, [checkoutState]);
 
   const renderItem = useCallback(
     (
@@ -147,7 +132,7 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
         </View>
         <View style={{ marginLeft: 16 }}>
           <Text>
-            <Button label="Finalizeaza " onPress={onConfirmCheckout} />
+            <Button label="Spre plata " onPress={() => navigation.push("Payment")} />
           </Text>
         </View>
       </View>

@@ -33,7 +33,8 @@
       ],
       "@theme/*": [
         "common/theme/*"
-      ],
+      ]
     }
-  }
+  },
+  "extends": "expo/tsconfig.base"
 }

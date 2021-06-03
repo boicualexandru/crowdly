@@ -5,7 +5,7 @@ import {
   Feather,
 } from "@expo/vector-icons";
 import React, { useMemo } from "react";
-import { Pressable, GestureResponderEvent } from "react-native";
+import { Pressable, GestureResponderEvent, ViewStyle, StyleProp } from "react-native";
 
 import ThemeColors from "@theme/theme-colors";
 
@@ -17,6 +17,7 @@ interface Props {
   onPress?: (event: GestureResponderEvent) => void;
   backgroundColor?: string;
   size?: number;
+  style?: StyleProp<ViewStyle>
 }
 
 const IconButton = (props: Props) => {
@@ -32,11 +33,11 @@ const IconButton = (props: Props) => {
     <Pressable
       onPress={props.onPress}
       android_ripple={{ radius: 24, color: "#00000051" }}
-      style={{
+      style={[{
         padding: 16,
         borderRadius: 200,
         backgroundColor: props.backgroundColor ?? "transparent",
-      }}
+      }, props.style]}
     >
       <IconComponent
         name={props.icon}

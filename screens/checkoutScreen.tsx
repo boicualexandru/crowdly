@@ -77,7 +77,7 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
               {days > 1 ? `${days} x ` : null}
               {item.vendorPrice} Lei
             </Text>
-            <IconButton theme="Feather" icon="trash-2" size={24} color={ThemeColors.primary} onPress={onRemove} />
+            <IconButton theme="Feather" icon="trash-2" color={ThemeColors.primary} onPress={onRemove} style={{padding: 0}} />
           </View>
         </View>
       </View>

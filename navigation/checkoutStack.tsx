@@ -3,7 +3,8 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import React from "react";
+import React, { useContext } from "react";
+import { View } from 'react-native';
 
 import CheckoutScreen from "@screens/checkoutScreen";
 
@@ -11,6 +12,10 @@ import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,
 } from "./homeTabs";
+import IconButton from "@components/button/icon-button";
+import ThemeColors from "@theme/theme-colors";
+import { CheckoutContext } from "@context/checkout/checkoutContext";
+import { CheckoutActionType } from "@context/checkout/checkoutActions";
 
 type CheckoutStackParamList = {
   Checkout: undefined;
@@ -22,12 +27,27 @@ type CheckoutStackRouteProp = HomeTabsRoutePropChild<"CheckoutStack">;
 const Stack = createStackNavigator<CheckoutStackParamList>();
 
 const CheckoutStackNavigation = () => {
+  const { dispatch: checkoutDispatch } = useContext(CheckoutContext);
+
   return (
     <Stack.Navigator initialRouteName="Checkout">
       <Stack.Screen
         name="Checkout"
         component={CheckoutScreen}
-        options={{ title: "Finalizeaza Selectia" }}
+        options={{ 
+          title: "Finalizeaza Selectia",
+          headerRight: () => (
+            <View style={{ flexDirection: "row" }}>
+              <IconButton 
+                icon="trash-2" 
+                color={ThemeColors.primary}
+                theme="Feather"
+                size={18}
+                onPress={() => checkoutDispatch({type: CheckoutActionType.ClearCheckout})}
+              />
+            </View>
+          )
+        }}
       />
     </Stack.Navigator>
   );

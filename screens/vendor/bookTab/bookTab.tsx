@@ -62,8 +62,9 @@ const BookTab = ({ vendor, navigation }: Props) => {
 
       // for the home tab navigator it takes time to get updated after the dispatch, so the checkout tab will not show up imidiately
       setTimeout(() => {
-        navigation.navigate("CheckoutStack");
-      }, 1000);
+        navigation.navigate("VendorsStack", { screen: "VendorsCategories"});
+        navigation.navigate("CheckoutStack", { screen: "Checkout"});
+      }, 500);
       // try {
       //   navigation.navigate("Checkout", {
       //     items: [{

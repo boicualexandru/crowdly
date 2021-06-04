@@ -57,7 +57,7 @@ const ProfileScreen = ({ navigation, route }: Props) => {
         <Divider />
         <Pressable style={styles.buttonItem}>
           <Feather name="tag" color={ThemeColors.textDark} size={25} />
-          <Text style={styles.buttonItemText}>Tichetele Mele</Text>
+          <Text style={styles.buttonItemText}>Biletele Mele</Text>
         </Pressable>
         <Divider />
         <Pressable style={styles.buttonItem}>

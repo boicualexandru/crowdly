@@ -1,5 +1,6 @@
 const ThemeColors = {
   primary: "#FB5C82",
+  success: "#6ebc41",
 
   black: "#000000",
   gray: "#E2E8F0",

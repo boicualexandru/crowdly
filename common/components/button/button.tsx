@@ -8,6 +8,7 @@ import {
   ViewStyle,
   StyleProp,
   TextStyle,
+  ActivityIndicator,
 } from "react-native";
 
 import ThemeColors from "@theme/theme-colors";
@@ -19,6 +20,7 @@ export interface ButtonProps extends PressableProps {
   rightIcon?: string;
   outlined?: boolean;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
@@ -31,9 +33,17 @@ const Button = (props: ButtonProps) => {
   const color = props.disabled ? ThemeColors.gray : ThemeColors.primary;
 
   return (
-    <Pressable {...props} style={[styles.button, {backgroundColor: color, borderColor: color}, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]} onPress={props.disabled ? null : props.onPress}>
+    <Pressable {...props} style={[styles.button, {backgroundColor: color, borderColor: color}, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]} onPress={props.disabled || props.loading ? null : props.onPress}>
       {props.leftIcon && renderIcon(props.leftIcon)}
-      <Text style={[styles.label, props.outlined ? {color: color}: null, props.labelStyle]}>{props.label}</Text>
+      {
+        props.loading ?
+        <ActivityIndicator
+          size="small"
+          color={props.outlined ? color : ThemeColors.white}
+          style={{width: '100%'}}
+        /> : null
+      }
+      <Text style={[styles.label, props.outlined ? {color: color}: null, props.loading ? {opacity: 0} : null, props.labelStyle]}>{props.label}</Text>
     </Pressable>
   );
 };

@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
+import { StripeProvider } from "@stripe/stripe-react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import jwt_decode from "jwt-decode";
+import moment from "moment";
 import "moment/locale/ro";
 import React, { useCallback, useEffect, useReducer } from "react";
 
@@ -26,7 +28,6 @@ import {
 } from "@context/preferences/preferencesState";
 
 import RootStackNavigation from "./navigation/rootStack";
-import { StripeProvider } from "@stripe/stripe-react-native";
 
 export default function App() {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
@@ -76,9 +77,20 @@ export default function App() {
     if (!checkoutJson) return;
 
     const checkout: CheckoutState = JSON.parse(checkoutJson);
+    const checkoutParsed: CheckoutState = {
+      ...checkout,
+      items: checkout.items.map((item) => ({
+        ...item,
+        period: {
+          startDate: moment(item.period.startDate).toDate(),
+          endDate: moment(item.period.endDate).toDate(),
+        },
+      })),
+    };
+
     checkoutDispatch({
       type: CheckoutActionType.Load,
-      payload: checkout,
+      payload: checkoutParsed,
     });
   }, []);
 

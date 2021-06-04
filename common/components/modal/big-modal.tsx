@@ -1,3 +1,4 @@
+import { BlurView } from "expo-blur";
 import React from "react";
 import { Modal, Pressable, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -18,27 +19,29 @@ const BigModal = (props: Props) => {
         props.requestClose();
       }}
     >
-      <ScrollView
-        style={styles.modalOverlay}
-        contentContainerStyle={{
-          justifyContent: "center",
-          flexGrow: 1,
-          padding: 16,
-        }}
-        keyboardShouldPersistTaps="always"
-      >
-        <Pressable
-          style={[styles.centeredView]}
-          onPress={() => props.requestClose()}
+      <BlurView style={{height: '100%'}} intensity={100} tint="light">
+        <ScrollView
+          style={styles.modalOverlay}
+          contentContainerStyle={{
+            justifyContent: "center",
+            flexGrow: 1,
+            padding: 16,
+          }}
+          keyboardShouldPersistTaps="always"
         >
           <Pressable
-            style={styles.modalView}
-            onPress={(e) => e.preventDefault()}
+            style={[styles.centeredView]}
+            onPress={() => props.requestClose()}
           >
-            {props.children}
+            <Pressable
+              style={styles.modalView}
+              onPress={(e) => e.preventDefault()}
+            >
+              {props.children}
+            </Pressable>
           </Pressable>
-        </Pressable>
-      </ScrollView>
+        </ScrollView>
+      </BlurView>
     </Modal>
   );
 };
@@ -50,7 +53,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalOverlay: {
-    backgroundColor: "#ffffffa0",
   },
   modalView: {
     margin: 20,

@@ -1,6 +1,12 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
-import { Text, Pressable, Modal, Alert, StyleSheet, View } from "react-native";
+import {
+  Text,
+  Pressable,
+  Modal,
+  StyleSheet,
+  Image,
+} from "react-native";
 
 import ThemeColors from "@theme/theme-colors";
 import {
@@ -21,45 +27,48 @@ const NewItemModal = (props: Props) => {
       transparent={true}
       visible={props.isOpen}
       onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
         props.requestClose();
       }}
     >
       <Pressable
-        style={[styles.centeredView, styles.modalOverlay]}
+        style={[styles.modalOverlay]}
         onPress={() => props.requestClose()}
       >
         <Pressable
-          style={[styles.button]}
+          style={[styles.itemContainer, { marginBottom: 16 }]}
           onPress={(e) => {
             e.preventDefault();
             // props.onNewVendor();
             props.requestClose();
           }}
         >
-          <MaterialCommunityIcons
-            name="calendar-plus"
-            color={ThemeColors.white}
-            size={50}
-            style={styles.buttonIcon}
+          <Image
+            source={{
+              uri:
+                "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80",
+            }}
+            style={styles.bgImage}
+            resizeMode="cover"
           />
-          <Text style={styles.textStyle}>Eveniment Nou</Text>
+          <Text style={styles.text}>Eveniment Nou</Text>
         </Pressable>
         <Pressable
-          style={[styles.button]}
+          style={[styles.itemContainer]}
           onPress={(e) => {
             e.preventDefault();
             props.onNewVendor();
             props.requestClose();
           }}
         >
-          <MaterialCommunityIcons
-            name="briefcase-plus-outline"
-            color={ThemeColors.white}
-            size={50}
-            style={styles.buttonIcon}
+          <Image
+            source={{
+              uri:
+                "https://images.unsplash.com/photo-1584402617825-1a58712ae0b0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=742&q=80",
+            }}
+            style={styles.bgImage}
+            resizeMode="cover"
           />
-          <Text style={styles.textStyle}>Serviciu Nou</Text>
+          <Text style={styles.text}>Serviciu Nou</Text>
         </Pressable>
       </Pressable>
     </Modal>
@@ -67,32 +76,41 @@ const NewItemModal = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  // centeredView: {
+  //   flex: 1,
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
   modalOverlay: {
     backgroundColor: "#ffffffdd",
-  },
-  button: {
-    width: 150,
-    height: 150,
-    borderRadius: 200,
-    marginHorizontal: 10,
-    elevation: 3,
-    backgroundColor: ThemeColors.primary,
+    padding: 16,
+    flex: 1,
     flexDirection: "column",
-    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  itemContainer: {
+    backgroundColor: "#000",
+    flex: 1,
+    borderRadius: 16,
     justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+    elevation: 3,
+    position: "relative",
   },
-  buttonIcon: {
-    marginBottom: 8,
+  bgImage: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    opacity: 0.5,
   },
-  textStyle: {
-    ...ThemeTypography.subtitle1,
+  text: {
+    ...ThemeTypography.h5,
     ...ThemeTypographyColorStyles.text_white,
+    textTransform: "uppercase",
+    letterSpacing: 4,
+    fontWeight: "600",
   },
 });
 

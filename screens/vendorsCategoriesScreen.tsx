@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 7 / 3,
     position: "absolute",
-    opacity: 0.6,
+    opacity: 0.5,
   },
   text: {
     ...ThemeTypography.h5,

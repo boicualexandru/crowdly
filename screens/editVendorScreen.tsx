@@ -281,15 +281,16 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: ThemeColors.gray,
-    paddingHorizontal: 4,
+    borderColor: ThemeColors.textGray,
+    padding: 4,
+    marginBottom: 8,
   },
   imagesContainer: {
     marginTop: 16,
     flexWrap: "wrap",
   },
   image: {
-    borderRadius: 12,
+    borderRadius: 8,
     width: "100%",
     aspectRatio: 4 / 3,
   },

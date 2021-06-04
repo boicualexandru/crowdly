@@ -26,6 +26,7 @@ const BookTab = ({ vendor, navigation }: Props) => {
   const [unavailablePeriods, setUnavailablePeriods] = useState<Period[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<SelectedPeriod>({});
   const { state: checkoutState, dispatch: checkoutDispatch } = useContext(CheckoutContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   useFocusEffect(
     useCallback(() => {
@@ -51,6 +52,7 @@ const BookTab = ({ vendor, navigation }: Props) => {
 
   const onBook = useCallback(
     async () => {
+      setIsSubmitting(true);
       checkoutDispatch({
         type: CheckoutActionType.AddItemToCheckout,
         payload: {
@@ -70,6 +72,7 @@ const BookTab = ({ vendor, navigation }: Props) => {
       setTimeout(() => {
         navigation.navigate("VendorsStack", { screen: "VendorsCategories"});
         navigation.navigate("CheckoutStack", { screen: "Checkout"});
+        setIsSubmitting(false);
       }, 500);
       // try {
       //   navigation.navigate("Checkout", {
@@ -117,11 +120,12 @@ const BookTab = ({ vendor, navigation }: Props) => {
             })
           }
         />
-        <View style={{padding: 16}}>
+        <View style={{padding: 16, paddingBottom: 32}}>
           <Button 
             label="Selecteaza" 
             disabled={selectedPeriod.startDate == null || selectedPeriod.endDate == null}
             onPress={onBook} 
+            loading={isSubmitting}
           />
         </View>
       </ScrollView>

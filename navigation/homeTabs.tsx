@@ -122,7 +122,7 @@ const HomeTabsNavigation = ({
             tabBarIcon: ({ color, size, focused }) => (
               <View style={styles.plusButton}>
                 <LinearGradient
-                  colors={[ThemeColors.primary, "#7A51E8"]}
+                  colors={[ThemeColors.primary, ThemeColors.secondary]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={{

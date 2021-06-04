@@ -4,7 +4,7 @@
     "slug": "crowdly",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon_2.png",
+    "icon": "./assets/icon_3.png",
     "splash": {
       "image": "./assets/splash_1.png",
       "resizeMode": "cover",
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon_2.png",
+        "foregroundImage": "./assets/adaptive-icon_3.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.boicualexandru.crowdly"

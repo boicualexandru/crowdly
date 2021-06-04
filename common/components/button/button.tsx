@@ -1,5 +1,5 @@
-import React from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useMemo } from "react";
+import { FontAwesome5, AntDesign, Feather } from "@expo/vector-icons";
 import {
   Pressable,
   Text,
@@ -18,6 +18,7 @@ export interface ButtonProps extends PressableProps {
   labelStyle?: StyleProp<TextStyle>;
   leftIcon?: string;
   rightIcon?: string;
+  iconTheme?: "FontAwesome5" | "AntDesign" | "Feather";
   outlined?: boolean;
   disabled?: boolean;
   loading?: boolean;
@@ -26,15 +27,23 @@ export interface ButtonProps extends PressableProps {
 const Button = (props: ButtonProps) => {
   const buttonStyle = props.style as StyleProp<ViewStyle>;
 
-  const renderIcon = (icon: string) => (
-    <FontAwesome5 name={icon} size={14} color={ThemeColors.white} style={styles.icon} />
+  const IconComponent = useMemo(() => {
+    const theme = props.iconTheme ?? "FontAwesome5";
+
+    if (theme == "FontAwesome5") return FontAwesome5;
+    if (theme == "AntDesign") return AntDesign;
+    if (theme == "Feather") return Feather;
+  }, [props.iconTheme]);
+
+  const renderIcon = (icon: string, color: string) => (
+    <IconComponent name={icon} size={14} color={color} style={styles.icon} />
   )
 
   const color = props.disabled ? ThemeColors.gray : ThemeColors.primary;
 
   return (
     <Pressable {...props} style={[styles.button, {backgroundColor: color, borderColor: color}, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]} onPress={props.disabled || props.loading ? null : props.onPress}>
-      {props.leftIcon && renderIcon(props.leftIcon)}
+      {props.leftIcon && renderIcon(props.leftIcon, props.outlined ? color : ThemeColors.white)}
       {
         props.loading ?
         <ActivityIndicator

@@ -237,18 +237,22 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
         <View style={[styles.row, { marginTop: 16 }]}>
           <View style={styles.columnHalf}>
             <Button
-              label="Incarca Imagine"
-              leftIcon="image"
-              style={{ flex: 1 }}
-              onPress={pickImage}
-            />
-          </View>
-          <View style={styles.columnHalf}>
-            <Button
               label="Fotografiaza"
               leftIcon="camera"
               style={{ flex: 1 }}
               onPress={takePhoto}
+              iconTheme="Feather"
+              outlined
+            />
+          </View>
+          <View style={styles.columnHalf}>
+            <Button
+              label="Incarca"
+              leftIcon="image"
+              style={{ flex: 1 }}
+              onPress={pickImage}
+              iconTheme="Feather"
+              outlined
             />
           </View>
         </View>

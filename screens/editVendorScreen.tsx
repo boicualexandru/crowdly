@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   imageContainer: {
-    borderRadius: 4,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: ThemeColors.gray,
     paddingHorizontal: 4,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   image: {
-    borderRadius: 4,
+    borderRadius: 12,
     width: "100%",
     aspectRatio: 4 / 3,
   },

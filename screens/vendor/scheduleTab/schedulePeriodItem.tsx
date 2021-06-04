@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: ThemeColors.white,
     marginBottom: 16,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     elevation: 3,
   },
   intervalWrapper: {

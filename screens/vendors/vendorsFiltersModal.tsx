@@ -43,6 +43,10 @@ const VendorsFiltersModal = (props: Props) => {
               priceMax: right,
             }));
           }}
+          placeholders={{
+            left: 'Min',
+            right: 'Max',
+          }}
           containerStyle={styles.fieldGroup}
         />
         <TextField
@@ -54,11 +58,12 @@ const VendorsFiltersModal = (props: Props) => {
             }));
           }}
           value={tempFilters.guests?.toString()}
+          placeholder="Ex: 100"
           keyboardType={"numeric"}
           containerStyle={styles.fieldGroup}
         />
         <DateIntervalField
-          label="Disponibil in perioada"
+          label="Disponibil"
           values={{ left: tempFilters.periodStart, right: tempFilters.periodEnd }}
           onChanges={({ left, right }) => {
             setTempFilters((f) => ({

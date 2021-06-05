@@ -55,15 +55,23 @@ const DateIntervalField = (props: Props) => {
       )}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Pressable style={[styles.inputWrapper]} onPress={() => setPickerOpenedFor("left")}>
-          <Text {...props} style={styles.input}>
-            {stringValues.left ?? ''}
-          </Text>
+          {
+            stringValues.left ?
+            <Text {...props} style={styles.input}>
+              {stringValues.left}
+            </Text> : 
+            <Text {...props} style={styles.placeholder}>De la</Text>
+          }
         </Pressable>
         <Text style={styles.divider}>-</Text>
         <Pressable style={[styles.inputWrapper]} onPress={() => setPickerOpenedFor("right")}>
-          <Text {...props} style={styles.input}>
-            {stringValues.right ?? ''}
-          </Text>
+          {
+            stringValues.right ?
+            <Text {...props} style={styles.input}>
+              {stringValues.right}
+            </Text> : 
+            <Text {...props} style={styles.placeholder}>Pana la</Text>
+          }
         </Pressable>
       </View>
       {
@@ -102,6 +110,11 @@ const styles = StyleSheet.create({
   input: {
     ...ThemeTypography.body1,
     color: ThemeColors.textDark,
+    flex: 1,
+  },
+  placeholder: {
+    ...ThemeTypography.body1,
+    color: ThemeColors.textGray,
     flex: 1,
   },
   divider: {

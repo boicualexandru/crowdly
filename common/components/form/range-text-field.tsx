@@ -21,6 +21,10 @@ interface Props extends TextInputProps {
     left?: number;
     right?: number;
   };
+  placeholders?: {
+    left?: string;
+    right?: string;
+  }
   onChanges: (values: { left?: number; right?: number }) => void;
 }
 
@@ -63,6 +67,7 @@ const RangeTextField = (props: Props) => {
               },
             ]}
             value={stringValues.left}
+            placeholder={props.placeholders?.left || ''}
             onChangeText={(text) => onChange(text, "left")}
           />
         </View>
@@ -80,6 +85,7 @@ const RangeTextField = (props: Props) => {
               },
             ]}
             value={stringValues.right}
+            placeholder={props.placeholders?.right || ''}
             onChangeText={(text) => onChange(text, "right")}
           />
         </View>

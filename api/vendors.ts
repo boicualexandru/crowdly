@@ -136,6 +136,7 @@ const useVendorsApi = () => {
       body.append("price", vendor.price.toString());
       if (vendor.guestsMin) body.append("guestsMin", vendor.guestsMin.toString());
       if (vendor.guestsMax) body.append("guestsMax", vendor.guestsMax.toString());
+      body.append("description", vendor.description);
       body.append("category", vendor.category.toString());
 
       vendor.images?.forEach((image) => {
@@ -162,6 +163,7 @@ const useVendorsApi = () => {
       body.append("price", vendor.price.toString());
       if (vendor.guestsMin) body.append("guestsMin", vendor.guestsMin.toString());
       if (vendor.guestsMax) body.append("guestsMax", vendor.guestsMax.toString());
+      body.append("description", vendor.description);
       body.append("category", vendor.category.toString());
 
       vendor.existingImages

@@ -83,6 +83,8 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           images: newImages,
         });
       }
+
+      navigation.pop();
     },
   });
 

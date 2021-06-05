@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   headerButtonsWrapper: {
-    backgroundColor: "#ffffffcc",
+    backgroundColor: "#ffffffaa",
     elevation: 3,
     borderRadius: 200,
     height: 48,

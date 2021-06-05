@@ -57,12 +57,6 @@ const ProfileScreen = ({ navigation, route }: Props) => {
     return state.user.firstName || state.user.email || "Utilizator";
   }, [state.user]);
 
-  const avatarImageUrl = useMemo(() => {
-    if (!state.user || !state.user.image)
-      return "https://mymodernmet.com/wp/wp-content/uploads/2019/09/100k-ai-faces-5.jpg";
-    return getImageUrlByUserId(state.user.id, state.user.image);
-  }, [state.user]);
-
   const checkPickerPermisions = useCallback(async () => {
     if (Platform.OS !== "web") {
       const {
@@ -104,10 +98,14 @@ const ProfileScreen = ({ navigation, route }: Props) => {
             onPress={() => setIsImagePickerModalOpen(true)}
           >
             <View style={styles.profileImageCircle}>
-              <Image
-                source={{ uri: avatarImageUrl }}
-                style={styles.profileImage}
-              />
+              {
+                !state.user || !state.user.image ?
+                <Feather name="user" color={ThemeColors.primary} size={46} /> :
+                <Image
+                  source={{ uri: getImageUrlByUserId(state.user.id, state.user.image) }}
+                  style={styles.profileImage}
+                />
+              }
             </View>
             <Feather
               name="edit-2"
@@ -212,6 +210,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: ThemeColors.primary,
     borderRadius: 200,
+    backgroundColor: ThemeColors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   profileImage: {
     position: "absolute",

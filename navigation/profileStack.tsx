@@ -5,19 +5,23 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 
+import ChangePasswordScreen from "@screens/changePasswordScreen";
 import MyVendorsScreen from "@screens/myVendorsScreen";
 import ProfileScreen from "@screens/profileScreen";
+import UpdateUserDetailsScreen from "@screens/updateUserDetailsScreen";
+import VendorScreen from "@screens/vendor/vendorScreen";
 
 import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,
 } from "./homeTabs";
-import VendorScreen from "@screens/vendor/vendorScreen";
 
 type ProfileStackParamList = {
   Profile: undefined;
   MyVendors: undefined;
   Vendor: { id: string; name: string };
+  UpdateUserDetails: undefined;
+  ChangePassword: undefined;
 };
 
 type ProfileStackNavigationProp = HomeTabsNavigationPropChild<"ProfileStack">;
@@ -45,6 +49,16 @@ const ProfileStackNavigation = () => {
           headerTransparent: true,
           title: "",
         }}
+      />
+      <Stack.Screen
+        name="UpdateUserDetails"
+        component={UpdateUserDetailsScreen}
+        options={{ title: "Detaliile Contului" }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+        options={{ title: "Schimba Parola" }}
       />
     </Stack.Navigator>
   );

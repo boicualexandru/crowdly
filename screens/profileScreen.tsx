@@ -1,4 +1,5 @@
 import { Feather } from "@expo/vector-icons";
+import { getImageUrlByUserId } from "api/helpers/getImage";
 import React, { useCallback, useContext, useMemo } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -17,7 +18,6 @@ import {
   ThemeTypography,
   ThemeTypographyColorStyles,
 } from "@theme/theme-typography";
-import { getImageUrlByUserId } from "api/helpers/getImage";
 
 type ProfileScreenNavigationProp = ProfileStackNavigationPropChild<"Profile">;
 type ProfileScreenRouteProp = ProfileStackRoutePropChild<"Profile">;
@@ -31,15 +31,17 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   const { state, dispatch } = useContext(AuthContext);
 
   const userNameToDisplay = useMemo(() => {
-    if (!state.user) return 'Utilizator';
-    if (state.user.firstName && state.user.lastName) return `${state.user.firstName} ${state.user.lastName}`;
-    return state.user.firstName || state.user.email || 'Utilizator';
-  }, [state.user])
+    if (!state.user) return "Utilizator";
+    if (state.user.firstName && state.user.lastName)
+      return `${state.user.firstName} ${state.user.lastName}`;
+    return state.user.firstName || state.user.email || "Utilizator";
+  }, [state.user]);
 
   const avatarImageUrl = useMemo(() => {
-    if (!state.user || !state.user.image) return 'https://mymodernmet.com/wp/wp-content/uploads/2019/09/100k-ai-faces-5.jpg';
-    return getImageUrlByUserId('', state.user?.image);
-  }, [state.user])
+    if (!state.user || !state.user.image)
+      return "https://mymodernmet.com/wp/wp-content/uploads/2019/09/100k-ai-faces-5.jpg";
+    return getImageUrlByUserId("", state.user?.image);
+  }, [state.user]);
 
   const logout = useCallback(() => {
     dispatch({
@@ -49,8 +51,8 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   }, []);
 
   return (
-    <ScrollView 
-      contentContainerStyle={styles.scrollViewContainer} 
+    <ScrollView
+      contentContainerStyle={styles.scrollViewContainer}
       keyboardShouldPersistTaps="always"
     >
       <View>
@@ -85,14 +87,20 @@ const ProfileScreen = ({ navigation, route }: Props) => {
       </View>
       <View>
         <Divider />
-        <Pressable style={styles.buttonItem}>
+        <Pressable
+          style={styles.buttonItem}
+          onPress={() => navigation.push("ChangePassword")}
+        >
           <Feather name="lock" color={ThemeColors.textDark} size={25} />
-          <Text style={styles.buttonItemText}>Setari de Securitate</Text>
+          <Text style={styles.buttonItemText}>Schimba parola</Text>
         </Pressable>
         <Divider />
-        <Pressable style={styles.buttonItem}>
+        <Pressable
+          style={styles.buttonItem}
+          onPress={() => navigation.push("UpdateUserDetails")}
+        >
           <Feather name="settings" color={ThemeColors.textDark} size={25} />
-          <Text style={styles.buttonItemText}>Setarile Contului</Text>
+          <Text style={styles.buttonItemText}>Detaliile Contului</Text>
         </Pressable>
         <Divider />
         <Pressable style={styles.buttonItem} onPress={() => logout()}>

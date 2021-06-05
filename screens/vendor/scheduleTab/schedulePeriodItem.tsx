@@ -1,7 +1,7 @@
 import { getImageUrlByUserId } from "api/helpers/getImage";
 import { VendorSchedulePeriod } from "api/schedulePeriods";
 import moment from "moment";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Alert, Pressable, StyleSheet, Text, View, Image } from "react-native";
 
 import ThemeColors from "@theme/theme-colors";
@@ -12,10 +12,11 @@ import {
 
 interface Props {
   period: VendorSchedulePeriod;
+  isPast?: boolean;
   onDelete: (periodId: string) => void;
 }
 
-const SchedulePeriodItem = ({ period, onDelete }: Props) => {
+const SchedulePeriodItem = ({ period, isPast, onDelete }: Props) => {
   const attepDelete = useCallback(
     (periodId: string) => {
       Alert.alert(
@@ -45,7 +46,7 @@ const SchedulePeriodItem = ({ period, onDelete }: Props) => {
 
   return (
     <Pressable
-      style={styles.scheduleItem}
+      style={[styles.scheduleItem, isPast ? {opacity: 0.5} : null]}
       onPress={() => attepDelete(period.id)}
     >
       <View
@@ -58,8 +59,13 @@ const SchedulePeriodItem = ({ period, onDelete }: Props) => {
       >
         <View style={styles.intervalWrapper}>
           <Text style={styles.date}>{getFormattedDate(period.startDate)}</Text>
-          <View style={styles.datesDivider} />
-          <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
+          {
+            period.startDate < period.endDate ?
+            <>
+              <View style={styles.datesDivider} />
+              <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
+            </> : null
+          }
         </View>
       </View>
       <View style={styles.content}>

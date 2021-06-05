@@ -54,10 +54,11 @@ const useSchdulePeriodsApi = () => {
 
   return {
     getSchdulePeriodsByVendorId: async (
-      vendorId: string
+      vendorId: string,
+      showPast?: boolean,
     ): Promise<VendorSchedulePeriod[]> => {
       const responseRaw = await state.axiosInstance?.get(
-        `vendors/${vendorId}/schedulePeriods`
+        `vendors/${vendorId}/schedulePeriods?showPast=${showPast ?? false}`
       );
 
       const response = (responseRaw?.data as VendorSchedulePeriod[]).map(period => ({

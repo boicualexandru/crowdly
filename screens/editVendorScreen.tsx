@@ -293,6 +293,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           onPress={() => formik.handleSubmit()}
           label="Salveaza"
           style={{ marginVertical: 16 }}
+          loading={formik.isSubmitting}
         />
       </View>
     </ScrollView>

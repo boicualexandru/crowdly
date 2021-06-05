@@ -77,6 +77,7 @@ const LoginScreen = ({ navigation, route }: Props) => {
           onPress={() => formik.handleSubmit()}
           label="Conecteaza-te"
           style={{ marginTop: 16 }}
+          loading={formik.isSubmitting}
         />
         <Button
           onPress={() => navigation.replace("Register")}

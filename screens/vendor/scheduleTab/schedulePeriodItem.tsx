@@ -39,7 +39,7 @@ const SchedulePeriodItem = ({ period, onDelete }: Props) => {
   );
 
   const getFormattedDate = useCallback(
-    (date: Date) => moment(date).format("Do MMMM"),
+    (date: Date) => moment(date).format("Do MMM"),
     []
   );
 
@@ -48,30 +48,48 @@ const SchedulePeriodItem = ({ period, onDelete }: Props) => {
       style={styles.scheduleItem}
       onPress={() => attepDelete(period.id)}
     >
-      <View style={styles.intervalWrapper}>
-        <Text style={styles.date}>{getFormattedDate(period.startDate)}</Text>
-        <View style={styles.datesDivider} />
-        <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
+      <View
+        style={{
+          minWidth: 76,
+          alignItems: "flex-start",
+          borderRightWidth: 1,
+          borderRightColor: ThemeColors.gray,
+        }}
+      >
+        <View style={styles.intervalWrapper}>
+          <Text style={styles.date}>{getFormattedDate(period.startDate)}</Text>
+          <View style={styles.datesDivider} />
+          <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
+        </View>
       </View>
-      {period.bookedByUser != null ? (
+      <View style={styles.content}>
         <View style={styles.userConatiner}>
           <Image
-            source={{
-              uri: getImageUrlByUserId(
-                period.bookedByUser.id,
-                period.bookedByUser.image
-              ),
-            }}
+            source={
+              period.bookedByUser
+                ? {
+                    uri: getImageUrlByUserId(
+                      period.bookedByUser.id,
+                      period.bookedByUser.image
+                    ),
+                  }
+                : {}
+            }
             style={styles.userImage}
           />
           <Text style={styles.userName}>
-            {period.bookedByUser?.firstName} {period.bookedByUser?.lastName}
+            {period.bookedByUser
+              ? `${period.bookedByUser?.firstName} ${period.bookedByUser?.lastName}`
+              : "Adaugata manual"}
           </Text>
         </View>
-      ) : null}
-      {period.description != null && period.description != "" && (
-        <Text style={styles.description}>{period.description}</Text>
-      )}
+        {period.description ? (
+          <View style={{ flexDirection: "column", marginTop: 8 }}>
+            <Text style={styles.descriptionLabel}>Descriere</Text>
+            <Text style={styles.description}>{period.description}</Text>
+          </View>
+        ) : null}
+      </View>
     </Pressable>
   );
 };
@@ -82,13 +100,14 @@ const styles = StyleSheet.create({
   scheduleItem: {
     width: "100%",
     backgroundColor: ThemeColors.white,
+    flexDirection: "row",
     marginBottom: 16,
     padding: 16,
     borderRadius: 12,
     elevation: 3,
   },
   intervalWrapper: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -99,28 +118,40 @@ const styles = StyleSheet.create({
   },
   datesDivider: {
     borderBottomColor: ThemeColors.textGray,
-    borderBottomWidth: 1,
-    height: 0,
-    width: 16,
+    borderLeftWidth: 1,
+    width: 0,
+    height: 8,
+    marginVertical: 8,
+  },
+  content: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingLeft: 16,
+  },
+  descriptionLabel: {
+    ...ThemeTypography.body2,
+    ...ThemeTypographyColorStyles.text_dark_60,
+    fontWeight: "bold",
   },
   description: {
     ...ThemeTypography.body2,
     ...ThemeTypographyColorStyles.text_dark_60,
-    marginTop: 16,
   },
   userConatiner: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 16,
   },
   userImage: {
-    height: 30,
-    width: 30,
+    height: 22,
+    width: 22,
     borderRadius: 40,
     marginRight: 8,
+    backgroundColor: ThemeColors.gray,
   },
   userName: {
-    ...ThemeTypography.body2,
+    ...ThemeTypography.body1,
     ...ThemeTypographyColorStyles.text_dark_60,
   },
 });

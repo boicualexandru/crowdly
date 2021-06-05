@@ -5,9 +5,9 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 
-import ChangePasswordScreen from "@screens/changePasswordScreen";
-import MyVendorsScreen from "@screens/myVendorsScreen";
-import ProfileScreen from "@screens/profileScreen";
+import ChangePasswordScreen from "@screens/profile/changePasswordScreen";
+import MyVendorsScreen from "@screens/profile/myVendorsScreen";
+import ProfileScreen from "@screens/profile/profileScreen";
 import UpdateUserDetailsScreen from "@screens/updateUserDetailsScreen";
 import VendorScreen from "@screens/vendor/vendorScreen";
 

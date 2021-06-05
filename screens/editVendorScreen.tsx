@@ -23,6 +23,7 @@ import useImagePicker from "@hooks/useImagePicker";
 
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
+import RangeTextField from "@components/form/range-text-field";
 
 type EditVendorScreenNavigationProp = RootStackNavigationPropChild<"EditVendor">;
 type EditVendorScreenRouteProp = RootStackRoutePropChild<"EditVendor">;
@@ -36,6 +37,8 @@ interface EditVendorForm {
   name: string;
   city: string;
   price: string;
+  guestsMin: string;
+  guestsMax: string;
   description: string;
   category: VendorCategoryType;
 }
@@ -49,6 +52,8 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       name: "",
       city: "",
       price: "",
+      guestsMin: "",
+      guestsMax: "",
       description: "",
       category: VendorCategoryType.None,
     },
@@ -62,7 +67,9 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       if (route.params.vendorId) {
         await updateVendor({
           ...values,
-          price: parseInt(values.price),
+          price: getNumericalValue(values.price) || 0,
+          guestsMin: getNumericalValue(values.guestsMin) || 0,
+          guestsMax: getNumericalValue(values.guestsMax) || 0,
           id: route.params.vendorId,
           existingImages: existingImages,
           newImages: newImages,
@@ -70,7 +77,9 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       } else {
         await createVendor({
           ...values,
-          price: parseInt(values.price),
+          price: getNumericalValue(values.price) || 0,
+          guestsMin: getNumericalValue(values.guestsMin) || 0,
+          guestsMax: getNumericalValue(values.guestsMax) || 0,
           images: newImages,
         });
       }
@@ -103,6 +112,8 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
               name: vendor.name,
               city: vendor.city,
               price: vendor.price.toString(),
+              guestsMin: vendor.guestsMin?.toString() || '',
+              guestsMax: vendor.guestsMax?.toString() || '',
               description: vendor.description,
               category: vendor.category,
             },
@@ -116,6 +127,11 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       })();
     }, [route.params])
   );
+  
+  const getNumericalValue = useCallback((text: string): number | undefined => {
+    const numericalValue = parseFloat(text);
+    return isNaN(numericalValue) ? undefined : numericalValue;
+  }, []);
 
   const renderImage = (
     image: { uri: string; selected: boolean },
@@ -214,6 +230,19 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           value={formik.values.price}
           containerStyle={styles.fieldGroup}
           keyboardType={"numeric"}
+        />
+        <RangeTextField
+          label="Numar de invitati"
+          values={{ left: getNumericalValue(formik.values.guestsMin), right: getNumericalValue(formik.values.guestsMax) }}
+          onChanges={({ left, right }) => {
+            formik.handleChange("guestsMin")(left?.toString() || '')
+            formik.handleChange("guestsMax")(right?.toString() || '')
+          }}
+          placeholders={{
+            left: 'Min',
+            right: 'Max',
+          }}
+          containerStyle={styles.fieldGroup}
         />
         <TextField
           label="Descriere"

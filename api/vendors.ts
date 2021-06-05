@@ -50,6 +50,8 @@ export interface CreateVendorRequest {
   price: number;
   guestsMin?: number;
   guestsMax?: number;
+  phone: string;
+  email: string;
   description: string;
   images: string[];
   category: VendorCategoryType;
@@ -62,6 +64,8 @@ export interface UpdateVendorRequest {
   price: number;
   guestsMin?: number;
   guestsMax?: number;
+  phone: string;
+  email: string;
   description: string;
   existingImages: string[];
   newImages: string[];
@@ -136,7 +140,9 @@ const useVendorsApi = () => {
       body.append("price", vendor.price.toString());
       if (vendor.guestsMin) body.append("guestsMin", vendor.guestsMin.toString());
       if (vendor.guestsMax) body.append("guestsMax", vendor.guestsMax.toString());
-      body.append("description", vendor.description);
+      if (vendor.phone) body.append("phone", vendor.phone);
+      if (vendor.email) body.append("email", vendor.email);
+      if (vendor.description) body.append("description", vendor.description);
       body.append("category", vendor.category.toString());
 
       vendor.images?.forEach((image) => {
@@ -163,7 +169,9 @@ const useVendorsApi = () => {
       body.append("price", vendor.price.toString());
       if (vendor.guestsMin) body.append("guestsMin", vendor.guestsMin.toString());
       if (vendor.guestsMax) body.append("guestsMax", vendor.guestsMax.toString());
-      body.append("description", vendor.description);
+      if (vendor.phone) body.append("phone", vendor.phone);
+      if (vendor.email) body.append("email", vendor.email);
+      if (vendor.description) body.append("description", vendor.description);
       body.append("category", vendor.category.toString());
 
       vendor.existingImages

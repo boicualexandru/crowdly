@@ -39,6 +39,8 @@ interface EditVendorForm {
   price: string;
   guestsMin: string;
   guestsMax: string;
+  phone: string;
+  email: string;
   description: string;
   category: VendorCategoryType;
 }
@@ -54,6 +56,8 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
       price: "",
       guestsMin: "",
       guestsMax: "",
+      phone: "",
+      email: "",
       description: "",
       category: VendorCategoryType.None,
     },
@@ -116,6 +120,8 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
               price: vendor.price.toString(),
               guestsMin: vendor.guestsMin?.toString() || '',
               guestsMax: vendor.guestsMax?.toString() || '',
+              phone: vendor.phone,
+              email: vendor.email,
               description: vendor.description,
               category: vendor.category,
             },
@@ -245,6 +251,23 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
             right: 'Max',
           }}
           containerStyle={styles.fieldGroup}
+        />
+        <TextField
+          label="Telefon"
+          onChangeText={formik.handleChange("phone")}
+          value={formik.values.phone}
+          containerStyle={styles.fieldGroup}
+          autoCompleteType="tel"
+          textContentType="telephoneNumber"
+          keyboardType="phone-pad"
+        />
+        <TextField
+          label="Adresa de Email"
+          onChangeText={formik.handleChange("email")}
+          value={formik.values.email}
+          containerStyle={styles.fieldGroup}
+          autoCompleteType="email"
+          textContentType="emailAddress"
         />
         <TextField
           label="Descriere"

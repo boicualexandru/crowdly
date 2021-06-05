@@ -24,6 +24,7 @@ import { ThemeTypographyColorStyles } from "@theme/theme-typography";
 import { VendorScreenNavigationProp } from "../vendorScreen";
 import AddSchedulePeriodModal from "./addSchedulePeriodModal";
 import SchedulePeriodItem from "./schedulePeriodItem";
+import SchedulePeriodItemModal from "./schedulePeriodItemModal";
 
 interface Props {
   vendor: VendorDetails;
@@ -40,6 +41,10 @@ const ScheduleTab = ({ vendor }: Props) => {
   const [data, setData] = useState<VendorSchedulePeriod[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [showPastItems, setShowPastItems] = useState(false);
+  const [
+    modalScheduleItem,
+    setModalScheduleItem,
+  ] = useState<VendorSchedulePeriod>();
 
   useFocusEffect(
     useCallback(() => {
@@ -53,14 +58,17 @@ const ScheduleTab = ({ vendor }: Props) => {
     return d;
   }, []);
 
-  const refresh = useCallback(async (showPast: boolean) => {
-    setIsRefreshing(true);
+  const refresh = useCallback(
+    async (showPast: boolean) => {
+      setIsRefreshing(true);
 
-    const result = await getSchdulePeriodsByVendorId(vendor.id, showPast);
-    setData(result);
+      const result = await getSchdulePeriodsByVendorId(vendor.id, showPast);
+      setData(result);
 
-    setIsRefreshing(false);
-  }, [vendor.id]);
+      setIsRefreshing(false);
+    },
+    [vendor.id]
+  );
 
   const onCreate = useCallback(
     async (vendorId: string, period: CreateSchedulePeriodModel) => {
@@ -71,10 +79,14 @@ const ScheduleTab = ({ vendor }: Props) => {
     [showPastItems]
   );
 
-  const onDelete = useCallback(async (vendorId: string, periodId: string) => {
-    await deleteSchedulePeriodAsVendor(vendorId, periodId);
-    await refresh(showPastItems);
-  }, [showPastItems]);
+  const onDelete = useCallback(
+    async (vendorId: string, periodId: string) => {
+      await deleteSchedulePeriodAsVendor(vendorId, periodId);
+      await refresh(showPastItems);
+      setModalScheduleItem(undefined);
+    },
+    [showPastItems]
+  );
 
   const renderListHeader = useCallback(() => {
     return (
@@ -85,20 +97,32 @@ const ScheduleTab = ({ vendor }: Props) => {
           style={{ marginBottom: 16 }}
         />
         <View style={styles.headerChips}>
-          <Pressable 
-            style={[styles.toggleChip, {borderColor: showPastItems ? ThemeColors.primary : ThemeColors.textDark}]}
-            onPress={() => setShowPastItems(v => !v)}
+          <Pressable
+            style={[
+              styles.toggleChip,
+              {
+                borderColor: showPastItems
+                  ? ThemeColors.primary
+                  : ThemeColors.textDark,
+              },
+            ]}
+            onPress={() => setShowPastItems((v) => !v)}
           >
-            {
-              showPastItems ?
+            {showPastItems ? (
               <Feather
                 name="check"
                 color={ThemeColors.primary}
                 size={18}
                 style={{ marginRight: 8 }}
-              /> : null
-            }
-            <Text style={showPastItems ? ThemeTypographyColorStyles.text_primary : ThemeTypographyColorStyles.text_dark_60}>
+              />
+            ) : null}
+            <Text
+              style={
+                showPastItems
+                  ? ThemeTypographyColorStyles.text_primary
+                  : ThemeTypographyColorStyles.text_dark_60
+              }
+            >
               Afiseaza istoricul
             </Text>
           </Pressable>
@@ -112,9 +136,7 @@ const ScheduleTab = ({ vendor }: Props) => {
       <SchedulePeriodItem
         period={item}
         isPast={today > item.endDate}
-        onDelete={async (periodId: string) =>
-          await onDelete(item.vendorId, periodId)
-        }
+        onModalShow={setModalScheduleItem}
       />
     ),
     [today]
@@ -124,7 +146,10 @@ const ScheduleTab = ({ vendor }: Props) => {
     <SafeAreaView style={styles.container}>
       <FlatList
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={() => refresh(showPastItems)} />
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={() => refresh(showPastItems)}
+          />
         }
         ListHeaderComponent={renderListHeader}
         data={data}
@@ -138,6 +163,13 @@ const ScheduleTab = ({ vendor }: Props) => {
         schedulePeriods={data}
         requestClose={() => setIsCreateModalOpen(false)}
         requestCreate={async (period) => await onCreate(vendor.id, period)}
+      />
+      <SchedulePeriodItemModal
+        schedulePeriod={modalScheduleItem}
+        requestClose={() => setModalScheduleItem(undefined)}
+        requestDelete={async (periodId: string) =>
+          await onDelete(vendor.id, periodId)
+        }
       />
     </SafeAreaView>
   );

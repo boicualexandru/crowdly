@@ -8,7 +8,7 @@ import React from "react";
 import ChangePasswordScreen from "@screens/profile/changePasswordScreen";
 import MyVendorsScreen from "@screens/profile/myVendorsScreen";
 import ProfileScreen from "@screens/profile/profileScreen";
-import UpdateUserDetailsScreen from "@screens/updateUserDetailsScreen";
+import UpdateUserDetailsScreen from "@screens/profile/updateUserDetailsScreen";
 import VendorScreen from "@screens/vendor/vendorScreen";
 
 import {

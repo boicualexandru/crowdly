@@ -13,32 +13,10 @@ import {
 interface Props {
   period: VendorSchedulePeriod;
   isPast?: boolean;
-  onDelete: (periodId: string) => void;
+  onModalShow?: (period: VendorSchedulePeriod) => void;
 }
 
-const SchedulePeriodItem = ({ period, isPast, onDelete }: Props) => {
-  const attepDelete = useCallback(
-    (periodId: string) => {
-      Alert.alert(
-        "Stergi rezervarea?",
-        "Aceasta rezervare va fi stearsa definitiv.",
-        [
-          {
-            text: "Nu",
-            style: "cancel",
-          },
-          {
-            text: "Da, Sterge",
-            onPress: () => onDelete(periodId),
-            style: "destructive",
-          },
-        ],
-        { cancelable: true }
-      );
-    },
-    [onDelete]
-  );
-
+const SchedulePeriodItem = ({ period, isPast, onModalShow }: Props) => {
   const getFormattedDate = useCallback(
     (date: Date) => moment(date).format("Do MMM"),
     []
@@ -46,8 +24,8 @@ const SchedulePeriodItem = ({ period, isPast, onDelete }: Props) => {
 
   return (
     <Pressable
-      style={[styles.scheduleItem, isPast ? {opacity: 0.5} : null]}
-      onPress={() => attepDelete(period.id)}
+      style={[styles.scheduleItem, isPast ? { opacity: 0.5 } : null]}
+      onPress={() => onModalShow && onModalShow(period)}
     >
       <View
         style={{
@@ -59,13 +37,14 @@ const SchedulePeriodItem = ({ period, isPast, onDelete }: Props) => {
       >
         <View style={styles.intervalWrapper}>
           <Text style={styles.date}>{getFormattedDate(period.startDate)}</Text>
-          {
-            period.startDate < period.endDate ?
+          {period.startDate < period.endDate ? (
             <>
               <View style={styles.datesDivider} />
-              <Text style={styles.date}>{getFormattedDate(period.endDate)}</Text>
-            </> : null
-          }
+              <Text style={styles.date}>
+                {getFormattedDate(period.endDate)}
+              </Text>
+            </>
+          ) : null}
         </View>
       </View>
       <View style={styles.content}>

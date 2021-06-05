@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { useFocusEffect } from "@react-navigation/native";
 import useVendorsApi, { VendorDetails } from "api/vendors";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Share } from "react-native";
 
 import { PreferencesActionType } from "@context/preferences/preferencesActions";
 import { PreferencesContext } from "@context/preferences/preferencesContext";
@@ -38,6 +38,12 @@ const useVendorState = (
   const [vendor, setVendorValue] = useState<VendorDetails>();
   const { state, dispatch } = useContext(PreferencesContext);
   
+  const onShare = useCallback(async () => {
+    await Share.share({
+      message: `${vendor?.name} \nIntra acum in alpicatia Crowdly pentru a vizualiza mai multe detalii despre acest serviciu.`,
+    });
+  }, [vendor?.name]);
+
   const setVendor = (vendor: VendorDetails) => {
     navigation.setOptions({
       headerLeftContainerStyle: styles.headerButtonsWrapper,
@@ -76,6 +82,7 @@ const useVendorState = (
             color={ThemeColors.textDark}
             theme="Feather"
             size={18}
+            onPress={onShare}
           />
         </View>
       ),
@@ -90,7 +97,7 @@ const useVendorState = (
         ...vendor,
         isFavourite: state.favoriteVendors?.includes(vendor.id) ?? false,
       });
-  }, [state.favoriteVendors]);
+  }, [state.favoriteVendors, vendor?.name]);
 
   return [vendor, setVendor];
 };

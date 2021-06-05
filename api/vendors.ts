@@ -1,4 +1,4 @@
-import { IMAGES_BASE_URL } from "@env";
+import { getImageUrlByVendorId, } from './helpers/getImage';
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
@@ -104,9 +104,6 @@ export const getInitialVendorsFilters = (
   category: category ?? VendorCategoryType.None,
 });
 
-const getImageUrl = (vendorId: string, imageFileName: string) =>
-  `${IMAGES_BASE_URL}/vendors/${vendorId}/${imageFileName}`;
-
 const useVendorsApi = () => {
   const { state } = useContext(AuthContext);
   const { state: preferencesState } = useContext(PreferencesContext);
@@ -120,7 +117,7 @@ const useVendorsApi = () => {
         ...response,
         price: parseInt(response.price),
         images: response.images?.map((imageFileName: string) =>
-          getImageUrl(response.id, imageFileName)
+          getImageUrlByVendorId(response.id, imageFileName)
         ),
         isFavourite:
           preferencesState.favoriteVendors?.includes(vendorId) ?? false,
@@ -196,7 +193,7 @@ const useVendorsApi = () => {
 
       const parsedVendors = response.data.map((vendor) => ({
         ...vendor,
-        thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
+        thumbnail: getImageUrlByVendorId(vendor.id, vendor.thumbnail),
       }));
 
       console.log("getVendorsPage: ", response.data.length);
@@ -213,7 +210,7 @@ const useVendorsApi = () => {
 
       const parsedVendors = response.map((vendor) => ({
         ...vendor,
-        thumbnail: getImageUrl(vendor.id, vendor.thumbnail),
+        thumbnail: getImageUrlByVendorId(vendor.id, vendor.thumbnail),
       }));
 
       return parsedVendors;

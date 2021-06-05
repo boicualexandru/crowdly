@@ -26,6 +26,7 @@ interface RegisterForm {
   email: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
   password: string;
 }
 
@@ -38,6 +39,7 @@ const RegisterScreen = ({ navigation, route }: Props) => {
       email: "",
       firstName: "",
       lastName: "",
+      phoneNumber: "",
       password: "",
     },
     onSubmit: async (values) => {
@@ -81,6 +83,15 @@ const RegisterScreen = ({ navigation, route }: Props) => {
           value={formik.values.lastName}
           containerStyle={styles.textField}
           textContentType="familyName"
+        />
+        <TextField
+          label="Telefon"
+          onChangeText={formik.handleChange("phoneNumber")}
+          value={formik.values.phoneNumber}
+          containerStyle={styles.textField}
+          autoCompleteType="tel"
+          textContentType="telephoneNumber"
+          keyboardType="phone-pad"
         />
         <TextField
           label="Parola"

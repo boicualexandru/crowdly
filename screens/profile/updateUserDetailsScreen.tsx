@@ -17,6 +17,7 @@ interface UpdateUserDetailsForm {
   email: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
 }
 
 type UpdateUserDetailsScreenNavigationProp = ProfileStackNavigationPropChild<"UpdateUserDetails">;
@@ -36,6 +37,7 @@ const UpdateUserDetailsScreen = ({ navigation, route }: Props) => {
       email: "",
       firstName: "",
       lastName: "",
+      phoneNumber: "",
     },
     onSubmit: async (values) => {
       const response = await updateUser({
@@ -56,6 +58,7 @@ const UpdateUserDetailsScreen = ({ navigation, route }: Props) => {
             email: state.user?.email || "",
             firstName: state.user?.firstName || "",
             lastName: state.user?.lastName || "",
+            phoneNumber: state.user?.phoneNumber || "",
           },
           false
         );
@@ -92,6 +95,15 @@ const UpdateUserDetailsScreen = ({ navigation, route }: Props) => {
           value={formik.values.lastName}
           containerStyle={styles.textField}
           textContentType="familyName"
+        />
+        <TextField
+          label="Telefon"
+          onChangeText={formik.handleChange("phoneNumber")}
+          value={formik.values.phoneNumber}
+          containerStyle={styles.textField}
+          autoCompleteType="tel"
+          textContentType="telephoneNumber"
+          keyboardType="phone-pad"
         />
       </View>
       <View>

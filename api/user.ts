@@ -18,12 +18,14 @@ export interface RegisterModel {
   firstName: string;
   lastName: string;
   password: string;
+  phoneNumber?: string;
 }
 
 export interface UpdateUserModel {
   email: string;
   firstName: string;
   lastName: string;
+  phoneNumber?: string;
 }
 
 export interface ChangePasswordModel {

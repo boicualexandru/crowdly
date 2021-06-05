@@ -6,6 +6,7 @@ import { AuthState, getAxiosInstance, User } from "./authState";
 interface JwtClaimsModel {
   ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]: string;
   ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"]: string;
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/otherphone"]: string;
   jti: string;
   exp: number;
   iss: string;
@@ -30,6 +31,10 @@ const convertJwtTokenToUser = (jwtToken: string): User => {
       ],
     firstName: decodedToken.firstName,
     lastName: decodedToken.lastName,
+    phoneNumber:
+      decodedToken[
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/otherphone"
+      ],
     image: decodedToken.image,
   };
 };

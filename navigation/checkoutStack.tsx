@@ -20,7 +20,9 @@ import PaymentScreen from "@screens/paymentScreen";
 
 type CheckoutStackParamList = {
   Checkout: undefined;
-  Payment: undefined;
+  Payment: {
+    amount: number;
+  };
 };
 
 type CheckoutStackNavigationProp = HomeTabsNavigationPropChild<"CheckoutStack">;

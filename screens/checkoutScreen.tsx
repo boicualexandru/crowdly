@@ -77,12 +77,18 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
           ) : null}
           <View style={styles.itemText}>
             <View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text style={styles.itemCaption}>
                   {vendorCategoryNameDictionary[item.vendorCategory]}
                 </Text>
                 <Text style={styles.itemCaption}>
-                  {startMoment.format("Do MMM")} - {days > 1 ? endMoment.format("Do MMM") : null}
+                  {startMoment.format("Do MMM")} -{" "}
+                  {days > 1 ? endMoment.format("Do MMM") : null}
                 </Text>
               </View>
               <Text style={styles.itemTitle}>{item.vendorName}</Text>
@@ -132,7 +138,10 @@ const CheckoutScreen = ({ navigation, route }: Props) => {
         </View>
         <View style={{ marginLeft: 16 }}>
           <Text>
-            <Button label="Spre plata " onPress={() => navigation.push("Payment")} />
+            <Button
+              label="Spre plata "
+              onPress={() => navigation.push("Payment", { amount: totalPrice })}
+            />
           </Text>
         </View>
       </View>

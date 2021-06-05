@@ -20,7 +20,7 @@ import BigModal from "@components/modal/big-modal";
 
 import { ThemeBoxing } from "@theme/theme-boxing";
 import ThemeColors from "@theme/theme-colors";
-import { ThemeTypography } from "@theme/theme-typography";
+import { ThemeTypography, ThemeTypographyColorStyles } from "@theme/theme-typography";
 
 type CheckoutScreenNavigationProp = CheckoutStackNavigationPropChild<"Payment">;
 type CheckoutScreenRouteProp = CheckoutStackRoutePropChild<"Payment">;
@@ -109,6 +109,13 @@ const PaymentScreen = ({ navigation, route }: Props) => {
             }}
           />
         </View>
+        
+        <Text style={[ThemeTypography.h6, { marginTop: 16 }]}>
+          Total de plata
+        </Text>
+        <Text style={[ThemeTypography.h5, ThemeTypographyColorStyles.text_primary, { marginTop: 4 }]}>
+          {route.params?.amount} Lei
+        </Text>
       </View>
       <Button
         label="Finalizeaza "

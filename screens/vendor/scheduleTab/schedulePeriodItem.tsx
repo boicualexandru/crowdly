@@ -1,12 +1,12 @@
 import ThemeColors from '@theme/theme-colors';
 import { ThemeTypography, ThemeTypographyColorStyles } from '@theme/theme-typography';
-import { SchedulePeriod } from 'api/schedulePeriods';
+import { VendorSchedulePeriod } from 'api/schedulePeriods';
 import moment from 'moment';
 import React, { useCallback } from 'react'
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native'
 
 interface Props {
-  period: SchedulePeriod;
+  period: VendorSchedulePeriod;
   onDelete: (periodId: string) => void;
 }
 

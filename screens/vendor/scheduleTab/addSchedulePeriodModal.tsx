@@ -1,4 +1,4 @@
-import { CreateSchedulePeriodModel, SchedulePeriod } from "api/schedulePeriods";
+import { CreateSchedulePeriodModel, VendorSchedulePeriod } from "api/schedulePeriods";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 
@@ -14,7 +14,7 @@ import {
 
 interface Props {
   isOpen: boolean;
-  schedulePeriods: SchedulePeriod[];
+  schedulePeriods: VendorSchedulePeriod[];
   requestCreate: (period: CreateSchedulePeriodModel) => void;
   requestClose: () => void;
 }

@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/native";
 import useSchdulePeriodsApi, {
   CreateSchedulePeriodModel,
-  SchedulePeriod,
+  VendorSchedulePeriod,
 } from "api/schedulePeriods";
 import { VendorDetails } from "api/vendors";
 import React, { useCallback, useState } from "react";
@@ -31,7 +31,7 @@ const ScheduleTab = ({ vendor }: Props) => {
     deleteSchedulePeriodAsVendor,
   } = useSchdulePeriodsApi();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [data, setData] = useState<SchedulePeriod[]>([]);
+  const [data, setData] = useState<VendorSchedulePeriod[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useFocusEffect(
@@ -72,7 +72,7 @@ const ScheduleTab = ({ vendor }: Props) => {
   }, []);
 
   const renderItem = useCallback(
-    ({ item, index }: { item: SchedulePeriod; index: number }) => (
+    ({ item, index }: { item: VendorSchedulePeriod; index: number }) => (
       <SchedulePeriodItem
         period={item}
         onDelete={async (periodId: string) =>

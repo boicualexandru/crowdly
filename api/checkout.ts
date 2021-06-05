@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
 
-import { SchedulePeriod } from "./schedulePeriods";
+import { VendorSchedulePeriod } from "./schedulePeriods";
 
 export interface ConfirmCheckoutModel {
   items: ConfirmCheckoutItem[];
@@ -20,20 +20,14 @@ const useCheckoutApi = () => {
   return {
     confirmCheckout: async (
       checkoutModel: ConfirmCheckoutModel
-    ): Promise<SchedulePeriod[]> => {
+    ): Promise<string[]> => {
       const responseRaw = await state.axiosInstance?.post(
         `checkout`,
         checkoutModel
       );
-      const response = responseRaw?.data as SchedulePeriod[];
+      const response = responseRaw?.data as string[];
 
-      const schedulePeriods = response.map((period) => ({
-        ...period,
-        startDate: new Date(period.startDate),
-        endDate: new Date(period.endDate),
-      }));
-
-      return schedulePeriods;
+      return response;
     },
   };
 };

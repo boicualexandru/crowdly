@@ -50,7 +50,7 @@ const PaymentScreen = ({ navigation, route }: Props) => {
       })),
     };
 
-    const schedulePeriods = await confirmCheckout(checkoutModel);
+    await confirmCheckout(checkoutModel);
 
     setLoading(false);
     setPaymentSucceeded(true);

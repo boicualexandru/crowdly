@@ -2,13 +2,40 @@ import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
 
-export interface SchedulePeriod {
+export interface VendorSchedulePeriod {
   id: string;
   description: string;
   startDate: Date;
   endDate: Date;
   vendorId: string;
+  bookedByUser: UserDetails;
+}
+
+export interface UserSchedulePeriod {
+  id: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  vendor: VendorDetails;
   bookedByUserId?: string;
+}
+
+interface UserDetails {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  image: string;
+  phoneNumber: string;
+}
+
+interface VendorDetails {
+  id: string;
+  name: string;
+  thumbnail: string;
+  city: string;
+  phone: string;
+  email: string;
 }
 
 export interface Period {
@@ -28,12 +55,12 @@ const useSchdulePeriodsApi = () => {
   return {
     getSchdulePeriodsByVendorId: async (
       vendorId: string
-    ): Promise<SchedulePeriod[]> => {
+    ): Promise<VendorSchedulePeriod[]> => {
       const responseRaw = await state.axiosInstance?.get(
         `vendors/${vendorId}/schedulePeriods`
       );
 
-      const response = (responseRaw?.data as SchedulePeriod[]).map(period => ({
+      const response = (responseRaw?.data as VendorSchedulePeriod[]).map(period => ({
         ...period,
         startDate: new Date(period.startDate),
         endDate: new Date(period.endDate),
@@ -56,12 +83,12 @@ const useSchdulePeriodsApi = () => {
 
       return response;
     },
-    getUsersSchdulePeriods: async (): Promise<SchedulePeriod[]> => {
+    getUsersSchdulePeriods: async (): Promise<UserSchedulePeriod[]> => {
       const responseRaw = await state.axiosInstance?.get(
         `user/schedulePeriods`
       );
 
-      const response = (responseRaw?.data as SchedulePeriod[]).map(
+      const response = (responseRaw?.data as UserSchedulePeriod[]).map(
         (period) => ({
           ...period,
           startDate: new Date(period.startDate),
@@ -87,28 +114,24 @@ const useSchdulePeriodsApi = () => {
     createSchedulePeriodAsVendor: async (
       vendorId: string,
       period: CreateSchedulePeriodModel
-    ): Promise<SchedulePeriod> => {
+    ): Promise<string> => {
       const responseRaw = await state.axiosInstance?.post(
         `vendors/${vendorId}/schedulePeriods`,
         period
       );
-      const response = responseRaw?.data as SchedulePeriod;
-      response.startDate = new Date(response.startDate);
-      response.endDate = new Date(response.endDate);
+      const response = responseRaw?.data as string;
 
       return response;
     },
     bookSchedulePeriodAsUser: async (
       vendorId: string,
       period: CreateSchedulePeriodModel
-    ): Promise<SchedulePeriod> => {
+    ): Promise<string> => {
       const responseRaw = await state.axiosInstance?.post(
         `vendors/${vendorId}/book`,
         period
       );
-      const response = responseRaw?.data as SchedulePeriod;
-      response.startDate = new Date(response.startDate);
-      response.endDate = new Date(response.endDate);
+      const response = responseRaw?.data as string;
 
       return response;
     },

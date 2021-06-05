@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import useAuthApi from "api/auth";
+import useUserApi from "api/user";
 import { useFormik } from "formik";
 import React, { useCallback, useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -28,7 +28,7 @@ type Props = {
 };
 
 const UpdateUserDetailsScreen = ({ navigation, route }: Props) => {
-  const { updateUser } = useAuthApi();
+  const { updateUser } = useUserApi();
   const { state } = useContext(AuthContext);
 
   const formik = useFormik<UpdateUserDetailsForm>({

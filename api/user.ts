@@ -31,13 +31,13 @@ export interface ChangePasswordModel {
   newPassword: string;
 }
 
-const useAuthApi = () => {
+const useUserApi = () => {
   const { state, dispatch } = useContext(AuthContext);
 
   return {
     login: async (loginModel: LoginModel): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
-        "authenticate/login",
+        "user/login",
         loginModel
       );
 
@@ -63,7 +63,7 @@ const useAuthApi = () => {
       registerModel: RegisterModel
     ): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
-        "authenticate/register",
+        "user/register",
         registerModel
       );
 
@@ -86,7 +86,7 @@ const useAuthApi = () => {
       user: UpdateUserModel
     ): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
-        "authenticate/update",
+        "user/update",
         user
       );
 
@@ -109,7 +109,7 @@ const useAuthApi = () => {
       changePassword: ChangePasswordModel
     ): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
-        "authenticate/changePassword",
+        "user/changePassword",
         changePassword
       );
 
@@ -139,7 +139,7 @@ const useAuthApi = () => {
       body.append("formFile", formImage);
 
       const response = await state.axiosInstance?.post(
-        "authenticate/uploadAvatar",
+        "user/uploadAvatar",
         body,
         {
           headers: {
@@ -166,4 +166,4 @@ const useAuthApi = () => {
   };
 };
 
-export default useAuthApi;
+export default useUserApi;

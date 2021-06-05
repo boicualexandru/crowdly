@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import useAuthApi from "api/auth";
+import useUserApi from "api/user";
 import { getImageUrlByUserId } from "api/helpers/getImage";
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerOptions } from "expo-image-picker";
@@ -46,7 +46,7 @@ const imagePickerOptions: ImagePickerOptions = {
 };
 
 const ProfileScreen = ({ navigation, route }: Props) => {
-  const { uploadAvatar, logout } = useAuthApi();
+  const { uploadAvatar, logout } = useUserApi();
   const { state } = useContext(AuthContext);
   const [isImagePickerModalOpen, setIsImagePickerModalOpen] = useState(false);
 

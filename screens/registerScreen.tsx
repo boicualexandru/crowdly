@@ -1,4 +1,4 @@
-import useAuthApi from "api/auth";
+import useUserApi from "api/user";
 import { useFormik } from "formik";
 import React, { useContext } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
@@ -31,7 +31,7 @@ interface RegisterForm {
 
 const RegisterScreen = ({ navigation, route }: Props) => {
   const { state, dispatch } = useContext(AuthContext);
-  const { register } = useAuthApi();
+  const { register } = useUserApi();
 
   const formik = useFormik<RegisterForm>({
     initialValues: {

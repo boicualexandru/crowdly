@@ -1,4 +1,4 @@
-import useAuthApi from "api/auth";
+import useUserApi from "api/user";
 import { useFormik } from "formik";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -25,7 +25,7 @@ type Props = {
 };
 
 const ChangePasswordScreen = ({ navigation, route }: Props) => {
-  const { changePassword } = useAuthApi();
+  const { changePassword } = useUserApi();
 
   const formik = useFormik<ChangePasswordForm>({
     initialValues: {

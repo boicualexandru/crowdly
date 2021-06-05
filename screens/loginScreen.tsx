@@ -1,4 +1,4 @@
-import useAuthApi from "api/auth";
+import useUserApi from "api/user";
 import { useFormik } from "formik";
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
@@ -27,7 +27,7 @@ interface LoginForm {
 }
 
 const LoginScreen = ({ navigation, route }: Props) => {
-  const { login } = useAuthApi();
+  const { login } = useUserApi();
 
   const formik = useFormik<LoginForm>({
     initialValues: {

@@ -1,10 +1,8 @@
 import useAuthApi from "api/auth";
 import { useFormik } from "formik";
-import React, { useContext } from "react";
+import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 
-import { AuthActionType } from "@context/auth/authActions";
-import { AuthContext } from "@context/auth/authContext";
 import {
   RootStackNavigationPropChild,
   RootStackRoutePropChild,
@@ -29,8 +27,7 @@ interface LoginForm {
 }
 
 const LoginScreen = ({ navigation, route }: Props) => {
-  const { state, dispatch } = useContext(AuthContext);
-  const { login, logout } = useAuthApi();
+  const { login } = useAuthApi();
 
   const formik = useFormik<LoginForm>({
     initialValues: {
@@ -40,13 +37,6 @@ const LoginScreen = ({ navigation, route }: Props) => {
     onSubmit: async (values) => {
       const loginResponse = await login({ ...values });
       if (!loginResponse) return;
-
-      dispatch({
-        type: AuthActionType.Login,
-        payload: {
-          jwtToken: loginResponse.jwtToken,
-        },
-      });
 
       navigation.replace("HomeTabs", { screen: "VendorsStack" });
     },
@@ -91,7 +81,11 @@ const LoginScreen = ({ navigation, route }: Props) => {
         <Button
           onPress={() => navigation.replace("Register")}
           label="Creeaza un cont nou"
-          style={{ marginTop: 16, backgroundColor: "transparent", borderWidth: 0 }}
+          style={{
+            marginTop: 16,
+            backgroundColor: "transparent",
+            borderWidth: 0,
+          }}
           labelStyle={{ color: ThemeColors.black }}
         />
       </View>

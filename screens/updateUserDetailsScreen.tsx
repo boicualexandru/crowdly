@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import React, { useCallback, useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { AuthActionType } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
 import {
   ProfileStackNavigationPropChild,
@@ -30,7 +29,7 @@ type Props = {
 
 const UpdateUserDetailsScreen = ({ navigation, route }: Props) => {
   const { updateUser } = useAuthApi();
-  const { state, dispatch } = useContext(AuthContext);
+  const { state } = useContext(AuthContext);
 
   const formik = useFormik<UpdateUserDetailsForm>({
     initialValues: {
@@ -43,14 +42,7 @@ const UpdateUserDetailsScreen = ({ navigation, route }: Props) => {
         ...values,
       });
 
-      if (!response?.jwtToken) return;
-
-      dispatch({
-        type: AuthActionType.Login,
-        payload: {
-          jwtToken: response?.jwtToken,
-        },
-      });
+      if (!response) return;
 
       navigation.pop();
     },

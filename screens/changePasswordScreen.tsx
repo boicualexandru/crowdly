@@ -1,10 +1,8 @@
 import useAuthApi from "api/auth";
 import { useFormik } from "formik";
-import React, { useContext } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-import { AuthActionType } from "@context/auth/authActions";
-import { AuthContext } from "@context/auth/authContext";
 import {
   ProfileStackNavigationPropChild,
   ProfileStackRoutePropChild,
@@ -28,7 +26,6 @@ type Props = {
 
 const ChangePasswordScreen = ({ navigation, route }: Props) => {
   const { changePassword } = useAuthApi();
-  const { dispatch } = useContext(AuthContext);
 
   const formik = useFormik<ChangePasswordForm>({
     initialValues: {
@@ -40,14 +37,7 @@ const ChangePasswordScreen = ({ navigation, route }: Props) => {
         ...values,
       });
 
-      if (!response?.jwtToken) return;
-
-      dispatch({
-        type: AuthActionType.Login,
-        payload: {
-          jwtToken: response?.jwtToken,
-        },
-      });
+      if (!response) return;
 
       navigation.pop();
     },

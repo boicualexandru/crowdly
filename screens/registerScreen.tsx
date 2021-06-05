@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import React, { useContext } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 
-import { AuthActionType } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
 import {
   RootStackNavigationPropChild,
@@ -32,7 +31,7 @@ interface RegisterForm {
 
 const RegisterScreen = ({ navigation, route }: Props) => {
   const { state, dispatch } = useContext(AuthContext);
-  const { register, logout } = useAuthApi();
+  const { register } = useAuthApi();
 
   const formik = useFormik<RegisterForm>({
     initialValues: {
@@ -44,13 +43,6 @@ const RegisterScreen = ({ navigation, route }: Props) => {
     onSubmit: async (values) => {
       const registerResponse = await register({ ...values });
       if (!registerResponse) return;
-
-      dispatch({
-        type: AuthActionType.Login,
-        payload: {
-          jwtToken: registerResponse.jwtToken,
-        },
-      });
 
       navigation.navigate("HomeTabs", { screen: "VendorsStack" });
     },

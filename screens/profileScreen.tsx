@@ -14,7 +14,6 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { AuthActionType } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
 import {
   ProfileStackNavigationPropChild,
@@ -47,8 +46,8 @@ const imagePickerOptions: ImagePickerOptions = {
 };
 
 const ProfileScreen = ({ navigation, route }: Props) => {
-  const { uploadAvatar } = useAuthApi();
-  const { state, dispatch } = useContext(AuthContext);
+  const { uploadAvatar, logout } = useAuthApi();
+  const { state } = useContext(AuthContext);
   const [isImagePickerModalOpen, setIsImagePickerModalOpen] = useState(false);
 
   const userNameToDisplay = useMemo(() => {
@@ -86,21 +85,10 @@ const ProfileScreen = ({ navigation, route }: Props) => {
     if (imagePickerResult.cancelled) return;
 
     const apiResponse = await uploadAvatar(imagePickerResult.uri);
-
-    if (!apiResponse?.jwtToken) return;
-
-    dispatch({
-      type: AuthActionType.Login,
-      payload: {
-        jwtToken: apiResponse?.jwtToken,
-      },
-    });
   }, []);
 
-  const logout = useCallback(() => {
-    dispatch({
-      type: AuthActionType.Logout,
-    });
+  const onLogout = useCallback(async () => {
+    await logout();
     navigation.replace("Login");
   }, []);
 
@@ -167,7 +155,7 @@ const ProfileScreen = ({ navigation, route }: Props) => {
           <Text style={styles.buttonItemText}>Detaliile Contului</Text>
         </Pressable>
         <Divider />
-        <Pressable style={styles.buttonItem} onPress={() => logout()}>
+        <Pressable style={styles.buttonItem} onPress={onLogout}>
           <Feather name="log-out" color="red" size={25} />
           <Text style={[styles.buttonItemText, { color: "red" }]}>
             Iesi din Cont

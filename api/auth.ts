@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
+import { AuthActionType } from "@context/auth/authActions";
 
 export interface LoginModel {
   email: string;
@@ -31,83 +32,103 @@ export interface ChangePasswordModel {
 }
 
 const useAuthApi = () => {
-  const { state } = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext);
 
   return {
-    login: async (loginModel: LoginModel): Promise<LoginResponse | null> => {
+    login: async (loginModel: LoginModel): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
         "authenticate/login",
         loginModel
       );
 
-      if (response.status != 200) return null;
+      if (response.status != 200) return false;
 
       const jwtToken = response.data.token;
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
-      return {
-        jwtToken: jwtToken,
-      };
+      dispatch({
+        type: AuthActionType.Login,
+        payload: {
+          jwtToken: jwtToken,
+        },
+      });
+
+      return true;
     },
     logout: async (): Promise<void> => {
       await AsyncStorage.removeItem("jwtToken");
     },
     register: async (
       registerModel: RegisterModel
-    ): Promise<LoginResponse | null> => {
+    ): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
         "authenticate/register",
         registerModel
       );
 
-      if (response.status != 200) return null;
+      if (response.status != 200) return false;
 
       const jwtToken = response.data.token;
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
-      return {
-        jwtToken: jwtToken,
-      };
+      dispatch({
+        type: AuthActionType.Login,
+        payload: {
+          jwtToken: jwtToken,
+        },
+      });
+
+      return true;
     },
     updateUser: async (
       user: UpdateUserModel
-    ): Promise<LoginResponse | null> => {
+    ): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
         "authenticate/update",
         user
       );
 
-      if (response.status != 200) return null;
+      if (response.status != 200) return false;
 
       const jwtToken = response.data.token;
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
-      return {
-        jwtToken: jwtToken,
-      };
+      dispatch({
+        type: AuthActionType.Login,
+        payload: {
+          jwtToken: jwtToken,
+        },
+      });
+
+      return true;
     },
     changePassword: async (
       changePassword: ChangePasswordModel
-    ): Promise<LoginResponse | null> => {
+    ): Promise<boolean> => {
       const response = await state.axiosInstance?.post(
         "authenticate/changePassword",
         changePassword
       );
 
-      if (response.status != 200) return null;
+      if (response.status != 200) return false;
 
       const jwtToken = response.data.token;
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
-      return {
-        jwtToken: jwtToken,
-      };
+      dispatch({
+        type: AuthActionType.Login,
+        payload: {
+          jwtToken: jwtToken,
+        },
+      });
+
+      return true;
     },
-    uploadAvatar: async (image: string): Promise<LoginResponse | null> => {
+    uploadAvatar: async (image: string): Promise<boolean> => {
       var body = new FormData();
 
       var formImage = {
@@ -127,15 +148,20 @@ const useAuthApi = () => {
         }
       );
 
-      if (response.status != 200) return null;
+      if (response.status != 200) return false;
 
       const jwtToken = response.data.token;
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
-      return {
-        jwtToken: jwtToken,
-      };
+      dispatch({
+        type: AuthActionType.Login,
+        payload: {
+          jwtToken: jwtToken,
+        },
+      });
+      
+      return true;
     },
   };
 };

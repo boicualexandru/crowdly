@@ -115,10 +115,10 @@ const useAuthApi = () => {
         type: "image/jpeg",
         name: "photo.jpg",
       };
-      body.append("formFiles", formImage);
+      body.append("formFile", formImage);
 
       const response = await state.axiosInstance?.post(
-        "authenticate/changePassword",
+        "authenticate/uploadAvatar",
         body,
         {
           headers: {

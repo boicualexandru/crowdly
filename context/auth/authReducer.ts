@@ -1,4 +1,5 @@
 import jwt_decode from "jwt-decode";
+
 import { AuthActions, AuthActionType } from "./authActions";
 import { AuthState, getAxiosInstance, User } from "./authState";
 
@@ -18,6 +19,10 @@ const convertJwtTokenToUser = (jwtToken: string): User => {
   const decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
 
   return {
+    id:
+      decodedToken[
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+      ],
     token: jwtToken,
     email:
       decodedToken[
@@ -26,8 +31,8 @@ const convertJwtTokenToUser = (jwtToken: string): User => {
     firstName: decodedToken.firstName,
     lastName: decodedToken.lastName,
     image: decodedToken.image,
-  }
-}
+  };
+};
 
 export function authReducer(state: AuthState, action: AuthActions): AuthState {
   switch (action.type) {
@@ -38,7 +43,7 @@ export function authReducer(state: AuthState, action: AuthActions): AuthState {
           hasLoaded: true,
           user: undefined,
           axiosInstance: getAxiosInstance(),
-        }
+        };
 
       const user: User = convertJwtTokenToUser(action.payload.jwtToken);
 

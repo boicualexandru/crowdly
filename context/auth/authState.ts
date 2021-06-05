@@ -2,6 +2,7 @@ import { API_BASE_URL } from "@env";
 import axios, { AxiosInstance } from "axios";
 
 export interface User {
+  id: string;
   email?: string;
   firstName?: string;
   lastName?: string;

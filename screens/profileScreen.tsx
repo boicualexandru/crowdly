@@ -1,7 +1,17 @@
 import { Feather } from "@expo/vector-icons";
+import useAuthApi from "api/auth";
 import { getImageUrlByUserId } from "api/helpers/getImage";
-import React, { useCallback, useContext, useMemo } from "react";
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { ImagePickerOptions } from "expo-image-picker";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { AuthActionType } from "@context/auth/authActions";
@@ -11,7 +21,9 @@ import {
   ProfileStackRoutePropChild,
 } from "@navigation/profileStack";
 
+import Button from "@components/button/button";
 import Divider from "@components/divider/divider";
+import BigModal from "@components/modal/big-modal";
 
 import ThemeColors from "@theme/theme-colors";
 import {
@@ -27,8 +39,17 @@ type Props = {
   route: ProfileScreenRouteProp;
 };
 
+const imagePickerOptions: ImagePickerOptions = {
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsEditing: true,
+  aspect: [1, 1],
+  quality: 1,
+};
+
 const ProfileScreen = ({ navigation, route }: Props) => {
+  const { uploadAvatar } = useAuthApi();
   const { state, dispatch } = useContext(AuthContext);
+  const [isImagePickerModalOpen, setIsImagePickerModalOpen] = useState(false);
 
   const userNameToDisplay = useMemo(() => {
     if (!state.user) return "Utilizator";
@@ -40,8 +61,41 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   const avatarImageUrl = useMemo(() => {
     if (!state.user || !state.user.image)
       return "https://mymodernmet.com/wp/wp-content/uploads/2019/09/100k-ai-faces-5.jpg";
-    return getImageUrlByUserId("", state.user?.image);
+    return getImageUrlByUserId(state.user.id, state.user.image);
   }, [state.user]);
+
+  const checkPickerPermisions = useCallback(async () => {
+    if (Platform.OS !== "web") {
+      const {
+        status,
+      } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+    }
+  }, []);
+
+  const pickImage = useCallback(async (source: "camera" | "library") => {
+    setIsImagePickerModalOpen(false);
+    await checkPickerPermisions();
+    let imagePickerResult =
+      source == "camera"
+        ? await ImagePicker.launchCameraAsync(imagePickerOptions)
+        : await ImagePicker.launchImageLibraryAsync(imagePickerOptions);
+
+    if (imagePickerResult.cancelled) return;
+
+    const apiResponse = await uploadAvatar(imagePickerResult.uri);
+
+    if (!apiResponse?.jwtToken) return;
+
+    dispatch({
+      type: AuthActionType.Login,
+      payload: {
+        jwtToken: apiResponse?.jwtToken,
+      },
+    });
+  }, []);
 
   const logout = useCallback(() => {
     dispatch({
@@ -57,12 +111,22 @@ const ProfileScreen = ({ navigation, route }: Props) => {
     >
       <View>
         <View style={styles.profileDetailContainer}>
-          <View style={styles.profileImageCircle}>
-            <Image
-              source={{ uri: avatarImageUrl }}
-              style={styles.profileImage}
+          <Pressable
+            style={styles.profileImageContainer}
+            onPress={() => setIsImagePickerModalOpen(true)}
+          >
+            <View style={styles.profileImageCircle}>
+              <Image
+                source={{ uri: avatarImageUrl }}
+                style={styles.profileImage}
+              />
+            </View>
+            <Feather
+              name="edit-2"
+              size={12}
+              style={styles.profileImageEditIcon}
             />
-          </View>
+          </Pressable>
           <Text style={styles.profileName}>{userNameToDisplay}</Text>
         </View>
         <Divider />
@@ -110,10 +174,29 @@ const ProfileScreen = ({ navigation, route }: Props) => {
           </Text>
         </Pressable>
       </View>
-      {/* <Pressable style={styles.buttonItem}
-        onPress={() => navigation.navigate("Login")}>
-        <Text style={[styles.buttonItemText, {color: 'green'}]}>Intra in Cont</Text>
-      </Pressable> */}
+      <BigModal
+        isOpen={isImagePickerModalOpen}
+        requestClose={() => setIsImagePickerModalOpen(false)}
+      >
+        <View>
+          <Button
+            label="Fotografiaza"
+            leftIcon="camera"
+            style={{ width: "100%", marginBottom: 16 }}
+            onPress={() => pickImage("camera")}
+            iconTheme="Feather"
+            outlined
+          />
+          <Button
+            label="Incarca"
+            leftIcon="image"
+            style={{ width: "100%" }}
+            onPress={() => pickImage("library")}
+            iconTheme="Feather"
+            outlined
+          />
+        </View>
+      </BigModal>
     </ScrollView>
   );
 };
@@ -129,21 +212,32 @@ const styles = StyleSheet.create({
     paddingTop: 56,
     paddingBottom: 36,
   },
+  profileImageContainer: {
+    position: "relative",
+    marginVertical: 8,
+  },
   profileImageCircle: {
     width: 80,
     height: 80,
     position: "relative",
     overflow: "hidden",
-    backgroundColor: "green",
     borderWidth: 2,
     borderColor: ThemeColors.primary,
     borderRadius: 200,
-    marginVertical: 8,
   },
   profileImage: {
     position: "absolute",
     height: "100%",
     width: "100%",
+  },
+  profileImageEditIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: ThemeColors.primary,
+    borderRadius: 50,
+    padding: 8,
+    color: ThemeColors.white,
   },
   profileName: {
     ...ThemeTypography.subtitle1,

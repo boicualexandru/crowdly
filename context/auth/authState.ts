@@ -1,11 +1,17 @@
 import { API_BASE_URL } from "@env";
 import axios, { AxiosInstance } from "axios";
 
+export interface User {
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  image?: string;
+  token: string;
+}
+
 export interface AuthState {
   hasLoaded: boolean;
-  isAuthenticated: boolean;
-  username?: string;
-  token?: string;
+  user?: User;
   axiosInstance: AxiosInstance;
 }
 
@@ -34,8 +40,5 @@ export const getAxiosInstance = (jwtToken?: string): AxiosInstance => {
 
 export const initialAuthState: AuthState = {
   hasLoaded: false,
-  isAuthenticated: false,
-  username: undefined,
-  token: undefined,
   axiosInstance: getAxiosInstance(),
 };

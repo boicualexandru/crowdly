@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import jwt_decode from "jwt-decode";
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
@@ -9,17 +8,9 @@ export interface LoginModel {
   password: string;
 }
 
-interface LoginResponseSuccess {
-  success: true;
+export interface LoginResponse {
   jwtToken: string;
-  username: string;
 }
-
-interface LoginResponseFail {
-  success: false;
-}
-
-export type LoginResponse = LoginResponseSuccess | LoginResponseFail;
 
 export interface RegisterModel {
   username: string;
@@ -27,67 +18,43 @@ export interface RegisterModel {
   password: string;
 }
 
-export interface JwtClaimsModel {
-  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]: string;
-  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]: string;
-  jti: string;
-  exp: number;
-  iss: string;
-  aud: string;
-}
-
 const useAuthApi = () => {
   const { state } = useContext(AuthContext);
 
   return {
-    login: async (loginModel: LoginModel): Promise<LoginResponse> => {
+    login: async (loginModel: LoginModel): Promise<LoginResponse | null> => {
       const response = await state.axiosInstance?.post(
         "authenticate/login",
         loginModel
       );
 
-      if (response.status != 200) return { success: false };
+      if (response.status != 200) return null;
 
       const jwtToken = response.data.token;
-
-      var decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
-      console.log("decodedToken: ", decodedToken);
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
       return {
-        success: true,
         jwtToken: jwtToken,
-        username:
-          decodedToken[
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-          ],
       };
     },
     logout: async (): Promise<void> => {
       await AsyncStorage.removeItem("jwtToken");
     },
-    register: async (registerModel: RegisterModel): Promise<LoginResponse> => {
+    register: async (registerModel: RegisterModel): Promise<LoginResponse | null> => {
       const response = await state.axiosInstance?.post(
         "authenticate/register",
         registerModel
       );
 
-      if (response.status != 200) return { success: false };
+      if (response.status != 200) return null;
 
       const jwtToken = response.data.token;
-
-      var decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
 
       await AsyncStorage.setItem("jwtToken", jwtToken);
 
       return {
-        success: true,
         jwtToken: jwtToken,
-        username:
-          decodedToken[
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-          ],
       };
     },
   };

@@ -28,7 +28,7 @@ const RootStackNavigation = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={state.isAuthenticated ? "HomeTabs" : "Login"}
+      initialRouteName={state.user ? "HomeTabs" : "Login"}
     >
       <Stack.Screen
         name="HomeTabs"

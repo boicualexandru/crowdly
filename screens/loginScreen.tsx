@@ -39,12 +39,11 @@ const LoginScreen = ({ navigation, route }: Props) => {
     },
     onSubmit: async (values) => {
       const loginResponse = await login({ ...values });
-      if (!loginResponse.success) return;
+      if (!loginResponse) return;
 
       dispatch({
         type: AuthActionType.Login,
         payload: {
-          username: loginResponse.username,
           jwtToken: loginResponse.jwtToken,
         },
       });
@@ -52,14 +51,6 @@ const LoginScreen = ({ navigation, route }: Props) => {
       navigation.replace("HomeTabs", { screen: "VendorsStack" });
     },
   });
-
-  const onLogout = async () => {
-    await logout();
-
-    dispatch({
-      type: AuthActionType.Logout,
-    });
-  };
 
   return (
     <ScrollView
@@ -98,12 +89,6 @@ const LoginScreen = ({ navigation, route }: Props) => {
         <Button
           onPress={() => navigation.replace("Register")}
           label="Creeaza un cont nou"
-          style={{ marginTop: 16, backgroundColor: "transparent", borderWidth: 0 }}
-          labelStyle={{ color: ThemeColors.black }}
-        />
-        <Button
-          onPress={onLogout}
-          label="Logout"
           style={{ marginTop: 16, backgroundColor: "transparent", borderWidth: 0 }}
           labelStyle={{ color: ThemeColors.black }}
         />

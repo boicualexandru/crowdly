@@ -1,32 +1,68 @@
+import jwt_decode from "jwt-decode";
 import { AuthActions, AuthActionType } from "./authActions";
-import { AuthState, getAxiosInstance } from "./authState";
+import { AuthState, getAxiosInstance, User } from "./authState";
+
+interface JwtClaimsModel {
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]: string;
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]: string;
+  jti: string;
+  exp: number;
+  iss: string;
+  aud: string;
+  firstName: string;
+  lastName: string;
+  image: string;
+}
+
+const convertJwtTokenToUser = (jwtToken: string): User => {
+  const decodedToken = jwt_decode<JwtClaimsModel>(jwtToken);
+
+  return {
+    token: jwtToken,
+    username:
+      decodedToken[
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+      ],
+    firstName: decodedToken.firstName,
+    lastName: decodedToken.lastName,
+    image: decodedToken.image,
+  }
+}
 
 export function authReducer(state: AuthState, action: AuthActions): AuthState {
   switch (action.type) {
-    case AuthActionType.Load:
+    case AuthActionType.Load: {
+      if (!action.payload.jwtToken)
+        return {
+          ...state,
+          hasLoaded: true,
+          user: undefined,
+          axiosInstance: getAxiosInstance(),
+        }
+
+      const user: User = convertJwtTokenToUser(action.payload.jwtToken);
+
       return {
         ...state,
         hasLoaded: true,
-        isAuthenticated: action.payload.isAuthenticated,
-        username: action.payload.isAuthenticated ? action.payload.username : undefined,
-        token: action.payload.isAuthenticated ? action.payload.jwtToken : undefined,
-        axiosInstance: getAxiosInstance(action.payload.isAuthenticated ? action.payload.jwtToken : undefined),
-      };
-    case AuthActionType.Login:
-      return {
-        ...state,
-        isAuthenticated: true,
-        username: action.payload.username,
-        token: action.payload.jwtToken,
+        user: user,
         axiosInstance: getAxiosInstance(action.payload.jwtToken),
       };
-    case AuthActionType.Logout:
+    }
+    case AuthActionType.Login: {
+      const user: User = convertJwtTokenToUser(action.payload.jwtToken);
       return {
         ...state,
-        isAuthenticated: false,
-        username: undefined,
-        token: undefined,
+        user: user,
+        axiosInstance: getAxiosInstance(action.payload.jwtToken),
+      };
+    }
+    case AuthActionType.Logout: {
+      return {
+        ...state,
+        user: undefined,
         axiosInstance: getAxiosInstance(),
       };
+    }
   }
 }

@@ -41,12 +41,11 @@ const RegisterScreen = ({ navigation, route }: Props) => {
     },
     onSubmit: async (values) => {
       const registerResponse = await register({ ...values });
-      if (!registerResponse.success) return;
+      if (!registerResponse) return;
 
       dispatch({
         type: AuthActionType.Login,
         payload: {
-          username: registerResponse.username,
           jwtToken: registerResponse.jwtToken,
         },
       });

@@ -4,28 +4,17 @@ export enum AuthActionType {
   Logout,
 }
 
-export interface LoadPayloadNotAuthenticatedModel {
-  isAuthenticated: false;
-}
-
-export interface LoadPayloadAuthenticatedModel {
-  isAuthenticated: true;
-  jwtToken: string;
-  username: string;
-}
-
-export type LoadPayloadModel = LoadPayloadAuthenticatedModel | LoadPayloadNotAuthenticatedModel;
-
 export interface Load {
   type: AuthActionType.Load;
-  payload: LoadPayloadModel;
+  payload: {
+    jwtToken?: string;
+  };
 }
 
 export interface Login {
   type: AuthActionType.Login;
   payload: {
     jwtToken: string;
-    username: string;
   };
 }
 

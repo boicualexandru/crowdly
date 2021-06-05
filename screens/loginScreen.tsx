@@ -24,7 +24,7 @@ type Props = {
 };
 
 interface LoginForm {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation, route }: Props) => {
 
   const formik = useFormik<LoginForm>({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     onSubmit: async (values) => {
@@ -65,10 +65,12 @@ const LoginScreen = ({ navigation, route }: Props) => {
     >
       <View>
         <TextField
-          label="Nume de utilizator"
-          onChangeText={formik.handleChange("username")}
-          value={formik.values.username}
+          label="Adresa de Email"
+          onChangeText={formik.handleChange("email")}
+          value={formik.values.email}
           containerStyle={styles.textField}
+          autoCompleteType="email"
+          textContentType="emailAddress"
         />
         <TextField
           label="Parola"

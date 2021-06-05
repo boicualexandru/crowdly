@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "@context/auth/authContext";
 
 export interface LoginModel {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -13,8 +13,9 @@ export interface LoginResponse {
 }
 
 export interface RegisterModel {
-  username: string;
   email: string;
+  firstName: string;
+  lastName: string;
   password: string;
 }
 

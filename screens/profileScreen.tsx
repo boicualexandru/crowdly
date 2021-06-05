@@ -33,7 +33,7 @@ const ProfileScreen = ({ navigation, route }: Props) => {
   const userNameToDisplay = useMemo(() => {
     if (!state.user) return 'Utilizator';
     if (state.user.firstName && state.user.lastName) return `${state.user.firstName} ${state.user.lastName}`;
-    return state.user.firstName || state.user.username || 'Utilizator';
+    return state.user.firstName || state.user.email || 'Utilizator';
   }, [state.user])
 
   const avatarImageUrl = useMemo(() => {

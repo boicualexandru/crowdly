@@ -3,12 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import jwt_decode from "jwt-decode";
 import moment from "moment";
 import "moment/locale/ro";
 import React, { useCallback, useEffect, useReducer } from "react";
 
-import { AuthActionType, LoadPayloadModel } from "@context/auth/authActions";
+import { AuthActionType } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
 import { authReducer } from "@context/auth/authReducer";
 import { initialAuthState } from "@context/auth/authState";
@@ -43,20 +42,12 @@ export default function App() {
   const loadAuthState = useCallback(async () => {
     const jwtToken = await AsyncStorage.getItem("jwtToken");
 
-    const actionPayload: LoadPayloadModel = jwtToken
-      ? {
-          isAuthenticated: true,
-          jwtToken: jwtToken,
-          username: jwt_decode<{ username: string }>(jwtToken).username,
-        }
-      : {
-          isAuthenticated: false,
-        };
-
     authDispatch({
       type: AuthActionType.Load,
-      payload: actionPayload,
-    });
+      payload: {
+        jwtToken: jwtToken ?? undefined
+      },
+    });    
   }, []);
 
   const loadPreferencesState = useCallback(async () => {

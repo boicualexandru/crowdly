@@ -24,8 +24,9 @@ type Props = {
 };
 
 interface RegisterForm {
-  username: string;
   email: string;
+  firstName: string;
+  lastName: string;
   password: string;
 }
 
@@ -35,8 +36,9 @@ const RegisterScreen = ({ navigation, route }: Props) => {
 
   const formik = useFormik<RegisterForm>({
     initialValues: {
-      username: "",
       email: "",
+      firstName: "",
+      lastName: "",
       password: "",
     },
     onSubmit: async (values) => {
@@ -67,18 +69,26 @@ const RegisterScreen = ({ navigation, route }: Props) => {
     >
       <View>
         <TextField
-          label="Nume de utilizator"
-          onChangeText={formik.handleChange("username")}
-          value={formik.values.username}
-          containerStyle={styles.textField}
-        />
-        <TextField
-          label="Email"
+          label="Adresa de Email"
           onChangeText={formik.handleChange("email")}
           value={formik.values.email}
           containerStyle={styles.textField}
           autoCompleteType="email"
           textContentType="emailAddress"
+        />
+        <TextField
+          label="Prenume"
+          onChangeText={formik.handleChange("firstName")}
+          value={formik.values.firstName}
+          containerStyle={styles.textField}
+          textContentType="givenName"
+        />
+        <TextField
+          label="Nume"
+          onChangeText={formik.handleChange("lastName")}
+          value={formik.values.lastName}
+          containerStyle={styles.textField}
+          textContentType="familyName"
         />
         <TextField
           label="Parola"

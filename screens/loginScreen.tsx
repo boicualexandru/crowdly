@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Text,
 } from "react-native";
+import * as Yup from 'yup';
 
 import {
   RootStackNavigationPropChild,
@@ -21,6 +22,7 @@ import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
 
 import splashImage from "../assets/splash_text.png";
+import Note from "@components/note/note";
 
 type LoginScreenNavigationProp = RootStackNavigationPropChild<"Login">;
 type LoginScreenRouteProp = RootStackRoutePropChild<"Login">;
@@ -35,6 +37,14 @@ interface LoginForm {
   password: string;
 }
 
+const loginFormSchema = Yup.object({
+  email: Yup.string()
+    .email('Introdu un email valid')
+    .required('Camp obligatoriu'),
+  password: Yup.string()
+    .required('Camp obligatoriu'),
+});
+
 const LoginScreen = ({ navigation, route }: Props) => {
   const { login } = useUserApi();
 
@@ -43,12 +53,19 @@ const LoginScreen = ({ navigation, route }: Props) => {
       email: "",
       password: "",
     },
-    onSubmit: async (values) => {
-      const loginResponse = await login({ ...values });
-      if (!loginResponse) return;
+    validationSchema: loginFormSchema,
+    onSubmit: async (values, formikHelpers) => {
+      formikHelpers.setStatus();
+      const errorMessage = await login({ ...values });
+      
+      if (!errorMessage) {
+        navigation.replace("HomeTabs", { screen: "VendorsStack" });
+        return;
+      }
 
-      navigation.replace("HomeTabs", { screen: "VendorsStack" });
+      formikHelpers.setStatus(errorMessage);
     },
+    validateOnMount: false,
   });
 
   return (
@@ -78,6 +95,8 @@ const LoginScreen = ({ navigation, route }: Props) => {
             containerStyle={styles.textField}
             autoCompleteType="email"
             textContentType="emailAddress"
+            noteText={formik.errors["email"]}
+            isError={!!formik.errors["email"]}
           />
           <TextField
             label="Parola"
@@ -87,7 +106,13 @@ const LoginScreen = ({ navigation, route }: Props) => {
             autoCompleteType="password"
             textContentType="password"
             secureTextEntry={true}
+            noteText={formik.errors["password"]}
+            isError={!!formik.errors["password"]}
           />
+          {
+            formik.status ?
+            <Note text={formik.status} style={{marginTop: 8}} colorType="danger" /> : null
+          }
         </View>
         <View>
           <Button
@@ -95,6 +120,7 @@ const LoginScreen = ({ navigation, route }: Props) => {
             label="Conecteaza-te"
             style={{ marginTop: 16 }}
             loading={formik.isSubmitting}
+            disabled={formik.touched && !formik.isValid}
           />
           <Button
             onPress={() => navigation.replace("Register")}

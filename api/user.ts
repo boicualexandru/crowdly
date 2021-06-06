@@ -3,6 +3,7 @@ import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
 import { AuthActionType } from "@context/auth/authActions";
+import { genericServerErrorText } from "./helpers/constants";
 
 export interface LoginModel {
   email: string;
@@ -37,52 +38,56 @@ const useUserApi = () => {
   const { state, dispatch } = useContext(AuthContext);
 
   return {
-    login: async (loginModel: LoginModel): Promise<boolean> => {
-      const response = await state.axiosInstance?.post(
-        "user/login",
-        loginModel
-      );
-
-      if (response.status != 200) return false;
-
-      const jwtToken = response.data.token;
-
-      await AsyncStorage.setItem("jwtToken", jwtToken);
-
-      dispatch({
-        type: AuthActionType.Login,
-        payload: {
-          jwtToken: jwtToken,
-        },
-      });
-
-      return true;
+    login: async (loginModel: LoginModel): Promise<string | null> => {
+      try {
+        const response = await state.axiosInstance?.post(
+          "user/login",
+          loginModel
+        );
+  
+        const jwtToken = response.data.token;
+  
+        await AsyncStorage.setItem("jwtToken", jwtToken);
+  
+        dispatch({
+          type: AuthActionType.Login,
+          payload: {
+            jwtToken: jwtToken,
+          },
+        });
+  
+        return null;
+      } catch (ex) {
+        return ex.response?.data?.[0] || genericServerErrorText;
+      }
     },
     logout: async (): Promise<void> => {
       await AsyncStorage.removeItem("jwtToken");
     },
     register: async (
       registerModel: RegisterModel
-    ): Promise<boolean> => {
-      const response = await state.axiosInstance?.post(
-        "user/register",
-        registerModel
-      );
+    ): Promise<string | null> => {
+      try {
+        const response = await state.axiosInstance?.post(
+          "user/register",
+          registerModel
+        );
+  
+        const jwtToken = response.data.token;
+  
+        await AsyncStorage.setItem("jwtToken", jwtToken);
+  
+        dispatch({
+          type: AuthActionType.Login,
+          payload: {
+            jwtToken: jwtToken,
+          },
+        });
+        return null;
 
-      if (response.status != 200) return false;
-
-      const jwtToken = response.data.token;
-
-      await AsyncStorage.setItem("jwtToken", jwtToken);
-
-      dispatch({
-        type: AuthActionType.Login,
-        payload: {
-          jwtToken: jwtToken,
-        },
-      });
-
-      return true;
+      } catch (ex) {
+        return ex.response?.data?.[0] || genericServerErrorText;
+      }
     },
     updateUser: async (
       user: UpdateUserModel

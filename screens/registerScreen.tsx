@@ -8,6 +8,7 @@ import {
   Text,
   ImageBackground,
 } from "react-native";
+import * as Yup from "yup";
 
 import {
   RootStackNavigationPropChild,
@@ -16,6 +17,7 @@ import {
 
 import Button from "@components/button/button";
 import TextField from "@components/form/text-field";
+import Note from "@components/note/note";
 
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
@@ -38,6 +40,16 @@ interface RegisterForm {
   password: string;
 }
 
+const registerFormSchema = Yup.object({
+  email: Yup.string()
+    .email("Introdu un email valid")
+    .required("Camp obligatoriu"),
+  firstName: Yup.string().required("Camp obligatoriu"),
+  lastName: Yup.string().required("Camp obligatoriu"),
+  phoneNumber: Yup.string().required("Camp obligatoriu"),
+  password: Yup.string().required("Camp obligatoriu"),
+});
+
 const RegisterScreen = ({ navigation, route }: Props) => {
   const { register } = useUserApi();
 
@@ -49,11 +61,17 @@ const RegisterScreen = ({ navigation, route }: Props) => {
       phoneNumber: "",
       password: "",
     },
-    onSubmit: async (values) => {
-      const registerResponse = await register({ ...values });
-      if (!registerResponse) return;
+    validationSchema: registerFormSchema,
+    onSubmit: async (values, formikHelpers) => {
+      formikHelpers.setStatus();
+      const errorMessage = await register({ ...values });
 
-      navigation.navigate("HomeTabs", { screen: "VendorsStack" });
+      if (!errorMessage) {
+        navigation.navigate("HomeTabs", { screen: "VendorsStack" });
+        return;
+      }
+
+      formikHelpers.setStatus(errorMessage);
     },
   });
 
@@ -84,6 +102,8 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             containerStyle={styles.textField}
             autoCompleteType="email"
             textContentType="emailAddress"
+            noteText={formik.errors["email"]}
+            isError={!!formik.errors["email"]}
           />
           <TextField
             label="Prenume"
@@ -91,6 +111,8 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             value={formik.values.firstName}
             containerStyle={styles.textField}
             textContentType="givenName"
+            noteText={formik.errors["firstName"]}
+            isError={!!formik.errors["firstName"]}
           />
           <TextField
             label="Nume"
@@ -98,6 +120,8 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             value={formik.values.lastName}
             containerStyle={styles.textField}
             textContentType="familyName"
+            noteText={formik.errors["lastName"]}
+            isError={!!formik.errors["lastName"]}
           />
           <TextField
             label="Telefon"
@@ -107,6 +131,8 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             autoCompleteType="tel"
             textContentType="telephoneNumber"
             keyboardType="phone-pad"
+            noteText={formik.errors["phoneNumber"]}
+            isError={!!formik.errors["phoneNumber"]}
           />
           <TextField
             label="Parola"
@@ -116,7 +142,16 @@ const RegisterScreen = ({ navigation, route }: Props) => {
             autoCompleteType="password"
             textContentType="password"
             secureTextEntry={true}
+            noteText={formik.errors["password"]}
+            isError={!!formik.errors["password"]}
           />
+          {formik.status ? (
+            <Note
+              text={formik.status}
+              style={{ marginTop: 8 }}
+              colorType="danger"
+            />
+          ) : null}
         </View>
         <View>
           <Button

@@ -49,6 +49,7 @@ const RootStackNavigation = () => {
         component={LoginScreen}
         options={{
           title: "Conecteaza-te",
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -56,6 +57,7 @@ const RootStackNavigation = () => {
         component={RegisterScreen}
         options={{
           title: "Creeaza un cont nou",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

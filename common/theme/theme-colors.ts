@@ -9,6 +9,7 @@ const ThemeColors = {
   textGray: "#828282",
   white: "#FFFFFF",
   transparent: "#00000000",
+  defaultBackgroundGray: "#F2F2F2",
 };
 
 export default ThemeColors;

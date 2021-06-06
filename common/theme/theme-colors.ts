@@ -10,6 +10,7 @@ const ThemeColors = {
   white: "#FFFFFF",
   transparent: "#00000000",
   defaultBackgroundGray: "#F2F2F2",
+  warningYellow: '#eed202',
 };
 
 export default ThemeColors;

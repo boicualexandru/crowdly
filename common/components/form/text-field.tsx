@@ -12,12 +12,15 @@ import {
 
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
+import Note from "@components/note/note";
 
 export interface TextFieldProps extends TextInputProps {
   label?: string;
   containerStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   rightText?: string;
+  noteText?: string;
+  isError?: boolean;
 }
 
 const TextField = (props: TextFieldProps) => {
@@ -29,10 +32,14 @@ const TextField = (props: TextFieldProps) => {
           {props.label}
         </Text>
       }
-      <View style={[styles.inputWrapper, props.multiline && {height: -1}]}>
+      <View style={[styles.inputWrapper, props.multiline && {height: -1}, props.isError ? {borderColor: 'red'} : null]}>
         <TextInput {...props} style={[styles.input, props.style, props.multiline && {textAlignVertical: "top", paddingVertical: 8}]} />
         { props.rightText && <Text style={styles.sideText}>{props.rightText}</Text> }
       </View>
+      {
+        props.noteText ?
+        <Note text={props.noteText} style={{marginTop: 4}} colorType={props.isError ? 'danger' : 'info'} /> : null
+      }
     </View>
   );
 };

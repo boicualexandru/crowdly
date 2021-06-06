@@ -39,7 +39,7 @@ const Button = (props: ButtonProps) => {
     <IconComponent name={icon} size={14} color={color} style={styles.icon} />
   )
 
-  const color = props.disabled ? ThemeColors.gray : ThemeColors.primary;
+  const color = props.disabled ? ThemeColors.textGray : ThemeColors.primary;
 
   return (
     <Pressable {...props} style={[styles.button, {backgroundColor: color, borderColor: color}, props.outlined ? {backgroundColor: 'transparent'}: null, buttonStyle]} onPress={props.disabled || props.loading ? null : props.onPress}>

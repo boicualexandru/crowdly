@@ -99,12 +99,12 @@ const ProfileScreen = ({ navigation, route }: Props) => {
           >
             <View style={styles.profileImageCircle}>
               {
-                !state.user || !state.user.image ?
-                <Feather name="user" color={ThemeColors.primary} size={46} /> :
+                state.user?.image ?
                 <Image
                   source={{ uri: getImageUrlByUserId(state.user.id, state.user.image) }}
                   style={styles.profileImage}
-                />
+                /> :
+                <Feather name="user" color={ThemeColors.primary} size={46} />
               }
             </View>
             <Feather

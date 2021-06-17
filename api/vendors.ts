@@ -79,6 +79,9 @@ export enum VendorCategoryType {
   Photo = 3,
   Video = 4,
   Food = 5,
+  Entertainment = 6,
+  Decoration = 7,
+  Flowers = 8,
 }
 
 export const availableCities = [
@@ -89,23 +92,27 @@ export const availableCities = [
   { value: "Bucuresti, Romania", label: "Bucuresti, Romania" },
 ];
 
-export const vendorCategoryOptions = [
-  { label: "Nicio categorie", value: VendorCategoryType.None },
-  { label: "Locatie", value: VendorCategoryType.Location },
-  { label: "Muzica", value: VendorCategoryType.Music },
-  { label: "Fotograf", value: VendorCategoryType.Photo },
-  { label: "Video", value: VendorCategoryType.Video },
-  { label: "Catering", value: VendorCategoryType.Food },
-];
-
-export const vendorCategoryNameDictionary = {
+export const vendorCategoryNameDictionary: {[key in VendorCategoryType]: string} = {
   [VendorCategoryType.None]: "Nicio categorie",
   [VendorCategoryType.Location]: "Locatie",
   [VendorCategoryType.Music]: "Muzica",
   [VendorCategoryType.Photo]: "Fotograf",
   [VendorCategoryType.Video]: "Video",
   [VendorCategoryType.Food]: "Catering",
+  [VendorCategoryType.Entertainment]: "Divertisment",
+  [VendorCategoryType.Decoration]: "Decoratiuni",
+  [VendorCategoryType.Flowers]: "Aranjamente Florale",
 }
+
+export const vendorCategoryOptions: {
+  value: VendorCategoryType;
+  label: string;
+}[] = Object.keys(vendorCategoryNameDictionary).map(categoryType => {
+  return ({
+    value: categoryType,
+    label: vendorCategoryNameDictionary[categoryType] as string,
+  });
+})
 
 export const getInitialVendorsFilters = (
   category?: VendorCategoryType

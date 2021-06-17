@@ -45,6 +45,24 @@ const categoriesLabels = [
     image:
       "https://images.unsplash.com/photo-1530062845289-9109b2c9c868?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=752&q=80",
   },
+  {
+    label: "Divertisment",
+    type: VendorCategoryType.Entertainment,
+    image:
+      "https://images.unsplash.com/photo-1519758965401-328f73031806?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+  },
+  {
+    label: "Decoratiuni",
+    type: VendorCategoryType.Decoration,
+    image:
+      "https://images.unsplash.com/photo-1617201460038-6e5555a8a1f5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80",
+  },
+  {
+    label: "Aranjamente Florale",
+    type: VendorCategoryType.Flowers,
+    image:
+      "https://images.unsplash.com/photo-1508610048659-a06b669e3321?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+  },
 ];
 
 type VendorsCategoriesScreenNavigationProp = VendorsStackNavigationPropChild<"VendorsCategories">;

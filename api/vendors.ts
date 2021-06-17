@@ -12,7 +12,6 @@ export interface Vendor {
   city: string;
   price: number;
   thumbnail: string;
-  // isFavourite: boolean;
   category: VendorCategoryType;
 }
 

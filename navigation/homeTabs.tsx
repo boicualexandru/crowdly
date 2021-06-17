@@ -22,6 +22,7 @@ import {
   RootStackRoutePropChild,
 } from "./rootStack";
 import VendorsStackNavigation from "./vendorsStack";
+import EventsStackNavigation from "./eventsStack";
 
 type HomeTabsParamList = {
   VendorsStack: undefined;
@@ -73,7 +74,7 @@ const HomeTabsNavigation = ({
         />
         <Tab.Screen
           name="EventsStack"
-          component={VendorsStackNavigation}
+          component={EventsStackNavigation}
           options={{
             tabBarIcon: ({ color, size, focused }) => (
               <Feather

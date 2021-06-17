@@ -18,7 +18,7 @@ import {
   VendorsStackRoutePropChild,
 } from "@navigation/vendorsStack";
 
-import VendorCard from "@components/vendor-card/vendor-card";
+import VendorCard from "@screens/vendors/vendor-card";
 
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
 

@@ -1,4 +1,4 @@
-import VendorCard from '@components/vendor-card/vendor-card';
+import VendorCard from '@screens/vendors/vendor-card';
 import { ProfileStackNavigationPropChild, ProfileStackRoutePropChild } from '@navigation/profileStack';
 import { useFocusEffect } from '@react-navigation/native';
 import useVendorsApi, { Vendor } from 'api/vendors';

@@ -153,6 +153,7 @@ const HomeTabsNavigation = ({
         isOpen={newItemModalIsOpen}
         requestClose={() => setNewItemModalIsOpen(false)}
         onNewVendor={() => navigation.navigate("EditVendor", {})}
+        onNewEvent={() => navigation.navigate("EditEvent", {})}
       />
     </React.Fragment>
   );

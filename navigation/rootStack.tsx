@@ -11,10 +11,12 @@ import LoginScreen from "@screens/loginScreen";
 import RegisterScreen from "@screens/registerScreen";
 
 import HomeTabsNavigation from "./homeTabs";
+import EditEventScreen from "@screens/editEventScreen";
 
 type RootStackParamList = {
   HomeTabs: undefined;
   EditVendor: { vendorId?: string };
+  EditEvent: { eventId?: string };
   Login: undefined;
   Register: undefined;
 };
@@ -40,6 +42,13 @@ const RootStackNavigation = () => {
       <Stack.Screen
         name="EditVendor"
         component={EditVendorScreen}
+        options={{
+          title: "Serviciu Nou",
+        }}
+      />
+      <Stack.Screen
+        name="EditEvent"
+        component={EditEventScreen}
         options={{
           title: "Serviciu Nou",
         }}

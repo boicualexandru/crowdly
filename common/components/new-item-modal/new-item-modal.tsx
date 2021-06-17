@@ -18,6 +18,7 @@ interface Props {
   isOpen: boolean;
   requestClose: () => void;
   onNewVendor: () => void;
+  onNewEvent: () => void;
 }
 
 const NewItemModal = (props: Props) => {
@@ -38,7 +39,7 @@ const NewItemModal = (props: Props) => {
           style={[styles.itemContainer, { marginBottom: 16 }]}
           onPress={(e) => {
             e.preventDefault();
-            // props.onNewVendor();
+            props.onNewEvent();
             props.requestClose();
           }}
         >

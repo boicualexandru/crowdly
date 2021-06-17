@@ -1,9 +1,10 @@
-import { getImageUrlByEventId, } from './helpers/getImage';
+import moment from "moment";
 import { useContext } from "react";
 
 import { AuthContext } from "@context/auth/authContext";
 import { PreferencesContext } from "@context/preferences/preferencesContext";
 
+import { getImageUrlByEventId } from "./helpers/getImage";
 import { DataPage } from "./models/datapage";
 
 export interface Event {
@@ -88,27 +89,29 @@ export enum EventCategoryType {
   Personal = 8,
 }
 
-export const eventCategoryNameDictionary: {[key in EventCategoryType]: string} = {
+export const eventCategoryNameDictionary: {
+  [key in EventCategoryType]: string;
+} = {
   [EventCategoryType.None]: "Nicio categorie",
-  [EventCategoryType.Party]: "Locatie",
-  [EventCategoryType.Music]: "Muzica",
-  [EventCategoryType.Comedy]: "Fotograf",
-  [EventCategoryType.Art]: "Video",
-  [EventCategoryType.Lifestyle]: "Catering",
-  [EventCategoryType.Comunity]: "Divertisment",
-  [EventCategoryType.Corporate]: "Decoratiuni",
-  [EventCategoryType.Personal]: "Aranjamente Florale",
-}
+  [EventCategoryType.Party]: "Petrecere",
+  [EventCategoryType.Music]: "Concert",
+  [EventCategoryType.Comedy]: "Comedie",
+  [EventCategoryType.Art]: "Arta",
+  [EventCategoryType.Lifestyle]: "Stil de viata",
+  [EventCategoryType.Comunity]: "Comunitate",
+  [EventCategoryType.Corporate]: "Corporativ",
+  [EventCategoryType.Personal]: "Personal",
+};
 
 export const eventCategoryOptions: {
   value: EventCategoryType;
   label: string;
-}[] = Object.keys(eventCategoryNameDictionary).map(categoryType => {
-  return ({
+}[] = Object.keys(eventCategoryNameDictionary).map((categoryType) => {
+  return {
     value: categoryType,
     label: eventCategoryNameDictionary[categoryType] as string,
-  });
-})
+  };
+});
 
 export const getInitialEventsFilters = (
   category?: EventCategoryType
@@ -143,8 +146,14 @@ const useEventsApi = () => {
       body.append("name", event.name);
       body.append("city", event.city);
       body.append("price", event.price.toString());
-      body.append("startDateTime", event.startDateTime.toString());
-      body.append("endDateTime", event.endDateTime.toString());
+      body.append(
+        "startDateTime",
+        moment(event.startDateTime).format("YYYY-MM-DD")
+      );
+      body.append(
+        "endDateTime",
+        moment(event.endDateTime).format("YYYY-MM-DD")
+      );
       if (event.guests) body.append("guests", event.guests.toString());
       if (event.phone) body.append("phone", event.phone);
       if (event.email) body.append("email", event.email);
@@ -166,6 +175,7 @@ const useEventsApi = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(responseRaw.status);
 
       return responseRaw?.data.id;
     },

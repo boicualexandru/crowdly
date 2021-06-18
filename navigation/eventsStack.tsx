@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 
-// import EventScreen from "@screens/event/eventScreen";
+import EventScreen from "@screens/event/eventScreen";
 import EventsScreen from "@screens/events/eventsScreen";
 
 import {
@@ -31,14 +31,14 @@ const EventsStackNavigation = () => {
     <Stack.Navigator initialRouteName="EventsCategories">
       <Stack.Screen name="EventsCategories" component={EventsCategoriesScreen} options={{title: 'Evenimente'}} />
       <Stack.Screen name="Events" component={EventsScreen} options={{title: 'Evenimente'}} />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Event"
         component={EventScreen}
         options={{
           headerTransparent: true,
           title: "",
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

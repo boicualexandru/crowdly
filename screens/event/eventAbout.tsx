@@ -1,3 +1,4 @@
+import Button from '@components/button/button'
 import IconButton from '@components/button/icon-button'
 import MapImage from '@components/map-image/map-image'
 import { EventScreenNavigationProp } from '@screens/event/eventScreen'
@@ -5,8 +6,10 @@ import { ThemeBoxing } from '@theme/theme-boxing'
 import ThemeColors from '@theme/theme-colors'
 import { ThemeTypography, ThemeTypographyColorStyles } from '@theme/theme-typography'
 import { EventDetails } from 'api/events'
-import React from 'react'
+import { BarCodeEvent, BarCodeScanner } from 'expo-barcode-scanner'
+import React, { useEffect, useState } from 'react'
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import ScanTicketModal from './scanTicketModal'
 
 interface Props {
   event: EventDetails;
@@ -14,6 +17,8 @@ interface Props {
 }
 
 const EventAbout = ({ event }: Props) => {
+  const [isScanTicketModalOpen, setIsScanTicketModalOpen] = useState(false);
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -24,6 +29,12 @@ const EventAbout = ({ event }: Props) => {
       keyboardShouldPersistTaps="always"
     >
       <View style={ThemeBoxing.container}>
+        <View style={{width: '100%'}}>
+          <Button
+            label="Scaneaza un Bilet"
+            onPress={() => setIsScanTicketModalOpen(true)}
+          />
+        </View>
         <View>
           <Text
             style={[
@@ -85,6 +96,7 @@ const EventAbout = ({ event }: Props) => {
           <MapImage lon={event.longitude} lat={event.latitude} aspectRatio={6 / 4} />
         </Pressable>
       ) : null}
+      <ScanTicketModal isOpen={isScanTicketModalOpen} eventId={event.id} requestClose={() => setIsScanTicketModalOpen(false)} />
     </ScrollView>
   )
 }

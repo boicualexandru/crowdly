@@ -6,6 +6,7 @@ import { ThemeBoxing } from '@theme/theme-boxing'
 import ThemeColors from '@theme/theme-colors'
 import { ThemeTypography, ThemeTypographyColorStyles } from '@theme/theme-typography'
 import { EventDetails } from 'api/events'
+import { useTicketApi } from 'api/ticket'
 import { BarCodeEvent, BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const EventAbout = ({ event }: Props) => {
+  const { book } = useTicketApi();
   const [isScanTicketModalOpen, setIsScanTicketModalOpen] = useState(false);
 
   return (
@@ -29,12 +31,23 @@ const EventAbout = ({ event }: Props) => {
       keyboardShouldPersistTaps="always"
     >
       <View style={ThemeBoxing.container}>
-        <View style={{width: '100%'}}>
+        {
+          event.isEditable ? 
+          <View style={{width: '100%', marginBottom: 16}}>
+            <Button
+              label="Scaneaza un Bilet"
+              onPress={() => setIsScanTicketModalOpen(true)}
+              leftIcon="qrcode"
+              iconTheme="FontAwesome5"
+            />
+          </View> : null
+        }
+        <View style={{width: '100%', marginBottom: 16}}>
           <Button
-            label="Scaneaza un Bilet"
-            onPress={() => setIsScanTicketModalOpen(true)}
-            leftIcon="qrcode"
-            iconTheme="FontAwesome5"
+            label="Ia un bilet"
+            onPress={async () => await book(event.id)}
+            leftIcon="tag"
+            iconTheme="Feather"
           />
         </View>
         <View>

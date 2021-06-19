@@ -14,7 +14,7 @@ import { ThemeTypography, ThemeTypographyColorStyles } from "@theme/theme-typogr
 import DateField from "@components/form/date-field";
 import { BarCodeEvent, BarCodeScanner } from "expo-barcode-scanner";
 import ThemeColors from "@theme/theme-colors";
-import { TicketValidationResult, useTicketsApi, ValidTicketResult } from "api/tickets";
+import { TicketValidationResult, useTicketApi, ValidTicketResult } from "api/ticket";
 import { getImageUrlByUserId } from "api/helpers/getImage";
 
 interface Props {
@@ -24,8 +24,13 @@ interface Props {
   requestClose: () => void;
 }
 
+interface QrDataModel {
+  eventId: string;
+  ticketId: string;
+}
+
 const ScanTicketModal = (props: Props) => {
-  const { validateTicket } = useTicketsApi();
+  const { validateTicket } = useTicketApi();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
@@ -53,7 +58,9 @@ const ScanTicketModal = (props: Props) => {
     setScanned(true);
     setIsValidating(true);
 
-    const validationResult = await validateTicket(data);
+    const qrData: QrDataModel = JSON.parse(data);
+
+    const validationResult = await validateTicket(qrData.eventId, qrData.ticketId);
     setIsValidating(false);
     setValidationResult(validationResult);
   };

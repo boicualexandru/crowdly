@@ -116,7 +116,10 @@ const ProfileScreen = ({ navigation, route }: Props) => {
           <Text style={styles.profileName}>{userNameToDisplay}</Text>
         </View>
         <Divider />
-        <Pressable style={styles.buttonItem}>
+        <Pressable 
+          style={styles.buttonItem}
+          onPress={() => navigation.push("MyTickets")}
+        >
           <Feather name="tag" color={ThemeColors.textDark} size={25} />
           <Text style={styles.buttonItemText}>Biletele Mele</Text>
         </Pressable>

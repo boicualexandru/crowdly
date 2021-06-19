@@ -22,6 +22,7 @@ export interface Ticket {
   id: string;
   eventId: string;
   userId: string;
+  eventName: string;
 }
 
 export const useTicketApi = () => {

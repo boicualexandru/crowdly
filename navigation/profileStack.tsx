@@ -15,10 +15,12 @@ import {
   HomeTabsNavigationPropChild,
   HomeTabsRoutePropChild,
 } from "./homeTabs";
+import MyTicketsScreen from "@screens/profile/myTickets";
 
 type ProfileStackParamList = {
   Profile: undefined;
   MyVendors: undefined;
+  MyTickets: undefined;
   Vendor: { id: string; name: string };
   UpdateUserDetails: undefined;
   ChangePassword: undefined;
@@ -41,6 +43,11 @@ const ProfileStackNavigation = () => {
         name="MyVendors"
         component={MyVendorsScreen}
         options={{ title: "Serviciile Mele" }}
+      />
+      <Stack.Screen
+        name="MyTickets"
+        component={MyTicketsScreen}
+        options={{ title: "Biletele Mele" }}
       />
       <Stack.Screen
         name="Vendor"

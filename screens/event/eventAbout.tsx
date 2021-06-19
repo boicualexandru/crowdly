@@ -33,6 +33,8 @@ const EventAbout = ({ event }: Props) => {
           <Button
             label="Scaneaza un Bilet"
             onPress={() => setIsScanTicketModalOpen(true)}
+            leftIcon="qrcode"
+            iconTheme="FontAwesome5"
           />
         </View>
         <View>

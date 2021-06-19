@@ -2,6 +2,7 @@ const ThemeColors = {
   primary: "#f12b7e",
   secondary: "#f89221",
   success: "#6ebc41",
+  danger: "#EA2B1F",
 
   black: "#000000",
   gray: "#E2E8F0",

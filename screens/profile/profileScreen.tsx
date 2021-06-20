@@ -167,7 +167,7 @@ const ProfileScreen = ({ navigation, route }: Props) => {
         isOpen={isImagePickerModalOpen}
         requestClose={() => setIsImagePickerModalOpen(false)}
       >
-        <View>
+        <View style={{width: '100%'}}>
           <Button
             label="Fotografiaza"
             leftIcon="camera"

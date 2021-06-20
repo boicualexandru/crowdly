@@ -65,7 +65,7 @@ const Button = (props: ButtonProps) => {
         /> : null
       }
       <View>
-        <Text style={[styles.label, props.outlined ? {color: color}: null, props.loading ? {opacity: 0} : null, props.labelStyle]}>{props.label}</Text>
+        <Text style={[styles.label, props.outlined ? {color: color}: null, props.loading ? {opacity: 0} : null, props.labelStyle]}> {props.label} </Text>
       </View>
     </Pressable>
   );

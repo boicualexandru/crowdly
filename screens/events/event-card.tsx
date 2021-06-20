@@ -37,10 +37,25 @@ const EventCard = ({ event, onPress }: Props) => {
             <Text text90 style={{ color: ThemeColors.primary }}>
               $$$
             </Text>
-            <Text text70 grey10>
+            <Text text70 grey10 style={{ marginBottom: 4 }}>
               {event.name}
             </Text>
 
+            <View row>
+              <View style={{ marginRight: 8, marginBottom: 4 }}>
+                <Text text90 grey50>
+                  <FontAwesome5
+                    name="calendar"
+                    color={ThemeColors.textGray}
+                  ></FontAwesome5>
+                </Text>
+              </View>
+              <View>
+                <Text text90 grey50>
+                  12-14 IUN.
+                </Text>
+              </View>
+            </View>
             <View row>
               <View style={{ marginRight: 8 }}>
                 <Text text90 grey50>
@@ -59,7 +74,7 @@ const EventCard = ({ event, onPress }: Props) => {
           </View>
         </View>
         <View>
-          <Text text70 grey10>
+          <Text text70 style={{color: ThemeColors.primary}}>
             {event.price} Lei
           </Text>
         </View>

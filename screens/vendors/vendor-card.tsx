@@ -37,7 +37,7 @@ const VendorCard = ({ vendor, onPress }: Props) => {
             <Text text90 style={{ color: ThemeColors.primary }}>
               $$$
             </Text>
-            <Text text70 grey10>
+            <Text text70 grey10 style={{ marginBottom: 4 }}>
               {vendor.name}
             </Text>
 
@@ -59,7 +59,7 @@ const VendorCard = ({ vendor, onPress }: Props) => {
           </View>
         </View>
         <View>
-          <Text text70 grey10>
+          <Text text70 style={{color: ThemeColors.primary}}>
             {vendor.price} Lei
           </Text>
         </View>

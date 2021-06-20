@@ -176,13 +176,13 @@ const styles = StyleSheet.create({
     ...ThemeTypographyColorStyles.text_dark_60,
   },
   buttonsContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     marginVertical: 16,
     justifyContent: "flex-start",
     width: "100%",
   },
   button: {
-    marginHorizontal: 8,
+    marginVertical: 8,
     flexDirection: "row",
     alignItems: "center",
   },

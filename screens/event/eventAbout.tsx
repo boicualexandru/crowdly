@@ -18,7 +18,6 @@ interface Props {
 }
 
 const EventAbout = ({ event }: Props) => {
-  const { book } = useTicketApi();
   const [isScanTicketModalOpen, setIsScanTicketModalOpen] = useState(false);
 
   return (
@@ -42,14 +41,6 @@ const EventAbout = ({ event }: Props) => {
             />
           </View> : null
         }
-        <View style={{width: '100%', marginBottom: 16}}>
-          <Button
-            label="Ia un bilet"
-            onPress={async () => await book(event.id)}
-            leftIcon="tag"
-            iconTheme="Feather"
-          />
-        </View>
         <View>
           <Text
             style={[

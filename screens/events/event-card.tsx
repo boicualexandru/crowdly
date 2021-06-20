@@ -1,9 +1,10 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import React from "react";
+import React, { useCallback } from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 
 import ThemeColors from "@theme/theme-colors";
 import { Event } from "api/events";
+import moment from "moment";
 
 interface Props {
   event: Event;
@@ -11,6 +12,11 @@ interface Props {
 }
 
 const EventCard = ({ event, onPress }: Props) => {
+  const getFormattedDate = useCallback(
+    (date: Date) => moment(date).format("Do MMM"),
+    []
+  );
+  
   return (
     <Card
       marginV-10
@@ -41,8 +47,8 @@ const EventCard = ({ event, onPress }: Props) => {
               {event.name}
             </Text>
 
-            <View row>
-              <View style={{ marginRight: 8, marginBottom: 4 }}>
+            <View row style={{ marginBottom: 4 }}>
+              <View style={{ marginRight: 8 }}>
                 <Text text90 grey50>
                   <FontAwesome5
                     name="calendar"
@@ -52,7 +58,7 @@ const EventCard = ({ event, onPress }: Props) => {
               </View>
               <View>
                 <Text text90 grey50>
-                  12-14 IUN.
+                  {getFormattedDate(event.startDateTime)} - {getFormattedDate(event.endDateTime)}
                 </Text>
               </View>
             </View>

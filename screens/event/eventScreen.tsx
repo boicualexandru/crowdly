@@ -3,6 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import useEventsApi, { EventDetails } from "api/events";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Share } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 import { PreferencesActionType } from "@context/preferences/preferencesActions";
 import { PreferencesContext } from "@context/preferences/preferencesContext";
@@ -21,6 +22,9 @@ import {
 } from "@theme/theme-typography";
 
 import EventAbout from "./eventAbout";
+import moment from "moment";
+import Button from "@components/button/button";
+import { useTicketApi } from "api/ticket";
 
 export type EventScreenNavigationProp = EventsStackNavigationPropChild<"Event">;
 type EventScreenRouteProp = EventsStackRoutePropChild<"Event">;
@@ -105,6 +109,7 @@ const EventScreen = ({ navigation, route }: Props) => {
 
   const [event, setEvent] = useEventState(navigation);
   const { getEventById } = useEventsApi();
+  const { book } = useTicketApi();
 
   useFocusEffect(
     useCallback(() => {
@@ -113,6 +118,11 @@ const EventScreen = ({ navigation, route }: Props) => {
         setEvent(eventResponse);
       })();
     }, [route.params])
+  );
+  
+  const getFormattedDate = useCallback(
+    (date: Date) => moment(date).format("Do MMM"),
+    []
   );
 
   if (event == null) return null;
@@ -139,14 +149,54 @@ const EventScreen = ({ navigation, route }: Props) => {
             >
               {event.name}
             </Text>
-            <Text
-              style={[
-                ThemeTypography.caption,
-                ThemeTypographyColorStyles.text_dark_60,
-              ]}
-            >
-              {event.city}
+          </View>
+          <View>
+            <Text style={[ThemeTypography.h6, {color: ThemeColors.primary}]}>
+              {event.price} Lei
             </Text>
+          </View>
+          {/* <ReviewStars {...event.rating} style={Spacing.mt_4} /> */}
+        </View>
+        <View style={[styles.descriptionContainer, {paddingBottom: 8}]}>
+          <View style={styles.descriptionContent}>
+            <View style={{flexDirection: 'row', marginBottom: 4}}>
+              <FontAwesome5
+                style={{ marginRight: 8 }}
+                name="calendar"
+                color={ThemeColors.textGray}
+              ></FontAwesome5>
+              <Text
+                style={[
+                  ThemeTypography.caption,
+                  ThemeTypographyColorStyles.text_dark_60,
+                ]}
+              >
+                {getFormattedDate(event.startDateTime)} - {getFormattedDate(event.endDateTime)}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <FontAwesome5
+                style={{ marginRight: 8 }}
+                name="map-marker-alt"
+                color={ThemeColors.textGray}
+              ></FontAwesome5>
+              <Text
+                style={[
+                  ThemeTypography.caption,
+                  ThemeTypographyColorStyles.text_dark_60,
+                ]}
+              >
+                {event.city}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <Button
+              label="Ia un bilet"
+              onPress={async () => await book(event.id)}
+              leftIcon="tag"
+              iconTheme="Feather"
+            />
           </View>
           {/* <ReviewStars {...event.rating} style={Spacing.mt_4} /> */}
         </View>
@@ -160,7 +210,7 @@ const EventScreen = ({ navigation, route }: Props) => {
 const styles = StyleSheet.create({
   descriptionContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 8,
     width: "100%",
     flexDirection: "row",
     alignItems: "flex-start",

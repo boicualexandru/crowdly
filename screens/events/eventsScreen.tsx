@@ -4,7 +4,7 @@ import useEventsApi, {
   Event,
   EventsFiltersModel,
 } from "api/events";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -25,6 +25,7 @@ import useInfiniteScroll from "@hooks/useInfiniteScroll";
 import ThemeColors from "@theme/theme-colors";
 
 import EventFilters from "./eventsFilters";
+import { PreferencesContext } from "@context/preferences/preferencesContext";
 
 type EventsScreenNavigationProp = EventsStackNavigationPropChild<"Events">;
 type EventsScreenRouteProp = EventsStackRoutePropChild<"Events">;
@@ -36,6 +37,7 @@ interface Props {
 
 const EventsScreen = ({ navigation, route }: Props) => {
   const { getEventsPage } = useEventsApi();
+  const { state: preferencesState } = useContext(PreferencesContext);
   const {
     data,
     hasMore,
@@ -46,7 +48,7 @@ const EventsScreen = ({ navigation, route }: Props) => {
     applyFilters,
   } = useInfiniteScroll<Event, EventsFiltersModel>(
     getEventsPage,
-    getInitialEventsFilters(route.params?.categoryType)
+    getInitialEventsFilters(preferencesState.currentCityId, route.params?.categoryType)
   );
 
   useFocusEffect(

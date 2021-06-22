@@ -6,6 +6,7 @@ import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import moment from "moment";
 import "moment/locale/ro";
 import React, { useCallback, useEffect, useReducer } from "react";
+import * as Location from 'expo-location';
 
 import { AuthActionType } from "@context/auth/authActions";
 import { AuthContext } from "@context/auth/authContext";
@@ -27,6 +28,7 @@ import {
 } from "@context/preferences/preferencesState";
 
 import RootStackNavigation from "./navigation/rootStack";
+import { availableCities, getClosestCity } from "api/helpers/cities";
 
 export default function App() {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
@@ -52,13 +54,25 @@ export default function App() {
 
   const loadPreferencesState = useCallback(async () => {
     const preferencesJson = await AsyncStorage.getItem("preferences");
-    if (!preferencesJson) return;
 
-    const preferences: PreferencesState = JSON.parse(preferencesJson);
+    const preferences: PreferencesState | null = preferencesJson ? JSON.parse(preferencesJson) : null;
+
+    let currentLocation: Location.LocationObject | null = null;
+    try{
+      await Location.requestForegroundPermissionsAsync();
+      await Location.requestBackgroundPermissionsAsync();
+      currentLocation = await Location.getCurrentPositionAsync();
+    } catch(ex) { }
+    
+    const closestCity = currentLocation?.coords == null ? 
+      availableCities[0] : 
+      getClosestCity(currentLocation?.coords.latitude, currentLocation?.coords.longitude);
+
     preferencesDispatch({
       type: PreferencesActionType.Load,
       payload: {
-        favoriteVendors: preferences.favoriteVendors ?? [],
+        favoriteVendors: preferences?.favoriteVendors ?? [],
+        currentCityId: closestCity.id,
       },
     });
   }, []);
@@ -88,6 +102,7 @@ export default function App() {
   useEffect(() => {
     (async () => {
       await SplashScreen.preventAutoHideAsync();
+      
       await Promise.all([
         loadAuthState(),
         loadPreferencesState(),

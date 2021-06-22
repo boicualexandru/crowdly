@@ -114,9 +114,10 @@ export const eventCategoryOptions: {
 });
 
 export const getInitialEventsFilters = (
+  cityId?: string,
   category?: EventCategoryType
 ): EventsFiltersModel => ({
-  cityId: undefined,
+  cityId: cityId ?? undefined,
   category: category ?? EventCategoryType.None,
 });
 

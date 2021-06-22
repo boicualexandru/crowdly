@@ -114,9 +114,10 @@ export const vendorCategoryOptions: {
 })
 
 export const getInitialVendorsFilters = (
+  cityId?: string,
   category?: VendorCategoryType
 ): VendorsFiltersModel => ({
-  cityId: undefined,
+  cityId: cityId ?? undefined,
   category: category ?? VendorCategoryType.None,
 });
 

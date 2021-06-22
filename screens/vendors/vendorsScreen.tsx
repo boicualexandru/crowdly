@@ -4,7 +4,7 @@ import useVendorsApi, {
   Vendor,
   VendorsFiltersModel,
 } from "api/vendors";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -25,6 +25,7 @@ import useInfiniteScroll from "@hooks/useInfiniteScroll";
 import ThemeColors from "@theme/theme-colors";
 
 import VendorFilters from "./vendorsFilters";
+import { PreferencesContext } from "@context/preferences/preferencesContext";
 
 type VendorsScreenNavigationProp = VendorsStackNavigationPropChild<"Vendors">;
 type VendorsScreenRouteProp = VendorsStackRoutePropChild<"Vendors">;
@@ -36,6 +37,8 @@ interface Props {
 
 const VendorsScreen = ({ navigation, route }: Props) => {
   const { getVendorsPage } = useVendorsApi();
+  const { state: preferencesState } = useContext(PreferencesContext);
+  
   const {
     data,
     hasMore,
@@ -46,7 +49,7 @@ const VendorsScreen = ({ navigation, route }: Props) => {
     applyFilters,
   } = useInfiniteScroll<Vendor, VendorsFiltersModel>(
     getVendorsPage,
-    getInitialVendorsFilters(route.params?.categoryType)
+    getInitialVendorsFilters(preferencesState.currentCityId, route.params?.categoryType)
   );
 
   useFocusEffect(

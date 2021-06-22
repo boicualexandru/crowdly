@@ -54,3 +54,24 @@ export const availableCitiesPickerOptions: PickerItemProps[] = availableCities.m
 }));
 
 export const getCityById = (id: string) => availableCities.find(c => c.id == id);
+
+const getGeoDistance = (ax: number, ay: number, bx: number, by: number) => {
+  const xDistance = Math.abs(ax - bx);
+  const yDistance = Math.abs(ay - by);
+  return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+}
+
+export const getClosestCity = (latitude: number, longitude: number): City => {
+  let closestCity = availableCities[0];
+  let minDistance = getGeoDistance(latitude, longitude, closestCity.latitude, closestCity.longitude);
+
+  for (let i = 1; i < availableCities.length; i++){
+    const distance = getGeoDistance(latitude, longitude, availableCities[i].latitude, availableCities[i].longitude);
+    if (distance < minDistance){
+      closestCity = availableCities[i];
+      minDistance = distance;
+    }
+  }
+
+  return closestCity;
+}

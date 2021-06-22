@@ -9,14 +9,14 @@ import { DataPage } from "./models/datapage";
 export interface Vendor {
   id: string;
   name: string;
-  city: string;
+  cityId: string;
   price: number;
   thumbnail: string;
   category: VendorCategoryType;
 }
 
 export interface VendorsFiltersModel {
-  city?: string;
+  cityId?: string;
   category?: VendorCategoryType;
   priceMin?: number;
   priceMax?: number;
@@ -28,7 +28,7 @@ export interface VendorsFiltersModel {
 export interface VendorDetails {
   id: string;
   name: string;
-  city: string;
+  cityId: string;
   longitude?: number;
   latitude?: number;
   phone: string;
@@ -45,7 +45,7 @@ export interface VendorDetails {
 
 export interface CreateVendorRequest {
   name: string;
-  city: string;
+  cityId: string;
   price: number;
   guestsMin?: number;
   guestsMax?: number;
@@ -59,7 +59,7 @@ export interface CreateVendorRequest {
 export interface UpdateVendorRequest {
   id: string;
   name: string;
-  city: string;
+  cityId: string;
   price: number;
   guestsMin?: number;
   guestsMax?: number;
@@ -83,13 +83,13 @@ export enum VendorCategoryType {
   Flowers = 8,
 }
 
-export const availableCities = [
-  { value: "", label: "Toate orasele" },
-  { value: "Cluj-Napoca, Romania", label: "Cluj-Napoca, Romania" },
-  { value: "Iasi, Romania", label: "Iasi, Romania" },
-  { value: "Brasov, Romania", label: "Brasov, Romania" },
-  { value: "Bucuresti, Romania", label: "Bucuresti, Romania" },
-];
+// export const availableCities = [
+//   { value: "", label: "Toate orasele" },
+//   { value: "Cluj-Napoca, Romania", label: "Cluj-Napoca, Romania" },
+//   { value: "Iasi, Romania", label: "Iasi, Romania" },
+//   { value: "Brasov, Romania", label: "Brasov, Romania" },
+//   { value: "Bucuresti, Romania", label: "Bucuresti, Romania" },
+// ];
 
 export const vendorCategoryNameDictionary: {[key in VendorCategoryType]: string} = {
   [VendorCategoryType.None]: "Nicio categorie",
@@ -116,7 +116,7 @@ export const vendorCategoryOptions: {
 export const getInitialVendorsFilters = (
   category?: VendorCategoryType
 ): VendorsFiltersModel => ({
-  city: "",
+  cityId: undefined,
   category: category ?? VendorCategoryType.None,
 });
 
@@ -142,7 +142,7 @@ const useVendorsApi = () => {
     createVendor: async (vendor: CreateVendorRequest): Promise<string> => {
       var body = new FormData();
       body.append("name", vendor.name);
-      body.append("city", vendor.city);
+      body.append("cityId", vendor.cityId);
       body.append("price", vendor.price.toString());
       if (vendor.guestsMin) body.append("guestsMin", vendor.guestsMin.toString());
       if (vendor.guestsMax) body.append("guestsMax", vendor.guestsMax.toString());
@@ -171,7 +171,7 @@ const useVendorsApi = () => {
     updateVendor: async (vendor: UpdateVendorRequest): Promise<void> => {
       var body = new FormData();
       body.append("name", vendor.name);
-      body.append("city", vendor.city);
+      body.append("cityId", vendor.cityId);
       body.append("price", vendor.price.toString());
       if (vendor.guestsMin) body.append("guestsMin", vendor.guestsMin.toString());
       if (vendor.guestsMax) body.append("guestsMax", vendor.guestsMax.toString());

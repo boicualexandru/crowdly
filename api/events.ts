@@ -10,7 +10,7 @@ import { DataPage } from "./models/datapage";
 export interface Event {
   id: string;
   name: string;
-  city: string;
+  cityId: string;
   price: number;
   thumbnail: string;
   category: EventCategoryType;
@@ -19,7 +19,7 @@ export interface Event {
 }
 
 export interface EventsFiltersModel {
-  city?: string;
+  cityId?: string;
   category?: EventCategoryType;
   priceMin?: number;
   priceMax?: number;
@@ -29,7 +29,7 @@ export interface EventsFiltersModel {
 export interface EventDetails {
   id: string;
   name: string;
-  city: string;
+  cityId: string;
   longitude?: number;
   latitude?: number;
   startDateTime: Date;
@@ -47,7 +47,7 @@ export interface EventDetails {
 
 export interface CreateEventRequest {
   name: string;
-  city: string;
+  cityId: string;
   price: number;
   startDateTime: Date;
   endDateTime: Date;
@@ -63,7 +63,7 @@ export interface CreateEventRequest {
 export interface UpdateEventRequest {
   id: string;
   name: string;
-  city: string;
+  cityId: string;
   price: number;
   startDateTime: Date;
   endDateTime: Date;
@@ -116,7 +116,7 @@ export const eventCategoryOptions: {
 export const getInitialEventsFilters = (
   category?: EventCategoryType
 ): EventsFiltersModel => ({
-  city: "",
+  cityId: undefined,
   category: category ?? EventCategoryType.None,
 });
 
@@ -144,7 +144,7 @@ const useEventsApi = () => {
     createEvent: async (event: CreateEventRequest): Promise<string> => {
       var body = new FormData();
       body.append("name", event.name);
-      body.append("city", event.city);
+      body.append("cityId", event.cityId);
       body.append("price", event.price.toString());
       body.append(
         "startDateTime",
@@ -182,10 +182,10 @@ const useEventsApi = () => {
     updateEvent: async (event: UpdateEventRequest): Promise<void> => {
       var body = new FormData();
       body.append("name", event.name);
-      body.append("city", event.city);
+      body.append("cityId", event.cityId);
       body.append("price", event.price.toString());
-      body.append("startDateTime", event.startDateTime.toString());
-      body.append("endDateTime", event.endDateTime.toString());
+      body.append("startDateTime", moment(event.startDateTime).format("YYYY-MM-DD"));
+      body.append("endDateTime", moment(event.endDateTime).format("YYYY-MM-DD"));
       if (event.guests) body.append("guests", event.guests.toString());
       if (event.phone) body.append("phone", event.phone);
       if (event.email) body.append("email", event.email);

@@ -25,6 +25,7 @@ import useImagePicker from "@hooks/useImagePicker";
 
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
+import { availableCities, availableCitiesPickerOptions } from "api/helpers/cities";
 
 type EditEventScreenNavigationProp = RootStackNavigationPropChild<"EditEvent">;
 type EditEventScreenRouteProp = RootStackRoutePropChild<"EditEvent">;
@@ -36,7 +37,7 @@ type Props = {
 
 interface EditEventForm {
   name: string;
-  city: string;
+  cityId: string;
   price: string;
   startDateTime: string;
   endDateTime: string;
@@ -54,7 +55,7 @@ const EditEventScreen = ({ route, navigation }: Props) => {
   const formik = useFormik<EditEventForm>({
     initialValues: {
       name: "",
-      city: "",
+      cityId: availableCities[0].id,
       price: "",
       startDateTime: moment().add(1, "day").startOf("day").format("YYYY-MM-DD"),
       endDateTime: moment().add(2, "day").startOf("day").format("YYYY-MM-DD"),
@@ -125,7 +126,7 @@ const EditEventScreen = ({ route, navigation }: Props) => {
           formik.setValues(
             {
               name: event.name,
-              city: event.city,
+              cityId: event.cityId,
               price: event.price.toString(),
               startDateTime: moment(event.startDateTime).format("YYYY-MM-DD"),
               endDateTime: moment(event.endDateTime).format("YYYY-MM-DD"),
@@ -233,11 +234,13 @@ const EditEventScreen = ({ route, navigation }: Props) => {
           value={formik.values.name}
           containerStyle={styles.fieldGroup}
         />
-        <TextField
+        <PickerField
           label="Oras"
-          placeholder="Ex: Iasi"
-          onChangeText={formik.handleChange("city")}
-          value={formik.values.city}
+          items={availableCitiesPickerOptions}
+          selectedValue={formik.values.cityId}
+          onValueChange={(itemValue, itemIndex) =>
+            formik.setFieldValue("cityId", itemValue)
+          }
           containerStyle={styles.fieldGroup}
         />
         <TextField

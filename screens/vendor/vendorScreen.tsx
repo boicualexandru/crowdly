@@ -23,6 +23,7 @@ import {
 import AboutTab from "./aboutTab";
 import ScheduleTab from "./scheduleTab/scheduleTab";
 import BookTab from "./bookTab/bookTab";
+import { getCityById } from "api/helpers/cities";
 
 export type VendorScreenNavigationProp = VendorsStackNavigationPropChild<"Vendor">;
 type VendorScreenRouteProp = VendorsStackRoutePropChild<"Vendor">;
@@ -147,7 +148,7 @@ const VendorScreen = ({ navigation, route }: Props) => {
                 ThemeTypographyColorStyles.text_dark_60,
               ]}
             >
-              {vendor.city}
+              {getCityById(vendor.cityId)?.name}
             </Text>
           </View>
           {/* <ReviewStars {...vendor.rating} style={Spacing.mt_4} /> */}

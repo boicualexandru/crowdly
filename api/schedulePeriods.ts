@@ -33,7 +33,7 @@ interface VendorDetails {
   id: string;
   name: string;
   thumbnail: string;
-  city: string;
+  cityId: string;
   phone: string;
   email: string;
 }

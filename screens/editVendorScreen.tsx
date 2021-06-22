@@ -24,6 +24,7 @@ import useImagePicker from "@hooks/useImagePicker";
 import ThemeColors from "@theme/theme-colors";
 import { ThemeTypography } from "@theme/theme-typography";
 import RangeTextField from "@components/form/range-text-field";
+import { availableCities, availableCitiesPickerOptions } from "api/helpers/cities";
 
 type EditVendorScreenNavigationProp = RootStackNavigationPropChild<"EditVendor">;
 type EditVendorScreenRouteProp = RootStackRoutePropChild<"EditVendor">;
@@ -35,7 +36,7 @@ type Props = {
 
 interface EditVendorForm {
   name: string;
-  city: string;
+  cityId: string;
   price: string;
   guestsMin: string;
   guestsMax: string;
@@ -52,7 +53,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
   const formik = useFormik<EditVendorForm>({
     initialValues: {
       name: "",
-      city: "",
+      cityId: availableCities[0].id,
       price: "",
       guestsMin: "",
       guestsMax: "",
@@ -116,7 +117,7 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           formik.setValues(
             {
               name: vendor.name,
-              city: vendor.city,
+              cityId: vendor.cityId,
               price: vendor.price.toString(),
               guestsMin: vendor.guestsMin?.toString() || '',
               guestsMax: vendor.guestsMax?.toString() || '',
@@ -223,11 +224,13 @@ const EditVendorScreen = ({ route, navigation }: Props) => {
           value={formik.values.name}
           containerStyle={styles.fieldGroup}
         />
-        <TextField
+        <PickerField
           label="Oras"
-          placeholder="Ex: Iasi"
-          onChangeText={formik.handleChange("city")}
-          value={formik.values.city}
+          items={availableCitiesPickerOptions}
+          selectedValue={formik.values.cityId}
+          onValueChange={(itemValue, itemIndex) =>
+            formik.setFieldValue("cityId", itemValue)
+          }
           containerStyle={styles.fieldGroup}
         />
         <TextField

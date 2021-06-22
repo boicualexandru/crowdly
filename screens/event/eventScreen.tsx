@@ -25,6 +25,7 @@ import EventAbout from "./eventAbout";
 import moment from "moment";
 import Button from "@components/button/button";
 import { useTicketApi } from "api/ticket";
+import { getCityById } from "api/helpers/cities";
 
 export type EventScreenNavigationProp = EventsStackNavigationPropChild<"Event">;
 type EventScreenRouteProp = EventsStackRoutePropChild<"Event">;
@@ -186,7 +187,7 @@ const EventScreen = ({ navigation, route }: Props) => {
                   ThemeTypographyColorStyles.text_dark_60,
                 ]}
               >
-                {event.city}
+                {getCityById(event.cityId)?.name}
               </Text>
             </View>
           </View>

@@ -4,6 +4,7 @@ import { View, Text, Card } from "react-native-ui-lib";
 
 import ThemeColors from "@theme/theme-colors";
 import { Vendor } from "api/vendors";
+import { getCityById } from "api/helpers/cities";
 
 interface Props {
   vendor: Vendor;
@@ -52,7 +53,7 @@ const VendorCard = ({ vendor, onPress }: Props) => {
               </View>
               <View>
                 <Text text90 grey50>
-                  {vendor.city}
+                  {getCityById(vendor.cityId)?.name}
                 </Text>
               </View>
             </View>

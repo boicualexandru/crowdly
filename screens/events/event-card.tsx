@@ -5,6 +5,7 @@ import { View, Text, Card } from "react-native-ui-lib";
 import ThemeColors from "@theme/theme-colors";
 import { Event } from "api/events";
 import moment from "moment";
+import { getCityById } from "api/helpers/cities";
 
 interface Props {
   event: Event;
@@ -73,7 +74,7 @@ const EventCard = ({ event, onPress }: Props) => {
               </View>
               <View>
                 <Text text90 grey50>
-                  {event.city}
+                  {getCityById(event.cityId)?.name}
                 </Text>
               </View>
             </View>

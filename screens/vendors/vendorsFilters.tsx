@@ -1,11 +1,12 @@
 import { Picker } from "@react-native-picker/picker";
-import { availableCities, VendorsFiltersModel } from "api/vendors";
+import { VendorsFiltersModel } from "api/vendors";
 import React, { memo, useState } from "react";
 import { View, StyleSheet, ViewProps, Text } from "react-native";
 
 import IconButton from "@components/button/icon-button";
 
 import VendorsFiltersModal from "./vendorsFiltersModal";
+import { availableCities } from "api/helpers/cities";
 
 interface Props extends ViewProps {
   filters: VendorsFiltersModel;
@@ -19,20 +20,20 @@ const VendorFilters = (props: Props) => {
     <View style={[styles.container, props.style]}>
       <View style={{ flex: 1 }}>
         <Picker
-          selectedValue={props.filters.city}
-          onValueChange={(itemValue, itemIndex) => {
-            const city = itemValue.toString();
-            if (city == props.filters.city) return;
+          selectedValue={props.filters.cityId}
+          onValueChange={(cityId, itemIndex) => {
+            if (cityId == props.filters.cityId) return;
 
             props.requestApply({
               ...props.filters,
-              city: itemValue.toString(),
+              cityId: cityId,
             });
           }}
           style={{ minWidth: 100, backgroundColor: "transparent" }}
         >
+          <Picker.Item key={undefined} value={undefined} label="Toate orasele"  />
           {availableCities.map((city) => (
-            <Picker.Item {...city} key={city.value} />
+            <Picker.Item key={city.id} value={city.id} label={city.name}  />
           ))}
         </Picker>
       </View>

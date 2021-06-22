@@ -3,12 +3,13 @@ import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 
 import ThemeColors from "@theme/theme-colors";
+import { getCityById } from "api/helpers/cities";
 
 export interface EventModel {
   id: string;
   title: string;
   date?: string;
-  city?: string;
+  cityId: string;
   imageUrl?: string;
   price: string;
 }
@@ -61,7 +62,7 @@ const EventCard = ({ event, onPress }: Props) => {
               </View>
               <View>
                 <Text text90 grey50>
-                  {event.city}
+                  {getCityById(event.cityId)?.name}
                 </Text>
               </View>
             </View>
